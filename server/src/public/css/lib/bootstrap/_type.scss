@@ -1,5 +1,14 @@
 // stylelint-disable declaration-no-important, selector-list-comma-newline-after
 
+// Google Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito|Quicksand|Ubuntu:300&display=swap');
+
+// Fonts
+$title-font-1: 'Nunito', sans-serif;
+$title-font-2: 'Quicksand', sans-serif;
+$title-font-3: 'Ubuntu', sans-serif;
+
+
 //
 // Headings
 //
@@ -23,6 +32,36 @@ h6, .h6 { font-size: $h6-font-size; }
 .lead {
   font-size: $lead-font-size;
   font-weight: $lead-font-weight;
+}
+
+.title-1 {
+  font-family: $title-font-3;
+  font-size: 200px;
+  padding-top: 80px;
+  padding-bottom: 0;
+  margin: none;
+  
+}
+
+.title-2 {
+  font-family: $title-font-3;
+  padding-top: 0px;
+  padding-left: 20px;
+  margin-top: -70px;
+  font-size: 55px;
+  padding-bottom: 100px;
+  
+}
+
+.titlep {
+  font-family: $title-font-3;
+  font-size: 20px;
+}
+
+.headerlogo {
+  font-family: $title-font-3;
+  font-size: 20px;
+  padding-top: 5px;
 }
 
 // Type display classes
