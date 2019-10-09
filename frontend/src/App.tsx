@@ -1,12 +1,24 @@
-import React from 'react';
-import './App.css';
+import * as React from "react";
+import { Switch, Route, HashRouter } from "react-router-dom";
+import 'reset-css';
 
-const App: React.FC = () => {
+import HomePage from "./pages/home.page";
+import SignupPage from "./pages/signup.page";
+import LoginPage from "./pages/login.page";
+
+const App = () => {
   return (
-    <div>
-     <h2>Hello World!</h2>
-    </div>
+    <>
+
+      <HashRouter>
+        <Switch>
+          <Route exact={true} path="/signup" component={SignupPage} />
+          <Route exact={true} path="/login" component={LoginPage} />
+          <Route path="/" component={HomePage} />
+        </Switch>
+      </HashRouter>
+    </>
   );
-}
+};
 
 export default App;
