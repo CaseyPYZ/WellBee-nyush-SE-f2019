@@ -1,10 +1,8 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
-//import { Personnel } from "./Personnel";
-//import { Record } from "./Record";
 
-export type UserDocument = mongoose.Document & {
+export type PersonnelDocument = mongoose.Document & {
     email: string;
     password: string;
     passwordResetToken: string;
@@ -33,7 +31,7 @@ export interface AuthToken {
     kind: string;
 }
 
-const userSchema = new mongoose.Schema({
+const personnelSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     passwordResetToken: String,
@@ -57,8 +55,8 @@ const userSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
-userSchema.pre("save", function save(next) {
-    const user = this as UserDocument;
+personnelSchema.pre("save", function save(next) {
+    const user = this as PersonnelDocument;
     if (!user.isModified("password")) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
@@ -76,12 +74,12 @@ const comparePassword: comparePasswordFunction = function (candidatePassword, cb
     });
 };
 
-userSchema.methods.comparePassword = comparePassword;
+personnelSchema.methods.comparePassword = comparePassword;
 
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function (size: number = 200) {
+personnelSchema.methods.gravatar = function (size: number = 200) {
     if (!this.email) {
         return `https://gravatar.com/avatar/?s=${size}&d=retro`;
     }
@@ -89,4 +87,4 @@ userSchema.methods.gravatar = function (size: number = 200) {
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-export const User = mongoose.model<UserDocument>("User", userSchema);
+export const Personnel = mongoose.model<PersonnelDocument>("Personnel", personnelSchema);

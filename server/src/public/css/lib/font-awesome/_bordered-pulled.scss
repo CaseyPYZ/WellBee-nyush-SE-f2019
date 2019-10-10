@@ -17,7 +17,7 @@
 
 /* Deprecated as of 4.4.0 */
 .pull-right { float: right; }
-.pull-left { float: left; }
+.pull-left { float: left; padding-top: 200px; margin-bottom: 20px; }
 
 .#{$fa-css-prefix} {
   &.pull-left { margin-right: .3em; }
