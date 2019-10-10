@@ -14,6 +14,7 @@ export type UserDocument = mongoose.Document & {
     profile: {
         name: string;
         gender: string;
+        birthday: string; // added birthday attribute for age
         location: string;
         website: string;
         picture: string;
@@ -44,6 +45,7 @@ const userSchema = new mongoose.Schema({
     profile: {
         name: String,
         gender: String,
+        birthday: String,
         location: String,
         website: String,
         picture: String

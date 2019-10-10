@@ -148,6 +148,7 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
         user.email = req.body.email || "";
         user.profile.name = req.body.name || "";
         user.profile.gender = req.body.gender || "";
+        user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
         user.profile.location = req.body.location || "";
         user.profile.website = req.body.website || "";
         user.save((err: WriteError) => {
