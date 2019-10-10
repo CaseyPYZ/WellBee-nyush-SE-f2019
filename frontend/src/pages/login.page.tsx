@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AuthForm } from '../style/login.style';
+import { LoginForm } from '../style/login.style';
 
 const LoginPage = () => {
 
@@ -10,7 +10,7 @@ const LoginPage = () => {
 
     return (
         <div>
-            <AuthForm>
+            <LoginForm>
                 <label htmlFor="username"> Username </label>
                 <input placeholder="username" value={username} onChange={(event) => setCredentials ({
                     username: event.target.value,
@@ -22,7 +22,7 @@ const LoginPage = () => {
                     password: event.target.value
                 })}/>
                 <button type="submit"> Login </button>
-            </AuthForm>
+            </LoginForm>
         </div>
     )
 }

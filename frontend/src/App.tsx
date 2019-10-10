@@ -7,12 +7,14 @@ import SignupPage from "./pages/signup.page";
 import LoginPage from "./pages/login.page";
 import NavbarComponent from "./components/navbar.component";
 import { Component } from "react";
+import AboutPage from "./pages/about.page";
+import UserPage from "./pages/user.page";
 
 const navigation = {
   brand: {name: 'WellBee', to: '/'},
   links: [
     { name: 'About', to: '/about' },
-    { name: 'Contact', to: '/contact' },
+    { name: 'User', to: '/user' },
     { name: 'Login', to: '/login' },
     { name: 'Sign Up', to: '/signup' }
   ]
@@ -32,6 +34,8 @@ class App extends Component {
         <Switch>
           <Route exact={true} path="/signup" component={SignupPage} />
           <Route exact={true} path="/login" component={LoginPage} />
+          <Route exact={true} path="/about" component={AboutPage} />
+          <Route exact={true} path="/user" component={UserPage} />
           <Route path="/" component={HomePage} />
         </Switch>
       </BrowserRouter>

@@ -1,0 +1,26 @@
+{
+  "name": "wellbee-nyush-se-f2019",
+  "version": "1.0.0",
+  "description": "This is the repo for WellBee EHR System",
+  "main": "index.js",
+  "dependencies": {
+    "concurrently": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "client": "cd frontend && npm start",
+    "server": "cd server && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaseyPYZ/WellBee-nyush-SE-f2019.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CaseyPYZ/WellBee-nyush-SE-f2019/issues"
+  },
+  "homepage": "https://github.com/CaseyPYZ/WellBee-nyush-SE-f2019#readme"
+}
