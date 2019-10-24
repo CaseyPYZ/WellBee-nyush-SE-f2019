@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { SignUpDoctorForm } from '../components/forms/signup/doctor.signup.form';
 
 const SignupPage = () => {
 
     return (
         <div>
-           <h2> Welcome to Sign Up page! </h2>
+           <SignUpDoctorForm />
         </div>
     )
 }
+
 
 export default SignupPage;
