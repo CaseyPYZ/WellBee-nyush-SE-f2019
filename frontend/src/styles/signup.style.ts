@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SignupForm = styled.form`
+export const SignupContainer = styled.form`
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -8,8 +8,4 @@ export const SignupForm = styled.form`
     margin: 20px auto;
     padding: 50px 0;
     border: 1px solid #ccc;
-    `
-export const Label = styled.label`
-    display: inline-block;
-    align: left;
     `

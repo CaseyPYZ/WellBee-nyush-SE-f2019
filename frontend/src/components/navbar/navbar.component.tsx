@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Img } from '../../styles/navbar.style';
 
 export default class NavbarComponent extends React.Component {
   render() {
@@ -6,7 +7,7 @@ export default class NavbarComponent extends React.Component {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div className="container">
           <a className="navbar-brand" href="/">
-            <h2>WellBee</h2>
+            <h2><Img src="bee-128.png" alt=""/> WellBee </h2>
           </a>
           
           <ul className="navbar-nav ml-auto">

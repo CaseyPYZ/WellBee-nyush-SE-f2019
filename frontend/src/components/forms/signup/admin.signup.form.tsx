@@ -4,30 +4,25 @@ import { Field } from "../field";
 
 export const SignUpAdminForm: React.SFC = () => {
     const fields: IFields = {
-        firstName: {
-            id: "firstName",
-            label: "First Name",
-            validation: { rule: required }
-        },
-        lastName: {
-            id: "lastName",
-            label: "Last Name",
-            validation: { rule: required }
-        },
-        dob: {
-            id: "dob",
-            label: "Date of Birth",
-            validation: { rule: required }
-        },
         email: {
             id: "email",
             label: "Email",
             validation: { rule: isEmail }
+        }, 
+        password: {
+            id: "password",
+            label: "Password",
+            validation: { rule: required }
+        }, 
+        confirmPw: {
+            id: "confirmPw",
+            label: "Confirm Password",
+            validation: { rule: required }
         }
     };
     return (
         <Form
-            action="http://localhost:3000/signup"
+            action="http://localhost:5000/signup"
             fields={fields}
             render={() => (
                 <React.Fragment>
@@ -35,10 +30,9 @@ export const SignUpAdminForm: React.SFC = () => {
                     <div className="alert alert-info" role="alert">
                         Sign Up!
           </div>
-                    <Field {...fields.firstName} />
-                    <Field {...fields.lastName} />
-                    <Field {...fields.dob} />
                     <Field {...fields.email} />
+                    <Field {...fields.password} />
+                    <Field {...fields.confirmPw} />
                 </React.Fragment>
             )}
         />

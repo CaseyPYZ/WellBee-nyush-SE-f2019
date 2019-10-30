@@ -1,5 +1,5 @@
+
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
 
-test.skip('skip', () => {});
+configure({ adapter: new Adapter() });
