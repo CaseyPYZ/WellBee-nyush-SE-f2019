@@ -5,10 +5,10 @@ import { Redirect } from "react-router";
 export interface IFormContext extends IFormState {
   /* Function that allows values in the values state to be set */
   setValues: (values: IValues) => void;
-
   /* Function that validates a field */
   validate: (fieldName: string) => void;
 }
+
 /* 
  * The context which allows state and functions to be shared with Field.
  * Note that we need to pass createContext a default value which is why undefined is unioned in the type
@@ -66,10 +66,8 @@ export interface IFields {
 interface IFormProps {
   /* The http path that the form will be posted to */
   action: string;
-
   /* The props for all the fields on the form */
   fields: IFields;
-
   /* A prop which allows content to be injected */
   render: () => React.ReactNode;
 }
@@ -87,10 +85,8 @@ export interface IErrors {
 export interface IFormState {
   /* The field values */
   values: IValues;
-
   /* The field validation error messages */
   errors: IErrors;
-
   /* Whether the form has been successfully submitted */
   submitSuccess?: boolean;
 }
@@ -191,14 +187,17 @@ export class Form extends React.Component<IFormProps, IFormState> {
    */
   private async submitForm(): Promise<boolean> {
     try {
+      const headers = {
+        "Content-Type": "application/json", 
+        Accept: "application/json"
+      }
       const response = await fetch(this.props.action, {
         method: "post",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }),
+        headers: headers,
         body: JSON.stringify(this.state.values)
       });
+      console.log(response);
+      console.log(this.state);
       if (response.status === 400) {
         /* Map any validation errors to IErrors */
         let responseBody: any;

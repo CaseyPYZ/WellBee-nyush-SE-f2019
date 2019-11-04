@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { IErrors, IValues, IFormContext, FormContext } from "./form";
 
 /* The available editors for the field */
@@ -13,19 +12,14 @@ export interface IValidation {
 export interface IFieldProps {
   /* The unique field name */
   id: string;
-
   /* The label text for the field */
   label?: string;
-
   /* The editor for the field */
   editor?: Editor;
-
   /* The drop down items for the field */
   options?: string[];
-
   /* The field value */
   value?: any;
-
   /* The field validator function and argument */
   validation?: IValidation;
 }
@@ -43,7 +37,6 @@ export const Field: React.SFC<IFieldProps> = ({
    * @returns {string[]} - The validation error
    */
   const getError = (errors: IErrors): string => (errors ? errors[id] : "");
-
   /**
    * Gets the inline styles for editor
    * @param {IErrors} errors - All the errors from the form
@@ -63,7 +56,7 @@ export const Field: React.SFC<IFieldProps> = ({
               id={id}
               type="text"
               value={value}
-              onChange={(e: React.FormEvent<HTMLInputElement>) => 
+              onChange={(e: React.FormEvent<HTMLInputElement>) =>
                 context.setValues({ [id]: e.currentTarget.value })
               }
               onBlur={() => context.validate(id)}

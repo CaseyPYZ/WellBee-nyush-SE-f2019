@@ -14,7 +14,5 @@ module.exports = {
       "json",
       "node"
     ],
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
-    // setupFiles: ['<rootDir>/tools/jest/setup-react-adapter.js'],
-
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }

@@ -1,12 +1,22 @@
 import * as React from 'react';
+import { Img } from '../../styles/navbar.style';
 
 export default class NavbarComponent extends React.Component {
+
+  // get login and logout
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      loggedIn: false
+    }
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div className="container">
           <a className="navbar-brand" href="/">
-            <h2>WellBee</h2>
+            <h2><Img src="bee-128.png" alt=""/> WellBee </h2>
           </a>
           
           <ul className="navbar-nav ml-auto">
@@ -22,6 +32,7 @@ export default class NavbarComponent extends React.Component {
               <a className="nav-link" href="/contact">Contact Us</a>
             </li>
           </ul>
+
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
