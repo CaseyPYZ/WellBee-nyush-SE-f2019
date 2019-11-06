@@ -15,6 +15,7 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+        // send req.user
         return res.redirect("/");
     }
     //view
@@ -28,23 +29,22 @@ export const getLogin = (req: Request, res: Response) => {
  * Sign in using email and password.
  */
 export const postLogin = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     check("email", "Email is not valid").isEmail();
     check("password", "Password cannot be blank").isLength({min: 1});
     // eslint-disable-next-line @typescript-eslint/camelcase
     sanitize("email").normalizeEmail({ gmail_remove_dots: false });
 
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
         req.flash("errors", errors.array());
         return res.redirect("/login");
     }
-
+    
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
         if (err) { return next(err); }
         if (!user) {
-            req.flash("errors", {msg: info.message});
-            return res.redirect("/login");
+            return res.send(JSON.stringify(info)).status(200);
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
