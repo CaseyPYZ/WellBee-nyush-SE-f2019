@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
-//import { Personnel } from "./Personnel";
+import { PersonnelDocument } from "./Personnel";
 
 
-export type DoctorDocument = mongoose.Document & {
+export interface DoctorDocument extends PersonnelDocument {
 
-    // Doctor
+    /* Doctor */
     
 };
 

@@ -17,6 +17,7 @@ export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
         return res.redirect("/");
     }
+    //view
     res.render("account/login", {
         title: "Login"
     });

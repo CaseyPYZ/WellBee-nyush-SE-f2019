@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
-//import { Personnel } from "./Personnel";
-//import { Record } from "./Record";
+
 
 export type UserDocument = mongoose.Document & {
     email: string;
@@ -32,6 +31,8 @@ export interface AuthToken {
     accessToken: string;
     kind: string;
 }
+
+
 
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
