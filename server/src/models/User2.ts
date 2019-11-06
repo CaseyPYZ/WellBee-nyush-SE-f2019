@@ -1,37 +1,29 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export type PersonnelDocument = mongoose.Document & {
-    email: string;
-    password: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
+import { PersonnelDocument } from "./Personnel";
 
-    facebook: string;
-    tokens: AuthToken[];
+export interface UserDocument extends PersonnelDocument { 
 
-    profile: {
-        name: string;
-        gender: string;
-        birthday: string; // added birthday attribute for age
-        location: string;
-        website: string;
-        picture: string;
-    };
+    /* User */
 
-    comparePassword: comparePasswordFunction;
-    gravatar: (size: number) => string;
-};
+
+}
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
+
 
 export interface AuthToken {
     accessToken: string;
     kind: string;
 }
 
-const personnelSchema = new mongoose.Schema({
+/**
+ * MongoDB Schema
+ */
+
+const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     passwordResetToken: String,
@@ -55,8 +47,9 @@ const personnelSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
-personnelSchema.pre("save", function save(next) {
-    const user = this as PersonnelDocument;
+
+userSchema.pre("save", function save(next) {
+    const user = this as UserDocument;
     if (!user.isModified("password")) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
@@ -74,12 +67,12 @@ const comparePassword: comparePasswordFunction = function (candidatePassword, cb
     });
 };
 
-personnelSchema.methods.comparePassword = comparePassword;
+userSchema.methods.comparePassword = comparePassword;
 
 /**
  * Helper method for getting user's gravatar.
  */
-personnelSchema.methods.gravatar = function (size: number = 200) {
+userSchema.methods.gravatar = function (size: number = 200) {
     if (!this.email) {
         return `https://gravatar.com/avatar/?s=${size}&d=retro`;
     }
@@ -87,4 +80,4 @@ personnelSchema.methods.gravatar = function (size: number = 200) {
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-export const Personnel = mongoose.model<PersonnelDocument>("Personnel", personnelSchema);
+export const User = mongoose.model<UserDocument>("User", userSchema);
