@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from "./pages/home.page";
@@ -23,7 +23,9 @@ export default class App extends Component<any, any> {
   }
 
   async checkLoginStatus() {
-    const response: any = await fetch("http://localhost:5000")
+    const response: any = await fetch("http://localhost:5000/")
+    console.log("CHECK LOGIN STATUS");
+    console.log(response);
     if (response.user &&
       this.state.loggedInStatus === "NOT_LOGGED_IN") {
       this.setState({
@@ -34,16 +36,19 @@ export default class App extends Component<any, any> {
       !response.user &&
       (this.state.loggedInStatus === "LOGGED_IN")
     ) {
+      console.log("LOGGING OUT");
+
       this.setState({
         loggedInStatus: "NOT_LOGGED_IN",
         user: {}
       });
     }
+    console.log(this.state);
   }
 
-  componentDidMount() {
-    this.checkLoginStatus();
-  }
+  // componentDidMount() {
+  //   this.checkLoginStatus();
+  // }
 
   handleLogout() {
     this.setState({
@@ -57,21 +62,24 @@ export default class App extends Component<any, any> {
       loggedInStatus: "LOGGED_IN",
       user: data.user
     });
+    console.log(this.state);
+    // return <Redirect to='/' />
+    // this.props.history.push("/");
   }
 
   render() {
     return (
       <div className="app" >
-        <NavbarComponent handleLogout={this.handleLogout} loggedInStatus={this.state.loggedInStatus} />
         <BrowserRouter>
+          <NavbarComponent handleLogout={this.handleLogout} loggedInStatus={this.state.loggedInStatus} />
           <Switch>
             <Route exact={true} path="/signup" component={SignupPage} />
             <Route
               exact={true}
               path="/login"
               render={props =>
-                (<LoginPage 
-                  {...props} 
+                (<LoginPage
+                  {...props}
                   handleLogin={this.handleLogin}
                   loggedInStatus={this.state.loggedInStatus} />)
               } />

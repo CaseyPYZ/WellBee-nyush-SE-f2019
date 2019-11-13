@@ -19,18 +19,13 @@ export default class Login extends Component<any, any> {
   }
 
   handleChange(event: any) {
-    console.log("HERE");
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
   async handleSubmit(event: any) {
-    console.log("BEFORE");
-    console.log(this.state);
-
     event.preventDefault();
-
     const headers = {
       "Content-Type": "application/json", 
       Accept: "application/json"
@@ -43,7 +38,7 @@ export default class Login extends Component<any, any> {
     .then(response => response.json())
     .then(response => {
       console.log(response);
-      this.props.handleSuccessfulAuth(response.data);
+      this.props.handleSuccessfulAuth(response);
     })
     .catch(error => {
       this.setState({loginErrors: error});

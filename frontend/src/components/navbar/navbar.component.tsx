@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Img } from '../../styles/navbar.style';
+import { Link } from 'react-router-dom';
 
 export default class NavbarComponent extends React.Component<any> {
 
@@ -25,21 +26,21 @@ export default class NavbarComponent extends React.Component<any> {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div className="container">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             <h2><Img src="bee-128.png" alt="" /> WellBee </h2>
-          </a>
+          </Link>
 
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="/">Home
+              <Link className="nav-link" to="/">Home
                       <span className="sr-only">(current)</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/about">About</a>
+              <Link className="nav-link" to="/about">About</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/contact">Contact Us</a>
+              <Link className="nav-link" to="/contact">Contact Us</Link>
             </li>
           </ul>
 
@@ -48,17 +49,17 @@ export default class NavbarComponent extends React.Component<any> {
               {this.props.loggedInStatus !== "LOGGED_IN" ? (
                 <>
                   <li className="nav-item">
-                    <a className="nav-link" href="/login">Login</a>
+                    <Link className="nav-link" to="/login">Login</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/signup">Signup</a>
+                    <Link className="nav-link" to="/signup">Signup</Link>
                   </li>
                 </>
               ) : (
                   <li className="nav-item">
-                    <a className="nav-link" href="/home">
+                    <Link className="nav-link" to="/home">
                       <button onClick={() => this.handleLogoutClick()}>Logout</button>
-                    </a>
+                    </Link>
                   </li>
                 )}
             </ul>

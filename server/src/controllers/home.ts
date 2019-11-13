@@ -5,7 +5,13 @@ import { Request, Response } from "express";
  * Home page.
  */
 export const index = (req: Request, res: Response) => {
-    res.render("home", {
-        title: "Home"
-    });
+    if (req.user) {
+        console.log("HOME WITH USER");
+        return res.send({user: req.user});
+    }
+    console.log("HOME WITHOUT USER");
+    return res.send();
+    // res.render("home", {
+    //     title: "Home"
+    // });
 };

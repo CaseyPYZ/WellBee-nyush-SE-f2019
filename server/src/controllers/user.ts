@@ -56,7 +56,8 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
-            return res.send({user: req.user, msg: 'You have logged in!'});
+            console.log(user);
+            return res.send({user: user, msg: 'You have logged in!'});
 
             // req.flash("success", { msg: "Success! You are logged in." });
             // res.redirect(req.session.returnTo || "/");
