@@ -1,34 +1,85 @@
-import * as React from "react";
-import { Form, IFields, required } from "../form";
-import { Field } from "../field";
+import React, { Component } from "react";
 
-export const LoginAdminForm: React.SFC = () => {
-  const fields: IFields = {
-    username: {
-      id: "username",
-      label: "Username",
-      validation: { rule: required }
-    },
-    password: {
-      id: "password",
-      label: "Password",
-      validation: { rule: required }
+export default class Login extends Component<any, any> {
+  constructor(props: any) {
+    super(props);
+
+    const email: string = "";
+    const password: string = "";
+    const loginErrors: string = "";
+
+    this.state = {
+      email,
+      password,
+      loginErrors
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event: any) {
+    console.log("HERE");
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  async handleSubmit(event: any) {
+    console.log("BEFORE");
+    console.log(this.state);
+
+    event.preventDefault();
+
+    const headers = {
+      "Content-Type": "application/json", 
+      Accept: "application/json"
     }
-  };
-  return (
-    <Form
-      action="http://localhost:5000/login"
-      fields={fields}
-      render={() => (
-        <React.Fragment>
-          <p></p>
-          <div className="alert alert-info" role="alert">
-            Please login
+    await fetch("http://localhost:5000/login", {
+      method: "post",
+      headers: headers,
+      body: JSON.stringify(this.state)
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.props.handleSuccessfulAuth(response.data);
+    })
+    .catch(error => {
+      this.setState({loginErrors: error});
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <div className="alert alert-info form-group" role="alert">
+              Please login
           </div>
-          <Field {...fields.username} />
-          <Field {...fields.password} />
-        </React.Fragment>
-      )}
-    />
-  );
-};
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            />
+            <div><input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            /></div>
+            <button type="submit" className="form-control">Login</button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+}
