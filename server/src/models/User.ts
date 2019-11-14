@@ -1,38 +1,27 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
+import { PersonnelDocument } from "./Personnel";
 
-export type UserDocument = mongoose.Document & {
-    email: string;
-    password: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
+export interface UserDocument extends PersonnelDocument { 
 
-    facebook: string;
-    tokens: AuthToken[];
+    /* User */
 
-    profile: {
-        name: string;
-        gender: string;
-        birthday: string; // added birthday attribute for age
-        location: string;
-        website: string;
-        picture: string;
-    };
-
-    comparePassword: comparePasswordFunction;
-    gravatar: (size: number) => string;
-};
+    
+}
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
+
 
 export interface AuthToken {
     accessToken: string;
     kind: string;
 }
 
-
+/**
+ * MongoDB Schema
+ */
 
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
@@ -58,6 +47,7 @@ const userSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
+
 userSchema.pre("save", function save(next) {
     const user = this as UserDocument;
     if (!user.isModified("password")) { return next(); }
