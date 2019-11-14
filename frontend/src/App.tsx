@@ -23,9 +23,16 @@ export default class App extends Component<any, any> {
   }
 
   async checkLoginStatus() {
+<<<<<<< HEAD
     const response: any = await fetch("http://localhost:5000/")
     console.log("CHECK LOGIN STATUS");
     console.log(response);
+=======
+    const response: any = await fetch("http://localhost:5000")
+    console.log("CHECK LOGIN STATUS");
+    console.log(response);
+
+>>>>>>> master
     if (response.user &&
       this.state.loggedInStatus === "NOT_LOGGED_IN") {
       this.setState({
@@ -46,15 +53,23 @@ export default class App extends Component<any, any> {
     console.log(this.state);
   }
 
+<<<<<<< HEAD
   // componentDidMount() {
   //   this.checkLoginStatus();
   // }
 
+=======
+  componentDidMount() {
+    this.checkLoginStatus();
+  }
+  
+>>>>>>> master
   handleLogout() {
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
       user: {}
     });
+<<<<<<< HEAD
   }
 
   handleLogin(data: any) {
@@ -67,6 +82,19 @@ export default class App extends Component<any, any> {
     // this.props.history.push("/");
   }
 
+=======
+  }
+  handleLogin(data: any) {
+    this.setState({
+      loggedInStatus: "LOGGED_IN",
+      user: data.user
+    });
+    console.log(this.state);
+    // return <Redirect to='/' />
+    // this.props.history.push("/");
+  }
+
+>>>>>>> master
   render() {
     return (
       <div className="app" >

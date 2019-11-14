@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 import { PersonnelDocument } from "./Personnel";
 
 
-export interface DoctorDocument extends PersonnelDocument {
+export interface AdminDocument extends PersonnelDocument {
 
-    /* Doctor */
+    /* Admin */
     
 };
 
@@ -17,7 +17,7 @@ export interface AuthToken {
     kind: string;
 }
 
-const doctorSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: String,
     passwordResetToken: String,
@@ -43,7 +43,8 @@ const doctorSchema = new mongoose.Schema({
 /**
  * Helper method for getting user's gravatar.
  */
-doctorSchema.methods.gravatar = function (size: number = 200) {
+
+adminSchema.methods.gravatar = function (size: number = 200) {
     if (!this.email) {
         return `https://gravatar.com/avatar/?s=${size}&d=retro`;
     }
@@ -51,4 +52,4 @@ doctorSchema.methods.gravatar = function (size: number = 200) {
     return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-export const Doctor = mongoose.model<DoctorDocument>("Doctor", doctorSchema);
+export const Admin = mongoose.model<AdminDocument>("Admin", adminSchema);
