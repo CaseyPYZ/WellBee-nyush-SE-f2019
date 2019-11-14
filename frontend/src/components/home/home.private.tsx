@@ -5,20 +5,21 @@ export default class HomePrivate extends Component<any, any> {
     super(props);
 
     this.state = {
-     
+
     };
   }
 
   render() {
     return (
-      <div>
-        Logged In Page
-        <button className="button button5">User</button>
-        <button className="button button5">Profile</button>
-        <button className="button button5">Record</button>
-        <button className="button button5">Smth</button>
-        <button className="button button5">Smth</button>
-      </div>
+      <>
+        <div>
+          <button className="btn btn-warning btn-circle btn-circle-sm m-1">User</button>
+          <button className="btn btn-warning btn-circle btn-circle-sm m-1">Profile</button>
+          <button className="btn btn-warning btn-circle btn-circle-sm m-1">Record</button>
+          <button className="btn btn-warning btn-circle btn-circle-sm m-1">Smth</button>
+          <button className="btn btn-warning btn-circle btn-circle-sm m-1">Smth</button>
+        </div>
+      </>
     );
   }
 }

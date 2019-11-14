@@ -13,7 +13,9 @@ export default class NavbarComponent extends React.Component<any> {
   handleLogoutClick() {
     console.log("IN LOGOUT");
 
-    fetch("http://localhost:5000/logout")
+    fetch("http://localhost:5000/logout", {
+      method: "get"
+    })
       .then(response => {
         this.props.handleLogout();
       })
