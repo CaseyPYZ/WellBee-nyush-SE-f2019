@@ -4,11 +4,19 @@ import { Link } from 'react-router-dom';
 
 export default class NavbarComponent extends React.Component<any> {
 
+<<<<<<< HEAD
+  // get login and logout
+=======
+>>>>>>> master
   constructor(props: any) {
     super(props);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
+<<<<<<< HEAD
+
+=======
   
+>>>>>>> master
   handleLogoutClick() {
     console.log("IN LOGOUT");
 
@@ -30,6 +38,10 @@ export default class NavbarComponent extends React.Component<any> {
           <Link className="navbar-brand" to="/">
             <h2><Img src="bee-128.png" alt="" /> WellBee </h2>
           </Link>
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
               <Link className="nav-link" to="/">Home
@@ -43,6 +55,7 @@ export default class NavbarComponent extends React.Component<any> {
               <Link className="nav-link" to="/contact">Contact Us</Link>
             </li>
           </ul>
+
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav ml-auto">
               {this.props.loggedInStatus !== "LOGGED_IN" ? (

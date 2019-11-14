@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
+
+export default class Signup extends Component<any, any> {
+=======
 import axios from "axios";
 
 export default class Signup extends Component<any, any> {
 
+>>>>>>> master
   constructor(props: any) {
     super(props);
 
@@ -24,6 +29,12 @@ export default class Signup extends Component<any, any> {
   }
 
   async handleSubmit(event: any) {
+<<<<<<< HEAD
+    event.preventDefault();
+
+    const headers = {
+      "Content-Type": "application/json", 
+=======
     console.log("IN SIGNUP");
     const { email, password, password_confirmation } = this.state;
 
@@ -51,6 +62,7 @@ export default class Signup extends Component<any, any> {
 
     const headers = {
       "Content-Type": "application/json",
+>>>>>>> master
       Accept: "application/json"
     }
     await fetch("http://localhost:5000/signup", {
@@ -58,6 +70,16 @@ export default class Signup extends Component<any, any> {
       headers: headers,
       body: JSON.stringify(this.state)
     })
+<<<<<<< HEAD
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.props.handleSuccessfulAuth(response);
+    })
+    .catch(error => {
+      this.setState({loginErrors: error});
+    })
+=======
       .then(response => response.json())
       .then(response => {
         console.log(response);
@@ -66,6 +88,7 @@ export default class Signup extends Component<any, any> {
       .catch(error => {
         this.setState({ loginErrors: error });
       })
+>>>>>>> master
   }
 
   render() {
@@ -96,6 +119,10 @@ export default class Signup extends Component<any, any> {
             onChange={this.handleChange}
             required
           /></div>
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
           <button type="submit">Register</button>
         </form>
       </div>

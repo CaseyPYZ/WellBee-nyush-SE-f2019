@@ -11,4 +11,10 @@ export const index = (req: Request, res: Response) => {
     }
     console.log("HOME WITHOUT USER");
     return res.send();
+<<<<<<< HEAD
+    // res.render("home", {
+    //     title: "Home"
+    // });
+=======
+>>>>>>> master
 };
