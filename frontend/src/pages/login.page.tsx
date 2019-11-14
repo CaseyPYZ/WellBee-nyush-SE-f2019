@@ -1,28 +1,35 @@
 import React from 'react';
-import { LoginDoctorForm } from '../components/forms/login/doctor.login.form'
-import { LoginAdminForm } from '../components/forms/login/admin.login.form';
-import { LoginPatientForm } from '../components/forms/login/patient.login.form';
 import { Tabs, Tab } from 'react-bootstrap';
 import { LoginContainer } from '../styles/login.style';
+import Login from '../components/forms/login/admin.login.form';
 
-export default class LoginPage extends React.Component {
+export default class LoginPage extends React.Component<any> {
+
+    constructor(props: any) {
+        super(props);
+
+        this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
+    }
+
+    handleSuccessfulAuth(data: any) {
+        this.props.handleLogin(data);
+    }
 
     render() {
         return (
             <LoginContainer >
                 <Tabs defaultActiveKey="login" id="uncontrolled-tab-example">
                     <Tab eventKey="Admin" title="Admin">
-                        <LoginAdminForm />
+                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                     <Tab eventKey="Doctor" title="Doctor">
-                        <LoginDoctorForm />
+                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                     <Tab eventKey="Patient" title="Patient">
-                        <LoginPatientForm />
+                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                 </Tabs>
             </LoginContainer>
         )
     }
 }
-
