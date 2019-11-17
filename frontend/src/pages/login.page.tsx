@@ -13,6 +13,7 @@ export default class LoginPage extends React.Component<any> {
 
     handleSuccessfulAuth(data: any) {
         this.props.handleLogin(data);
+        this.props.history.push(`/`);
     }
 
     render() {

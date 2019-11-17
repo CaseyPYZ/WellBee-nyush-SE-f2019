@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from "./pages/home.page";
@@ -63,8 +63,6 @@ export default class App extends Component<any, any> {
       loggedInStatus: "LOGGED_IN",
       user: data.user
     });
-    return <Redirect to='/' />
-    // this.props.history.push("/");
   }
 
   render() {

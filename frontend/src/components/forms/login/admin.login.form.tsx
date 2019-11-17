@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 
 export default class Login extends Component<any, any> {
 
@@ -47,6 +46,7 @@ export default class Login extends Component<any, any> {
     .then(response => {
       console.log(response);
       this.props.handleSuccessfulAuth(response);
+      this.props.history.push(`/`);
     })
     .catch(error => {
       this.setState({loginErrors: error});

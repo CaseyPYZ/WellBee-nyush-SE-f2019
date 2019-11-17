@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Img } from '../../styles/navbar.style';
-import { Link, Redirect, NavLink } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 
 export default class NavbarComponent extends React.Component<any> {
 
@@ -19,7 +19,7 @@ export default class NavbarComponent extends React.Component<any> {
       .then(response => {
         console.log(response);
         this.props.handleLogout();
-        // return <Redirect to='/login' />      
+        this.props.history.push(`/login`);
       })
       .catch(error => {
         console.log("logout error", error);
@@ -60,27 +60,20 @@ export default class NavbarComponent extends React.Component<any> {
                 </>
               ) : (
                   <li className="nav-item">
-
-                    <Dropdown >
-                      <DropdownToggle caret>
+                    <UncontrolledDropdown setActiveFromChild>
+                      <DropdownToggle tag="a" className="nav-link" caret>
                         {this.props.user.email}
                       </DropdownToggle>
                       <DropdownMenu>
-                        <Link to="/">
-                          <DropdownItem>Profile</DropdownItem>
-                        </Link>
-                        <Link to="/">
-                          <DropdownItem>Record</DropdownItem>
-                        </Link>
-                        <Link to="/">
-                          <DropdownItem>Emergency</DropdownItem>
-                        </Link>
-                        <Link className="nav-link" to="/home"
+                        <DropdownItem><Link to="/">Profile</Link></DropdownItem>
+                        <DropdownItem><Link to="/">Record</Link></DropdownItem>
+                        <DropdownItem><Link to="/">Emergency</Link></DropdownItem>
+                        <DropdownItem><Link to="/"
                           onClick={() => this.handleLogoutClick()}>
                           Logout
-                        </Link>
+                        </Link></DropdownItem>
                       </DropdownMenu>
-                    </Dropdown>
+                    </UncontrolledDropdown>
                   </li>
                 )}
             </ul>
