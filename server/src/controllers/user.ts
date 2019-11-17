@@ -15,11 +15,19 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+
+        // send req.user
+        // return res.redirect("/");
+
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
+
+    // res.render("account/login", {
+    //     title: "Login"
+    // });
 };
 
 /**
@@ -51,7 +59,12 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
-            return res.send({user: req.user, msg: 'You have logged in!'});
+
+            console.log(user);
+            return res.send({user: user, msg: 'You have logged in!'});
+
+            // req.flash("success", { msg: "Success! You are logged in." });
+            // res.redirect(req.session.returnTo || "/");
         });
     })(req, res, next);
 };
