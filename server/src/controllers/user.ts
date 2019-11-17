@@ -15,22 +15,11 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
-<<<<<<< HEAD
-        // send req.user
-        // return res.redirect("/");
-=======
->>>>>>> master
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
-<<<<<<< HEAD
-    // res.render("account/login", {
-    //     title: "Login"
-    // });
-=======
->>>>>>> master
 };
 
 /**
@@ -62,15 +51,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
-<<<<<<< HEAD
-            console.log(user);
-            return res.send({user: user, msg: 'You have logged in!'});
-
-            // req.flash("success", { msg: "Success! You are logged in." });
-            // res.redirect(req.session.returnTo || "/");
-=======
             return res.send({user: req.user, msg: 'You have logged in!'});
->>>>>>> master
         });
     })(req, res, next);
 };
@@ -89,12 +70,9 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.redirect("/");
+        return res.send({user: req.user});
     }
-    res.json({status: "NOT_LOGGED_IN"})
-    // res.render("account/signup", {
-    //     title: "Create Account"
-    // });
+    res.send({user: null, msg: 'Oops something went wrong'})
 };
 
 

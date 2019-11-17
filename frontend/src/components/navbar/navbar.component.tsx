@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { Img } from '../../styles/navbar.style';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, NavLink } from 'react-router-dom';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 export default class NavbarComponent extends React.Component<any> {
 
-<<<<<<< HEAD
-  // get login and logout
-=======
->>>>>>> master
   constructor(props: any) {
     super(props);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> master
   handleLogoutClick() {
     console.log("IN LOGOUT");
 
@@ -24,7 +17,9 @@ export default class NavbarComponent extends React.Component<any> {
       method: "get"
     })
       .then(response => {
+        console.log(response);
         this.props.handleLogout();
+        // return <Redirect to='/login' />      
       })
       .catch(error => {
         console.log("logout error", error);
@@ -38,10 +33,6 @@ export default class NavbarComponent extends React.Component<any> {
           <Link className="navbar-brand" to="/">
             <h2><Img src="bee-128.png" alt="" /> WellBee </h2>
           </Link>
-<<<<<<< HEAD
-
-=======
->>>>>>> master
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
               <Link className="nav-link" to="/">Home
@@ -69,9 +60,27 @@ export default class NavbarComponent extends React.Component<any> {
                 </>
               ) : (
                   <li className="nav-item">
-                    <Link className="nav-link" to="/home">
-                      <button onClick={() => this.handleLogoutClick()}>Logout</button>
-                    </Link>
+
+                    <Dropdown >
+                      <DropdownToggle caret>
+                        {this.props.user.email}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <Link to="/">
+                          <DropdownItem>Profile</DropdownItem>
+                        </Link>
+                        <Link to="/">
+                          <DropdownItem>Record</DropdownItem>
+                        </Link>
+                        <Link to="/">
+                          <DropdownItem>Emergency</DropdownItem>
+                        </Link>
+                        <Link className="nav-link" to="/home"
+                          onClick={() => this.handleLogoutClick()}>
+                          Logout
+                        </Link>
+                      </DropdownMenu>
+                    </Dropdown>
                   </li>
                 )}
             </ul>

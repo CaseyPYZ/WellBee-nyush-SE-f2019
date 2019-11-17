@@ -1,10 +1,8 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 export default class Login extends Component<any, any> {
-<<<<<<< HEAD
-=======
 
->>>>>>> master
   constructor(props: any) {
     super(props);
 
@@ -23,33 +21,23 @@ export default class Login extends Component<any, any> {
   }
 
   handleChange(event: any) {
-<<<<<<< HEAD
-=======
     console.log("HERE");
->>>>>>> master
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
   async handleSubmit(event: any) {
-<<<<<<< HEAD
-    event.preventDefault();
-=======
     console.log("BEFORE");
     console.log(this.state);
 
     event.preventDefault();
 
->>>>>>> master
     const headers = {
       "Content-Type": "application/json", 
       Accept: "application/json"
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> master
     await fetch("http://localhost:5000/login", {
       method: "post",
       headers: headers,

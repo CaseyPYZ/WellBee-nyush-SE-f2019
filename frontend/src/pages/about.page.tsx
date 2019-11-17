@@ -1,12 +1,11 @@
-import React from 'react';
+import * as React from 'react'
 
-const AboutPage = () => {
-
+export default class AboutPage extends React.Component {
+  render() {
     return (
         <div>
-           <h2> All about WellBee </h2>
         </div>
     )
+  }
 }
 
-export default AboutPage;
