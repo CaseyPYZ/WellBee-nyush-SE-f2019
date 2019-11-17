@@ -1,37 +1,37 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export type UserDocument = mongoose.Document & {
-    email: string;
-    password: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
+import { PersonnelDocument, HealthRecord } from "./Personnel";
 
-    facebook: string;
-    tokens: AuthToken[];
+export interface UserDocument extends PersonnelDocument { 
 
-    profile: {
-        name: string;
-        gender: string;
-        location: string;
-        website: string;
-        picture: string;
-    };
-
-    comparePassword: comparePasswordFunction;
-    gravatar: (size: number) => string;
-};
+    /* User */
+    healthrecord: HealthRecord[];
+    
+}
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
+
 
 export interface AuthToken {
     accessToken: string;
     kind: string;
 }
 
+export interface HealthRecord {
+    date: string;
+    BloodPressure: string;
+    BloodSugar: string;
+}
+
+/**
+ * MongoDB Schema
+ */
+
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
+    ID: {type: String, unique: true}, //UUID
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -44,15 +44,20 @@ const userSchema = new mongoose.Schema({
     profile: {
         name: String,
         gender: String,
+        birthday: String,
         location: String,
         website: String,
         picture: String
-    }
+    },
+
+    healthrecord: Array,
+
 }, { timestamps: true });
 
 /**
  * Password hash middleware.
  */
+
 userSchema.pre("save", function save(next) {
     const user = this as UserDocument;
     if (!user.isModified("password")) { return next(); }
@@ -68,7 +73,7 @@ userSchema.pre("save", function save(next) {
 
 const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
-        cb(err, isMatch);
+        cb(err, isMatch);   //callback function
     });
 };
 

@@ -15,11 +15,16 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
-        return res.redirect("/");
+        // send req.user
+        // return res.redirect("/");
+        console.log("GET LOGIN WITH USER");
+        return res.send({user: req.user});
     }
-    res.render("account/login", {
-        title: "Login"
-    });
+    console.log("GET LOGIN WITHOUT USER");
+    return res.send();
+    // res.render("account/login", {
+    //     title: "Login"
+    // });
 };
 
 /**
@@ -27,28 +32,35 @@ export const getLogin = (req: Request, res: Response) => {
  * Sign in using email and password.
  */
 export const postLogin = (req: Request, res: Response, next: NextFunction) => {
+    console.log("POST LOGIN");
+    console.log(req.body);
+    
     check("email", "Email is not valid").isEmail();
     check("password", "Password cannot be blank").isLength({min: 1});
     // eslint-disable-next-line @typescript-eslint/camelcase
     sanitize("email").normalizeEmail({ gmail_remove_dots: false });
 
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
         req.flash("errors", errors.array());
         return res.redirect("/login");
     }
-
+    
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+        console.log(user);
         if (err) { return next(err); }
         if (!user) {
-            req.flash("errors", {msg: info.message});
-            return res.redirect("/login");
+            console.log("POST LOGIN ERROR")
+            return res.send({user: null, msg: 'Oops something went wrong'});
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
-            req.flash("success", { msg: "Success! You are logged in." });
-            res.redirect(req.session.returnTo || "/");
+            console.log("POST LOGIN SUCCESS")
+            console.log(user);
+            return res.send({user: user, msg: 'You have logged in!'});
+
+            // req.flash("success", { msg: "Success! You are logged in." });
+            // res.redirect(req.session.returnTo || "/");
         });
     })(req, res, next);
 };
@@ -59,7 +71,6 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
  */
 export const logout = (req: Request, res: Response) => {
     req.logout();
-    res.redirect("/");
 };
 
 /**
@@ -70,51 +81,12 @@ export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
         return res.redirect("/");
     }
-    res.render("account/signup", {
-        title: "Create Account"
-    });
+    res.json({status: "NOT_LOGGED_IN"})
+    // res.render("account/signup", {
+    //     title: "Create Account"
+    // });
 };
 
-/**
- * POST /signup
- * Create a new local account.
- */
-export const postSignup = (req: Request, res: Response, next: NextFunction) => {
-    check("email", "Email is not valid").isEmail();
-    check("password", "Password must be at least 4 characters long").isLength({ min: 4 });
-    check("confirmPassword", "Passwords do not match").equals(req.body.password);
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    sanitize("email").normalizeEmail({ gmail_remove_dots: false });
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("/signup");
-    }
-
-    const user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-
-    User.findOne({ email: req.body.email }, (err, existingUser) => {
-        if (err) { return next(err); }
-        if (existingUser) {
-            req.flash("errors", { msg: "Account with that email address already exists." });
-            return res.redirect("/signup");
-        }
-        user.save((err) => {
-            if (err) { return next(err); }
-            req.logIn(user, (err) => {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect("/");
-            });
-        });
-    });
-};
 
 /**
  * GET /account
@@ -148,6 +120,7 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
         user.email = req.body.email || "";
         user.profile.name = req.body.name || "";
         user.profile.gender = req.body.gender || "";
+        user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
         user.profile.location = req.body.location || "";
         user.profile.website = req.body.website || "";
         user.save((err: WriteError) => {
