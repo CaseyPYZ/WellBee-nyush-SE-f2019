@@ -9,7 +9,7 @@ import { nextTick } from "async";
 export const postSearch = (req:Request, res: Response, next: NextFunction) => {
     const key = req.body.keyword;
 
-    //This key word can be ID, name, email;
+    //This key word is email;
 
     User.findOne({email: req.body.keyword}, (err, existingUser: UserDocument) => {
         if (err){ return next(err); }
