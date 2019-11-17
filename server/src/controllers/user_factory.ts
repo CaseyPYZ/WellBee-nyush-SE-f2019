@@ -8,26 +8,30 @@ import { userInfo } from "os";
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
 
+    console.log("SIGNUP");
+    console.log(req.body);
+    
     switch(req.body.usertype){
         case "user": {
+            console.log("SIGNUP USER");
             const user = new User({
                 email: req.body.email,
                 password: req.body.password,
             });
 
             User.findOne({ email: req.body.email }, (err, existingUser) => {
-                if (err) { return next(err); }
+                if (err) { return res.send(err); }
                 if (existingUser) {
                     req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.redirect("/signup");
+                    return res.send({ msg: "User with that email address already exists." });
                 }
                 user.save((err) => {
-                    if (err) { return next(err); }
+                    if (err) { return res.send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
-                            return next(err);
+                            return res.send(err);
                         }
-                        res.redirect("/");
+                        return res.send({ user: req.user, msg: "Success signing up user" });
                     });
                 });
             });
@@ -35,24 +39,25 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             break;
         }
         case "doctor": {
+            console.log("SIGNUP DOCTOR");
             const user = new Doctor({
                 email: req.body.email,
                 password: req.body.password,
             });
 
             Doctor.findOne({ email: req.body.email }, (err, existingUser) => {
-                if (err) { return next(err); }
+                if (err) { return res.send(err); }
                 if (existingUser) {
                     req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.redirect("/signup");
+                    return res.send({ msg: "Doctor with that email address already exists." });
                 }
                 user.save((err) => {
-                    if (err) { return next(err); }
+                    if (err) { return res.send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
-                            return next(err);
+                            return res.send(err);
                         }
-                        res.redirect("/");
+                        return res.send({ user: req.user, msg: "Success signing up doctor" });
                     });
                 });
             });
@@ -60,33 +65,30 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             break;
         }
         case "admin": {
+            console.log("SIGNUP ADMIN");
             const user = new Admin({
                 email: req.body.email,
                 password: req.body.password,
             });
 
             Admin.findOne({ email: req.body.email }, (err, existingUser) => {
-                if (err) { return next(err); }
+                if (err) { return res.send(err); }
                 if (existingUser) {
                     req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.redirect("/signup");
+                    return res.send({ msg: "Admin with that email address already exists." });
                 }
                 user.save((err) => {
-                    if (err) { return next(err); }
+                    if (err) { return res.send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
-                            return next(err);
+                            return res.send(err);
                         }
-                        res.redirect("/");
+                        return res.send({ user: req.user, msg: "Success signing up admin" });
                     });
                 });
             });
 
             break;
         }
-
     }
-        
-    
-
 }

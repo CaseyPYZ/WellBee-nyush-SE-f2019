@@ -15,13 +15,16 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+
         // send req.user
         // return res.redirect("/");
+
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
+
     // res.render("account/login", {
     //     title: "Login"
     // });
@@ -56,6 +59,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
+
             console.log(user);
             return res.send({user: user, msg: 'You have logged in!'});
 
@@ -79,12 +83,9 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.redirect("/");
+        return res.send({user: req.user});
     }
-    res.json({status: "NOT_LOGGED_IN"})
-    // res.render("account/signup", {
-    //     title: "Create Account"
-    // });
+    res.send({user: null, msg: 'Oops something went wrong'})
 };
 
 
