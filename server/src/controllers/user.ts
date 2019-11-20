@@ -16,13 +16,24 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+<<<<<<< HEAD
         // send req.user
         // return res.redirect("/");
+=======
+
+        // send req.user
+        // return res.redirect("/");
+
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
+<<<<<<< HEAD
+=======
+
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
     // res.render("account/login", {
     //     title: "Login"
     // });
@@ -57,6 +68,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
+<<<<<<< HEAD
+=======
+
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
             console.log(user);
             return res.send({user: user, msg: 'You have logged in!'});
 
@@ -80,12 +95,9 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.redirect("/");
+        return res.send({user: req.user});
     }
-    res.json({status: "NOT_LOGGED_IN"})
-    // res.render("account/signup", {
-    //     title: "Create Account"
-    // });
+    res.send({user: null, msg: 'Oops something went wrong'})
 };
 
 

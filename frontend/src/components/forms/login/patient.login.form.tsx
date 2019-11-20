@@ -4,6 +4,7 @@ export default class Login extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
+
     const email: string = "";
     const password: string = "";
     const loginErrors: string = "";
@@ -32,7 +33,7 @@ export default class Login extends Component<any, any> {
     event.preventDefault();
 
     const headers = {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json", 
       Accept: "application/json"
     }
 
@@ -41,15 +42,14 @@ export default class Login extends Component<any, any> {
       headers: headers,
       body: JSON.stringify(this.state)
     })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-        this.props.handleSuccessfulAuth(response.data);
-        this.props.handleSuccessfulAuth(response);
-      })
-      .catch(error => {
-        this.setState({ loginErrors: error });
-      })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.props.handleSuccessfulAuth(response);
+    })
+    .catch(error => {
+      this.setState({loginErrors: error});
+    })
   }
 
   render() {

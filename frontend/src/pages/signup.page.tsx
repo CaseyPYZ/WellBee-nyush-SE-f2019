@@ -1,7 +1,9 @@
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { SignupContainer } from '../styles/signup.style';
-import Signup from '../components/forms/signup/admin.signup.form';
+import DoctorSignup from '../components/forms/signup/doctor.signup.form';
+import PatientSignup from '../components/forms/signup/patient.signup.form';
+import AdminSignup from '../components/forms/signup/admin.signup.form';
 
 export default class SignupPage extends React.Component<any> {
     
@@ -20,13 +22,13 @@ export default class SignupPage extends React.Component<any> {
             <SignupContainer>
                 <Tabs defaultActiveKey="signup" id="uncontrolled-tab-example">
                     <Tab eventKey="Admin" title="Admin">
-                        <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                        <AdminSignup handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                     <Tab eventKey="Doctor" title="Doctor">
-                        <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
-                    </Tab>
+                        <DoctorSignup handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                    </Tab> 
                     <Tab eventKey="Patient" title="Patient">
-                        <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                        <PatientSignup handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                 </Tabs>
             </SignupContainer>

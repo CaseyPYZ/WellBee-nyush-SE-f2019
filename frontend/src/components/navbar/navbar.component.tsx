@@ -1,14 +1,22 @@
 import * as React from 'react';
 import { Img } from '../../styles/navbar.style';
 import { Link } from 'react-router-dom';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 
 export default class NavbarComponent extends React.Component<any> {
 
+<<<<<<< HEAD
   // get login and logout
+=======
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
   constructor(props: any) {
     super(props);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
   handleLogoutClick() {
     console.log("IN LOGOUT");
 
@@ -16,7 +24,9 @@ export default class NavbarComponent extends React.Component<any> {
       method: "get"
     })
       .then(response => {
+        console.log(response);
         this.props.handleLogout();
+        this.props.history.push(`/login`);
       })
       .catch(error => {
         console.log("logout error", error);
@@ -57,9 +67,20 @@ export default class NavbarComponent extends React.Component<any> {
                 </>
               ) : (
                   <li className="nav-item">
-                    <Link className="nav-link" to="/home">
-                      <button onClick={() => this.handleLogoutClick()}>Logout</button>
-                    </Link>
+                    <UncontrolledDropdown setActiveFromChild>
+                      <DropdownToggle tag="a" className="nav-link" caret>
+                        {this.props.user.email}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem><Link to="/">Profile</Link></DropdownItem>
+                        <DropdownItem><Link to="/">Record</Link></DropdownItem>
+                        <DropdownItem><Link to="/">Emergency</Link></DropdownItem>
+                        <DropdownItem><Link to="/"
+                          onClick={() => this.handleLogoutClick()}>
+                          Logout
+                        </Link></DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </li>
                 )}
             </ul>
