@@ -3,6 +3,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
+import { Record, recordSchema, RecordDocument} from "../models/Record"
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
@@ -15,16 +16,24 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+<<<<<<< HEAD
+        // send req.user
+        // return res.redirect("/");
+=======
 
         // send req.user
         // return res.redirect("/");
 
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
+<<<<<<< HEAD
+=======
 
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
     // res.render("account/login", {
     //     title: "Login"
     // });
@@ -59,7 +68,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS")
+<<<<<<< HEAD
+=======
 
+>>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
             console.log(user);
             return res.send({user: user, msg: 'You have logged in!'});
 
@@ -360,3 +372,28 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
         res.redirect("/forgot");
     });
 };
+
+export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
+    const record = new Record({
+
+    })
+
+    record.save((err) => {
+        return next(err)
+    });
+
+    const user = req.user
+
+    User.findOne({email: user}, (err, existingUser: UserDocument) => {
+        if (err){ return next(err); }
+        if (existingUser){ 
+            existingUser.healthrecord.push(record._id);
+            existingUser.save((err) => {
+                return next(err)
+            })
+        }
+        res.send("User not found.");
+    })
+}
+
+export const get
