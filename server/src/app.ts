@@ -21,7 +21,7 @@ import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
 import * as searchController from "./controllers/search";
 
-import * as signUp from "./controllers/signUp"
+import * as signUp from "./controllers/signUp";
 
 
 // API keys and Passport configuration

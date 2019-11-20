@@ -3,8 +3,8 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
-import { Record, recordSchema, RecordDocument} from "../models/records/Record"
-import { Entry, EntryDocument} from "../models/records/Entry"
+import { Record, recordSchema, RecordDocument} from "../models/records/Record";
+import { Entry, EntryDocument} from "../models/records/Entry";
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
@@ -52,14 +52,14 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         console.log(user);
         if (err) { return next(err); }
         if (!user) {
-            console.log("POST LOGIN ERROR")
-            return res.send({user: null, msg: 'Oops something went wrong'});
+            console.log("POST LOGIN ERROR");
+            return res.send({user: null, msg: "Oops something went wrong"});
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
-            console.log("POST LOGIN SUCCESS")
+            console.log("POST LOGIN SUCCESS");
             console.log(user);
-            return res.send({user: user, msg: 'You have logged in!'});
+            return res.send({user: user, msg: "You have logged in!"});
 
             // req.flash("success", { msg: "Success! You are logged in." });
             // res.redirect(req.session.returnTo || "/");
@@ -83,7 +83,7 @@ export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
         return res.redirect("/");
     }
-    res.json({status: "NOT_LOGGED_IN"})
+    res.json({status: "NOT_LOGGED_IN"});
     // res.render("account/signup", {
     //     title: "Create Account"
     // });
@@ -366,11 +366,11 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction) =
     const newRecord = new Record({
         type: req.body.recordtype,
         createdAt: req.body.date,
-    })
+    });
 
     const entryArray = JSON.parse(req.body.entries);
-    for ( let entry of entryArray ){
-        let newEntry = new Entry(entry.param, entry.val, entry.unit);
+    for ( const entry of entryArray ){
+        const newEntry = new Entry(entry.param, entry.val, entry.unit);
         newRecord.entries.push(newEntry);
     }
     
@@ -387,12 +387,12 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction) =
             existingUser.healthrecord.push(newRecord._id);
             existingUser.save((err) => {
                 return next(err);
-            })
-            return res.send("Record successfully added.")
+            });
+            return res.send("Record successfully added.");
         }
         return res.send("User not found.");
-    })
-}
+    });
+};
 
 export const getRecordList = (req: Request, res: Response, next: NextFunction) => {
     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
@@ -402,8 +402,8 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction) =
             return res.json(JSON.stringify(records));
         }
         return res.send("User not found.");
-    })
-}
+    });
+};
 
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     Record.findById(req.body.recordID, (err, existingrecord: RecordDocument) => {
@@ -412,5 +412,5 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
             return res.json(JSON.stringify(existingrecord));
         }
         return res.send("User not found");
-    })
-}
+    });
+};
