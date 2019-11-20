@@ -8,7 +8,7 @@ import { RecordDocument } from "./records/Record";
 export interface UserDocument extends PersonnelDocument { 
 
     /* User */
-    healthrecord: HealthRecord[];
+    healthrecord: mongoose.Types.ObjectId[];
     
 }
 

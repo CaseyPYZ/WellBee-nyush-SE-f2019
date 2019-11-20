@@ -18,6 +18,7 @@ export const postSearch = (req:Request, res: Response, next: NextFunction) => {
                 email: existingUser.email,
                 age: existingUser.age
             })
+            return
         }
         res.send("User not found.");
     })
