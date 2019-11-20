@@ -2,21 +2,13 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
-<<<<<<< HEAD
-import { PersonnelDocument, HealthRecord } from "./Personnel";
-=======
 import { PersonnelDocument } from "./Personnel";
 import { RecordDocument } from "./records/Record";
->>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
 
 export interface UserDocument extends PersonnelDocument { 
 
     /* User */
-<<<<<<< HEAD
-    healthrecord: String[];
-=======
     healthrecord: HealthRecord[];
->>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
     
 }
 
