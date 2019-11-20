@@ -8,7 +8,7 @@ export type RecordDocument = mongoose.Document & {
 }
 
 
-const recordSchema = new mongoose.Schema({
+export const recordSchema = new mongoose.Schema({
     // personnel Schema
 
 

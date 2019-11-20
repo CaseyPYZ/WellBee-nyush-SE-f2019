@@ -2,12 +2,12 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
-import { PersonnelDocument } from "./Personnel";
+import { PersonnelDocument, HealthRecord } from "./Personnel";
 
 export interface UserDocument extends PersonnelDocument { 
 
     /* User */
-
+    healthrecord: String[];
     
 }
 
@@ -19,12 +19,19 @@ export interface AuthToken {
     kind: string;
 }
 
+export interface HealthRecord {
+    date: string;
+    BloodPressure: string;
+    BloodSugar: string;
+}
+
 /**
  * MongoDB Schema
  */
 
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
+    ID: {type: String, unique: true}, //UUID
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -41,7 +48,10 @@ const userSchema = new mongoose.Schema({
         location: String,
         website: String,
         picture: String
-    }
+    },
+
+    healthrecord: Array,
+
 }, { timestamps: true });
 
 /**
@@ -63,7 +73,7 @@ userSchema.pre("save", function save(next) {
 
 const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
-        cb(err, isMatch);
+        cb(err, isMatch);   //callback function
     });
 };
 

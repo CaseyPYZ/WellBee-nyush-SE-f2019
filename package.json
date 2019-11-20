@@ -11,9 +11,11 @@
     "bootstrap": "^4.3.1",
     "concurrently": "^5.0.0",
     "cors": "^2.8.5",
+    "node-uuid": "^1.4.8",
     "react-bootstrap": "^1.0.0-beta.14",
     "reactstrap": "^8.0.1",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {},
   "scripts": {
