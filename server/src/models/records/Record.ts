@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import { EntryDocument } from "./Entry";
+import { Entry, EntryDocument } from "./Entry";
 
 export enum RecordType {
     COMPLETE_BLOOD_COUNT
@@ -12,7 +12,7 @@ export interface RecordDocument extends mongoose.Document {
     type: RecordType;
     createdAt: Date;
 
-    entries: EntryDocument[];
+    entries: Entry[];
 
 }
 

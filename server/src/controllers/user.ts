@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
 import { Record, recordSchema, RecordDocument} from "../models/records/Record"
+import { Entry, EntryDocument} from "../models/records/Entry"
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
@@ -16,10 +17,8 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
-
         // send req.user
         // return res.redirect("/");
-
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
@@ -82,9 +81,12 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.send({user: req.user});
+        return res.redirect("/");
     }
-    res.send({user: null, msg: 'Oops something went wrong'})
+    res.json({status: "NOT_LOGGED_IN"})
+    // res.render("account/signup", {
+    //     title: "Create Account"
+    // });
 };
 
 
@@ -361,26 +363,54 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
-    const record = new Record({
-
+    const newRecord = new Record({
+        type: req.body.recordtype,
+        createdAt: req.body.date,
     })
 
-    record.save((err) => {
-        return next(err)
+    const entryArray = JSON.parse(req.body.entries);
+    for ( let entry of entryArray ){
+        let newEntry = new Entry(entry.param, entry.val, entry.unit);
+        newRecord.entries.push(newEntry);
+    }
+    
+
+    newRecord.save((err) => {
+        return next(err);
     });
 
-    const user = req.user
+    const user = req.user;
 
     User.findOne({email: user}, (err, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){ 
-            existingUser.healthrecord.push(record._id);
+            existingUser.healthrecord.push(newRecord._id);
             existingUser.save((err) => {
-                return next(err)
+                return next(err);
             })
+            return res.send("Record successfully added.")
         }
-        res.send("User not found.");
+        return res.send("User not found.");
     })
 }
 
-//export const get
+export const getRecordList = (req: Request, res: Response, next: NextFunction) => {
+    User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
+        if (err){ return next(err); }
+        if (existingUser){
+            const records = existingUser.healthrecord;
+            return res.json(JSON.stringify(records));
+        }
+        return res.send("User not found.");
+    })
+}
+
+export const getRecord = (req: Request, res: Response, next: NextFunction) => {
+    Record.findById(req.body.recordID, (err, existingrecord: RecordDocument) => {
+        if (err){ return next(err); }
+        if (existingrecord){
+            return res.json(JSON.stringify(existingrecord));
+        }
+        return res.send("User not found");
+    })
+}

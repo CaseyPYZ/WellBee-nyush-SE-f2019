@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
-import { nextTick } from "async";
 
 
 export const postSearch = (req:Request, res: Response, next: NextFunction) => {
@@ -11,7 +10,7 @@ export const postSearch = (req:Request, res: Response, next: NextFunction) => {
 
     //This key word can be ID, name, email;
 
-    User.findOne({email: req.body.keyword}, (err, existingUser: UserDocument) => {
+    User.findOne({email: req.body.keyword}, (err: Error, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){ 
             res.json({
@@ -19,6 +18,7 @@ export const postSearch = (req:Request, res: Response, next: NextFunction) => {
                 email: existingUser.email,
                 age: existingUser.age
             })
+            return
         }
         res.send("User not found.");
     })
