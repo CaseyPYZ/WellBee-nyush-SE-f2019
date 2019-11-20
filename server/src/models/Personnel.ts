@@ -1,7 +1,10 @@
 import mongoose, { Document } from "mongoose";
 
 export interface PersonnelDocument extends mongoose.Document { 
+    name: string;
+    ID: string; // UUID;
     email: string;
+    age: string;
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;

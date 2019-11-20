@@ -15,13 +15,19 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+
         // send req.user
-        return res.redirect("/");
+        // return res.redirect("/");
+
+        console.log("GET LOGIN WITH USER");
+        return res.send({user: req.user});
     }
-    //view
-    res.render("account/login", {
-        title: "Login"
-    });
+    console.log("GET LOGIN WITHOUT USER");
+    return res.send();
+
+    // res.render("account/login", {
+    //     title: "Login"
+    // });
 };
 
 /**
@@ -29,7 +35,9 @@ export const getLogin = (req: Request, res: Response) => {
  * Sign in using email and password.
  */
 export const postLogin = (req: Request, res: Response, next: NextFunction) => {
+    console.log("POST LOGIN");
     console.log(req.body);
+    
     check("email", "Email is not valid").isEmail();
     check("password", "Password cannot be blank").isLength({min: 1});
     // eslint-disable-next-line @typescript-eslint/camelcase
@@ -42,14 +50,21 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     }
     
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+        console.log(user);
         if (err) { return next(err); }
         if (!user) {
-            return res.send(JSON.stringify(info)).status(200);
+            console.log("POST LOGIN ERROR")
+            return res.send({user: null, msg: 'Oops something went wrong'});
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
-            req.flash("success", { msg: "Success! You are logged in." });
-            res.redirect(req.session.returnTo || "/");
+            console.log("POST LOGIN SUCCESS")
+
+            console.log(user);
+            return res.send({user: user, msg: 'You have logged in!'});
+
+            // req.flash("success", { msg: "Success! You are logged in." });
+            // res.redirect(req.session.returnTo || "/");
         });
     })(req, res, next);
 };
@@ -60,7 +75,6 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
  */
 export const logout = (req: Request, res: Response) => {
     req.logout();
-    res.redirect("/");
 };
 
 /**
@@ -69,11 +83,9 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.redirect("/");
+        return res.send({user: req.user});
     }
-    res.render("account/signup", {
-        title: "Create Account"
-    });
+    res.send({user: null, msg: 'Oops something went wrong'})
 };
 
 

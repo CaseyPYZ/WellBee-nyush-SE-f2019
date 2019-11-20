@@ -1,40 +1,98 @@
-import * as React from "react";
-import { Form, IFields, required, isEmail, maxLength } from "../form";
-import { Field } from "../field";
+import React, { Component } from "react";
 
-export const SignUpAdminForm: React.SFC = () => {
-    const fields: IFields = {
-        email: {
-            id: "email",
-            label: "Email",
-            validation: { rule: isEmail }
-        }, 
-        password: {
-            id: "password",
-            label: "Password",
-            validation: { rule: required }
-        }, 
-        confirmPw: {
-            id: "confirmPw",
-            label: "Confirm Password",
-            validation: { rule: required }
-        }
+export default class AdminSignup extends Component<any, any> {
+
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: "",
+      password_confirmation: "",
+      usertype: "admin",
+      profile: {
+        name: "",
+        gender: "",
+        birthday: "",
+        location: "",
+        website: "",
+        picture: ""
+      },
+      registrationErrors: ""
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event: any) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  async handleSubmit(event: any) {
+    event.preventDefault();
+
+    const headers = {
+      "Content-Type": "application/json", 
+      Accept: "application/json"
+    }
+
+    await fetch("http://localhost:5000/signup", {
+      method: "post",
+      headers: headers,
+      body: JSON.stringify(this.state)
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      this.props.handleSuccessfulAuth(response);
+    })
+    .catch(error => {
+      this.setState({loginErrors: error});
+    })
+  }
+
+  render() {
     return (
-        <Form
-            action="http://localhost:5000/signup"
-            fields={fields}
-            render={() => (
-                <React.Fragment>
-                    <p></p>
-                    <div className="alert alert-info" role="alert">
-                        Sign Up!
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <div className="alert alert-info form-group" role="alert">
+              Please signup
           </div>
-                    <Field {...fields.email} />
-                    <Field {...fields.password} />
-                    <Field {...fields.confirmPw} />
-                </React.Fragment>
-            )}
-        />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            />
+            <div><input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            /></div>
+            <div><input
+              type="password"
+              name="password_confirmation"
+              placeholder="Confirm Password"
+              value={this.state.password_confirmation}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            /></div>
+            <button type="submit" className="form-control">Register</button>
+          </div>
+        </form>
+      </div>
     );
-};
+  }
+}
