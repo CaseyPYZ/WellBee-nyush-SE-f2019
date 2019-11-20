@@ -19,13 +19,11 @@ export interface RecordDocument extends mongoose.Document {
 
 const recordSchema = new mongoose.Schema({
     // personnel Schema
-
     type: RecordType,
     id: String,
     createdAt: Date,
 
     entries: Array,
-
 
 },{ timestamps : true });
                       
