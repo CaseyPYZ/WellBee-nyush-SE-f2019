@@ -17,7 +17,7 @@ export interface RecordDocument extends mongoose.Document {
 }
 
 
-const recordSchema = new mongoose.Schema({
+export const recordSchema = new mongoose.Schema({
     // personnel Schema
     type: RecordType,
     id: String,
