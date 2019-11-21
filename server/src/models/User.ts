@@ -8,7 +8,7 @@ import { RecordDocument } from "./records/Record";
 export interface UserDocument extends PersonnelDocument { 
 
     /* User */
-    healthrecord: mongoose.Types.ObjectId[];
+    healthRecord: mongoose.Types.ObjectId[];
     
 }
 
@@ -36,6 +36,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
+
 
     facebook: String,
     twitter: String,
