@@ -34,5 +34,4 @@ export const postSignup = (req: Request, res: Response, next: NextFunction) => {
     }
 
     const user = userFactory.createUser(req, res, next);
-
 };

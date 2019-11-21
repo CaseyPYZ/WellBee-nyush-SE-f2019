@@ -3,9 +3,11 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 import { Entry, EntryDocument } from "./Entry";
 
-export enum RecordType {
-    COMPLETE_BLOOD_COUNT
-}
+// export enum RecordType {
+//     COMPLETE_BLOOD_COUNT
+// }
+
+export type RecordType = "COMPLETE_BLOOD_COUNT" | "2" | "3" | "4";
 
 export interface RecordDocument extends mongoose.Document {
     // RecordDocument interface
@@ -19,7 +21,7 @@ export interface RecordDocument extends mongoose.Document {
 
 export const recordSchema = new mongoose.Schema({
     // personnel Schema
-    type: RecordType,
+    type: String,
     id: String,
     createdAt: Date,
 

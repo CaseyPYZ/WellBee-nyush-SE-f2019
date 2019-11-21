@@ -363,17 +363,25 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
+    const bodyData = JSON.parse(req.body);
+    //const bodyData = req.body;
+
     const newRecord = new Record({
-        type: req.body.recordtype,
-        createdAt: req.body.date,
+        type: bodyData.recordtype,
+        createdAt: bodyData.date,
     });
 
-    const entryArray = JSON.parse(req.body.entries);
-    for ( const entry of entryArray ){
-        const newEntry = new Entry(entry.param, entry.val, entry.unit);
+    for ( const entry of bodyData.entries ){
+        const entryData = JSON.parse(entry);
+        const newEntry = new Entry(entryData.param, entryData.val, entryData.unit);
         newRecord.entries.push(newEntry);
     }
-    
+
+    // for ( const entry of bodyData.entries ){
+    //     //const entryData = JSON.parse(entry);
+    //     const newEntry = new Entry(entry.param, entry.val, entry.unit);
+    //     newRecord.entries.push(newEntry);
+    // }
 
     newRecord.save((err) => {
         return next(err);
@@ -384,7 +392,7 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction) =
     User.findOne({email: user}, (err, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){ 
-            existingUser.healthrecord.push(newRecord._id);
+            existingUser.healthRecord.push(newRecord._id);
             existingUser.save((err) => {
                 return next(err);
             });
@@ -398,7 +406,7 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction) =
     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){
-            const records = existingUser.healthrecord;
+            const records = existingUser.healthRecord;
             return res.json(JSON.stringify(records));
         }
         return res.send("User not found.");
@@ -406,10 +414,10 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction) =
 };
 
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
-    Record.findById(req.body.recordID, (err, existingrecord: RecordDocument) => {
+    Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {
         if (err){ return next(err); }
-        if (existingrecord){
-            return res.json(JSON.stringify(existingrecord));
+        if (existingRecord){
+            return res.json(JSON.stringify(existingRecord));
         }
         return res.send("User not found");
     });
