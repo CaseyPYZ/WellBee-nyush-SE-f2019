@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Login extends Component<any, any> {
+export default class PatientLogin extends Component<any, any> {
 
   constructor(props: any) {
     super(props);

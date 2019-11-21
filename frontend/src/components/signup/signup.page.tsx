@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
-import { SignupContainer } from '../styles/signup.style';
-import DoctorSignup from '../components/forms/signup/doctor.signup.form';
-import PatientSignup from '../components/forms/signup/patient.signup.form';
-import AdminSignup from '../components/forms/signup/admin.signup.form';
+import { SignupContainer } from '../../styles/signup.style';
+import DoctorSignup from './doctor.signup.form';
+import PatientSignup from './patient.signup.form';
+import AdminSignup from './admin.signup.form';
 
 export default class SignupPage extends React.Component<any> {
     

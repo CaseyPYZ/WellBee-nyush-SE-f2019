@@ -11,7 +11,7 @@ export default class HomePublic extends Component<any, any> {
   render() {
     return (
       <div>
-          Logged Out Page
+        STATUS: {this.props.loggedInStatus}
       </div>
     );
   }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Img } from '../../styles/navbar.style';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import SidebarComponent from '../sidebar/sidebar';
 
 export default class NavbarComponent extends React.Component<any> {
 
@@ -35,6 +36,7 @@ export default class NavbarComponent extends React.Component<any> {
           </Link>
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
+              {/* add a search bar here */}
               <Link className="nav-link" to="/">Home
                       <span className="sr-only">(current)</span>
               </Link>

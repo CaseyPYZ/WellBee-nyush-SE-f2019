@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, RouteProps, Redirect } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Home from "./pages/home.page";
-import SignupPage from "./pages/signup.page";
-import LoginPage from "./pages/login.page";
-import AboutPage from "./pages/about.page";
-import ContactusPage from "./pages/contactus.page";
+import SignupPage from "./components/signup/signup.page";
+import LoginPage from "./components/login/login.page";
 import NavbarComponent from "./components/navbar/navbar.component";
+import SidebarComponent from "./components/sidebar/sidebar";
+import HomePrivate from "./components/home/home.private";
+import HomePublic from "./components/home/home.public";
 
 export default class App extends Component<any, any> {
   constructor(props: any) {
@@ -48,7 +48,7 @@ export default class App extends Component<any, any> {
   componentDidMount() {
     this.checkLoginStatus();
   }
-  
+
   handleLogout() {
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
@@ -83,15 +83,30 @@ export default class App extends Component<any, any> {
                   handleLogin={this.handleLogin}
                   loggedInStatus={this.state.loggedInStatus} />)
               } />
-            <Route exact path="/about" component={AboutPage} />
-            <Route exact path="/contact" component={ContactusPage} />
             <Route exact path="/"
               render={props =>
-                (<Home loggedInStatus={this.state.loggedInStatus} />)
+                (<HomePublic loggedInStatus={this.state.loggedInStatus} />)
               } />
+            <PrivateRoute>
+              <Route exact path="/home"
+                render={props =>
+                  (<HomePrivate loggedInStatus={this.state.loggedInStatus} />)
+                } />
+              <Route path="/sidebar" component={SidebarComponent} />
+            </PrivateRoute>
           </Switch>
         </BrowserRouter>
       </div>
     );
   }
 }
+
+const PrivateRoute: React.FC<RouteProps> = ({ component: Component, ...rest }) => {
+  return (
+    <Route {...rest} render={props => (
+      localStorage.getItem("token")  ?
+        <React.Component {...props} />
+        : <Redirect to="/signin" />
+    )} />
+  );
+};
