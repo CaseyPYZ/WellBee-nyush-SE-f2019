@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Img } from '../../styles/navbar.style';
+import { Img, Navbar } from '../../styles/navbar.style';
 import { Link } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
-import SidebarComponent from '../sidebar/sidebar';
+import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 
 export default class NavbarComponent extends React.Component<any> {
 
@@ -29,25 +28,11 @@ export default class NavbarComponent extends React.Component<any> {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div className="container">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/home">
             <h2><Img src="bee-128.png" alt="" /> WellBee </h2>
           </Link>
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item active">
-              {/* add a search bar here */}
-              <Link className="nav-link" to="/">Home
-                      <span className="sr-only">(current)</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/about">About</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/contact">Contact Us</Link>
-            </li>
-          </ul>
 
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav ml-auto">
@@ -67,9 +52,6 @@ export default class NavbarComponent extends React.Component<any> {
                         {this.props.user.email}
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem><Link to="/">Profile</Link></DropdownItem>
-                        <DropdownItem><Link to="/">Record</Link></DropdownItem>
-                        <DropdownItem><Link to="/">Emergency</Link></DropdownItem>
                         <DropdownItem><Link to="/"
                           onClick={() => this.handleLogoutClick()}>
                           Logout
@@ -81,7 +63,7 @@ export default class NavbarComponent extends React.Component<any> {
             </ul>
           </div>
         </div>
-      </nav>
+      </Navbar>
     )
   }
 }

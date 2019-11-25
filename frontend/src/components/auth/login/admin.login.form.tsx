@@ -27,9 +27,6 @@ export default class AdminLogin extends Component<any, any> {
   }
 
   async handleSubmit(event: any) {
-    console.log("BEFORE");
-    console.log(this.state);
-
     event.preventDefault();
 
     const headers = {
@@ -46,7 +43,6 @@ export default class AdminLogin extends Component<any, any> {
     .then(response => {
       console.log(response);
       this.props.handleSuccessfulAuth(response);
-      this.props.history.push(`/`);
     })
     .catch(error => {
       this.setState({loginErrors: error});
