@@ -2,12 +2,13 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
-import { PersonnelDocument, HealthRecord } from "./Personnel";
+import { PersonnelDocument } from "./Personnel";
+import { RecordDocument } from "./records/Record";
 
 export interface UserDocument extends PersonnelDocument { 
 
     /* User */
-    healthrecord: HealthRecord[];
+    healthRecord: mongoose.Types.ObjectId[];
     
 }
 
@@ -35,6 +36,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
+
 
     facebook: String,
     twitter: String,

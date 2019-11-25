@@ -21,7 +21,7 @@ import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
 import * as searchController from "./controllers/search";
 
-import * as signUp from "./controllers/signUp"
+import * as signUp from "./controllers/signUp";
 
 
 // API keys and Passport configuration
@@ -108,12 +108,11 @@ app.post("/account/profile", passportConfig.isAuthenticated, userController.post
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
-
+app.post("/account/addrecord", passportConfig.isAuthenticated, userController.postAddRecord);
 /**
  * API examples routes.
  */
 app.get("/api", apiController.getApi);
-//app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
 
 /**
  * OAuth authentication routes. (Sign in)

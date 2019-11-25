@@ -3,6 +3,8 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
+import { Record, recordSchema, RecordDocument} from "../models/records/Record";
+import { Entry, EntryDocument} from "../models/records/Entry";
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
@@ -15,11 +17,16 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
+        // send req.user
+        // return res.redirect("/");
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
+    // res.render("account/login", {
+    //     title: "Login"
+    // });
 };
 
 /**
@@ -45,13 +52,17 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         console.log(user);
         if (err) { return next(err); }
         if (!user) {
-            console.log("POST LOGIN ERROR")
-            return res.send({user: null, msg: 'Oops something went wrong'});
+            console.log("POST LOGIN ERROR");
+            return res.send({user: null, msg: "Oops something went wrong"});
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
-            console.log("POST LOGIN SUCCESS")
-            return res.send({user: req.user, msg: 'You have logged in!'});
+            console.log("POST LOGIN SUCCESS");
+            console.log(user);
+            return res.send({user: user, msg: "You have logged in!"});
+
+            // req.flash("success", { msg: "Success! You are logged in." });
+            // res.redirect(req.session.returnTo || "/");
         });
     })(req, res, next);
 };
@@ -73,9 +84,12 @@ export const logout = (req: Request, res: Response) => {
  */
 export const getSignup = (req: Request, res: Response) => {
     if (req.user) {
-        return res.send({user: req.user});
+        return res.redirect("/");
     }
-    res.send({user: null, msg: 'Oops something went wrong'})
+    res.json({status: "NOT_LOGGED_IN"});
+    // res.render("account/signup", {
+    //     title: "Create Account"
+    // });
 };
 
 /**
@@ -347,5 +361,66 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
     ], (err) => {
         if (err) { return next(err); }
         res.redirect("/forgot");
+    });
+};
+
+export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
+    const bodyData = JSON.parse(req.body);
+    //const bodyData = req.body;
+
+    const newRecord = new Record({
+        type: bodyData.recordtype,
+        createdAt: bodyData.date,
+    });
+
+    for ( const entry of bodyData.entries ){
+        const entryData = JSON.parse(entry);
+        const newEntry = new Entry(entryData.param, entryData.val, entryData.unit);
+        newRecord.entries.push(newEntry);
+    }
+
+    // for ( const entry of bodyData.entries ){
+    //     //const entryData = JSON.parse(entry);
+    //     const newEntry = new Entry(entry.param, entry.val, entry.unit);
+    //     newRecord.entries.push(newEntry);
+    // }
+
+    newRecord.save((err) => {
+        return next(err);
+    });
+
+    const user = req.user;
+
+    User.findOne({email: user}, (err, existingUser: UserDocument) => {
+        if (err){ return next(err); }
+        if (existingUser){ 
+            existingUser.healthRecord.push(newRecord._id);
+            existingUser.save((err) => {
+                return next(err);
+            });
+            return res.send("Record successfully added.");
+        }
+        return res.send("User not found.");
+    });
+};
+
+export const getRecordList = (req: Request, res: Response, next: NextFunction) => {
+    User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
+        if (err){ return next(err); }
+        if (existingUser){
+            const records = existingUser.healthRecord;
+            return res.json(JSON.stringify(records));
+        }
+        return res.send("User not found.");
+    });
+};
+
+export const getRecord = (req: Request, res: Response, next: NextFunction) => {
+    Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {
+        if (err){ return next(err); }
+        if (existingRecord){
+            return res.json(JSON.stringify(existingRecord));
+        }
+        return res.send("User not found");
     });
 };

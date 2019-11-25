@@ -3,7 +3,7 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 import { PersonnelDocument } from "./Personnel";
 
-
+// @ts-ignore
 export interface AdminDocument extends PersonnelDocument {
 
     /* Admin */
