@@ -1,7 +1,9 @@
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
-import { LoginContainer } from '../styles/login.style';
-import Login from '../components/forms/login/admin.login.form';
+import { LoginContainer } from '../../../styles/login.style';
+import AdminLogin from './admin.login.form';
+import DoctorLogin from './doctor.login.form';
+import PatientLogin from './patient.login.form';
 
 export default class LoginPage extends React.Component<any> {
 
@@ -13,21 +15,21 @@ export default class LoginPage extends React.Component<any> {
 
     handleSuccessfulAuth(data: any) {
         this.props.handleLogin(data);
-        this.props.history.push(`/`);
+        this.props.history.push(`/home`);
     }
 
     render() {
         return (
-            <LoginContainer >
+            <LoginContainer>
                 <Tabs defaultActiveKey="login" id="uncontrolled-tab-example">
                     <Tab eventKey="Admin" title="Admin">
-                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                        <AdminLogin className="tab-pane in fade active" handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                     <Tab eventKey="Doctor" title="Doctor">
-                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                        <DoctorLogin handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                     <Tab eventKey="Patient" title="Patient">
-                        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+                        <PatientLogin handleSuccessfulAuth={this.handleSuccessfulAuth} />
                     </Tab>
                 </Tabs>
             </LoginContainer>

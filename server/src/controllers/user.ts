@@ -73,6 +73,9 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
  */
 export const logout = (req: Request, res: Response) => {
     req.logout();
+    req.session.destroy(function (err) {
+        res.send({ msg: 'Logged out!' })
+    });
 };
 
 /**
@@ -88,7 +91,6 @@ export const getSignup = (req: Request, res: Response) => {
     //     title: "Create Account"
     // });
 };
-
 
 /**
  * GET /account

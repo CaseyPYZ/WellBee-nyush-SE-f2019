@@ -1,24 +1,18 @@
 import React, { Component } from "react";
 
-export default class AdminSignup extends Component<any, any> {
+export default class AdminLogin extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
 
+    const email: string = "";
+    const password: string = "";
+    const loginErrors: string = "";
+
     this.state = {
-      email: "",
-      password: "",
-      password_confirmation: "",
-      usertype: "admin",
-      profile: {
-        name: "",
-        gender: "",
-        birthday: "",
-        location: "",
-        website: "",
-        picture: ""
-      },
-      registrationErrors: ""
+      email,
+      password,
+      loginErrors
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,6 +20,7 @@ export default class AdminSignup extends Component<any, any> {
   }
 
   handleChange(event: any) {
+    console.log("HERE");
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -39,7 +34,7 @@ export default class AdminSignup extends Component<any, any> {
       Accept: "application/json"
     }
 
-    await fetch("http://localhost:5000/signup", {
+    await fetch("http://localhost:5000/login", {
       method: "post",
       headers: headers,
       body: JSON.stringify(this.state)
@@ -60,7 +55,7 @@ export default class AdminSignup extends Component<any, any> {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <div className="alert alert-info form-group" role="alert">
-              Please signup
+              Please login
           </div>
             <input
               type="email"
@@ -80,16 +75,7 @@ export default class AdminSignup extends Component<any, any> {
               className="form-control"
               required
             /></div>
-            <div><input
-              type="password"
-              name="password_confirmation"
-              placeholder="Confirm Password"
-              value={this.state.password_confirmation}
-              onChange={this.handleChange}
-              className="form-control"
-              required
-            /></div>
-            <button type="submit" className="form-control">Register</button>
+            <button type="submit" className="form-control">Login</button>
           </div>
         </form>
       </div>

@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 
-export default class Login extends Component<any, any> {
+export default class PatientSignup extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
 
-    const email: string = "";
-    const password: string = "";
-    const loginErrors: string = "";
-
     this.state = {
-      email,
-      password,
-      loginErrors
+      email: "",
+      password: "",
+      password_confirmation: "",
+      usertype: "user",
+      registrationErrors: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,16 +18,12 @@ export default class Login extends Component<any, any> {
   }
 
   handleChange(event: any) {
-    console.log("HERE");
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
   async handleSubmit(event: any) {
-    console.log("BEFORE");
-    console.log(this.state);
-
     event.preventDefault();
 
     const headers = {
@@ -37,7 +31,7 @@ export default class Login extends Component<any, any> {
       Accept: "application/json"
     }
 
-    await fetch("http://localhost:5000/login", {
+    await fetch("http://localhost:5000/signup", {
       method: "post",
       headers: headers,
       body: JSON.stringify(this.state)
@@ -58,7 +52,7 @@ export default class Login extends Component<any, any> {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <div className="alert alert-info form-group" role="alert">
-              Please login
+              Please signup
           </div>
             <input
               type="email"
@@ -78,7 +72,16 @@ export default class Login extends Component<any, any> {
               className="form-control"
               required
             /></div>
-            <button type="submit" className="form-control">Login</button>
+            <div><input
+              type="password"
+              name="password_confirmation"
+              placeholder="Confirm Password"
+              value={this.state.password_confirmation}
+              onChange={this.handleChange}
+              className="form-control"
+              required
+            /></div>
+            <button type="submit" className="form-control">Sign Up</button>
           </div>
         </form>
       </div>
