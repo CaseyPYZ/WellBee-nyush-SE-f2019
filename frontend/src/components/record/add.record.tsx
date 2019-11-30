@@ -1,12 +1,11 @@
 import React, { Component } from "react";
+import { Div } from "../../styles/pages.style";
 
 export default class AddRecord extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            name: "",
             date: "",
-            time: "",
             description: ""
         };
 
@@ -30,7 +29,7 @@ export default class AddRecord extends Component<any, any> {
             Accept: "application/json"
         }
 
-        await fetch("http://localhost:5000/addRecord", {
+        await fetch("http://localhost:5000//account/addrecord", {
             method: "post",
             headers: headers,
             body: JSON.stringify(this.state)
@@ -38,7 +37,7 @@ export default class AddRecord extends Component<any, any> {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.props.history.push(`/record`);
+                this.props.history.push(`/patient/record`);
             })
             .catch(error => {
                 this.setState({ loginErrors: error });
@@ -53,7 +52,7 @@ export default class AddRecord extends Component<any, any> {
             Accept: "application/json"
         }
 
-        await fetch("http://localhost:5000/editRecord", {
+        await fetch("http://localhost:5000/account/updaterecord", {
             method: "post",
             headers: headers,
             body: JSON.stringify(this.state)
@@ -61,7 +60,7 @@ export default class AddRecord extends Component<any, any> {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.props.history.push(`/record`);
+                this.props.history.push(`/patient/record`);
             })
             .catch(error => {
                 this.setState({ loginErrors: error });
@@ -70,32 +69,14 @@ export default class AddRecord extends Component<any, any> {
 
     render() {
         return (
-            <div>
+            <Div>
                 <form onSubmit={this.addRecord}>
                     <div className="form-group">
-                        <input
-                            type="name"
-                            name="name"
-                            placeholder="Name"
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                            className="form-control"
-                            required
-                        />
                         <div><input
                             type="date"
                             name="date"
                             placeholder="Date"
                             value={this.state.date}
-                            onChange={this.handleChange}
-                            className="form-control"
-                            required
-                        /></div>
-                        <div><input
-                            type="time"
-                            name="time"
-                            placeholder="Time"
-                            value={this.state.time}
                             onChange={this.handleChange}
                             className="form-control"
                             required
@@ -112,7 +93,7 @@ export default class AddRecord extends Component<any, any> {
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
                 </form>
-            </div>
+            </Div>
         );
     }
 }

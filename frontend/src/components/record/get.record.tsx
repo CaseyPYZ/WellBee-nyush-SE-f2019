@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Div } from "../../styles/pages.style";
 
 export default class GetRecord extends Component<any, any> {
   constructor(props: any) {
@@ -10,9 +11,9 @@ export default class GetRecord extends Component<any, any> {
 
   render() {
     return (
-      <div>
+      <Div>
           USER
-      </div>
+      </Div>
     );
   }
 }

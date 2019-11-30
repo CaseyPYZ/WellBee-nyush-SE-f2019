@@ -3,20 +3,18 @@ import { Img, Navbar } from '../../styles/navbar.style';
 import { Link } from 'react-router-dom';
 import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 
+/*
+NAVBAR
+- logged out => ???
+- logged in => logout & username
+*/
 export default class NavbarComponent extends React.Component<any> {
 
-<<<<<<< HEAD
-  // get login and logout
-=======
->>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
   constructor(props: any) {
     super(props);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> b1c5a1d83bd8fc95a0b47b077463ede329f789d7
+  
   handleLogoutClick() {
     console.log("IN LOGOUT");
 
