@@ -2,7 +2,7 @@
 import React from 'react';
 import '../setup.test';
 import { shallow } from 'enzyme';
-import NavBarComponent from '../components/navbar/navbar.component';
+import NavBarComponent from '../components/layout/navbar';
 
 describe('Navbar', () => {
   it('Navbar Component should render', () => {

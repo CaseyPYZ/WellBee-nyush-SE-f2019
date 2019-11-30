@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { FaSearch } from 'react-icons/fa';
+import { Div } from "../styles/pages.style";
 
-export default class AccessList extends Component<any, any> {
+export default class DoctorList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            accessList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            doctorList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
         };
 
-        this.getAccessList = this.getAccessList.bind(this);
+        this.getDoctorList = this.getDoctorList.bind(this);
     }
 
-    getAccessList(record: any, i: any) {
+    getDoctorList(doctor: any, i: any) {
         return (
             <div className="jumbotron">
-                <img></img>
+                <img alt=""></img>
                 {i}
             </div>
         )
@@ -23,8 +23,8 @@ export default class AccessList extends Component<any, any> {
 
     render() {
         return (
-            <>
-                <h1>Access</h1>
+            <Div>
+                <h1>Doctor List</h1>
                 <div className="input-group md-form form-sm form-1 pl-0">
                     <input className="form-control my-0 py-1" type="text" placeholder="Search" aria-label="Search" />
                     <div className="input-group-prepend">
@@ -32,8 +32,8 @@ export default class AccessList extends Component<any, any> {
                     </div>
                 </div>
                 <br />
-                <div>{this.state.accessList.map(this.getAccessList)}</div>
-            </>
+                <div>{this.state.doctorList.map(this.getDoctorList)}</div>
+            </Div>
         );
     }
 }

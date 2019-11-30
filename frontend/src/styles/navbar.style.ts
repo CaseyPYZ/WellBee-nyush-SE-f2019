@@ -5,4 +5,5 @@ export const Img = styled.img`
     weight: 30px`;
 
 export const Navbar = styled.nav`
+
     `;
