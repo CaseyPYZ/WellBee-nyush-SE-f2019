@@ -22,25 +22,25 @@ export default class RecordList extends Component<any, any> {
       <details className="jumbotron" onClick={this.getSingleRecord}>
         <summary>{i}</summary>
         <p> RECORD INFORMATION ~ </p>
-        <button onClick={this.editRecord}>Edit Record</button>
-        <button onClick={this.deleteRecord}>Delete Record</button>
+        <button type="button" className="btn btn-dark" onClick={this.editRecord}>Edit Record</button>
+        <button type="button" className="btn btn-dark" onClick={this.deleteRecord}>Delete Record</button>
       </details>
     )
   }
 
   deleteRecord() {
-
+    // talk to backend
   }
 
   editRecord() {
-
+    // talk to backend
   }
 
   render() {
     return (
       <Div>
         <h1>Personal Records</h1>
-        <button><Link to="/patient/addrecord"> Add Record </Link></button>
+        <button type="button" className="btn btn-dark"><Link to="/patient/addrecord"> Add Record </Link></button>
         <div>{this.state.recordList.map(this.getRecordList)}</div>
       </Div>
     );

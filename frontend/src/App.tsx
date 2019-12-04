@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import NavbarComponent from "./components/layout/navbar";
 import SidebarComponent from "./components/layout/sidebar";
-import HomePublic from "./pages/home.public";
 import PatientPrivate from "./pages/patient.private";
 import AdminPrivate from "./pages/admin.private";
 import DoctorPrivate from "./pages/doctor.private";
@@ -16,6 +15,8 @@ import AddRecord from "./components/record/add.record";
 import AccessList from "./components/access";
 import AuthorizeList from "./components/authorize";
 import Family from "./components/family";
+import Login from "./pages/login.public";
+import HomePublic from "./pages/home.public";
 
 export default class App extends Component<any, any> {
 
@@ -72,7 +73,10 @@ export default class App extends Component<any, any> {
             <PrivateDoctorRoute path="/doctor" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={DoctorPrivate} />
 
             <PrivateRoute path="/profile" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={Profile} />
-            <Route path="/" render={(props) => <HomePublic {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />
+            
+            <Route exact path="/home" render={(props) => <HomePublic {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />
+            <Route exact path="/signup" render={(props) => <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />
+            <Route exact path="/login" render={(props) => <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />
           </Switch>
         </BrowserRouter>
       </div >

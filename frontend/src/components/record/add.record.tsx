@@ -6,7 +6,8 @@ export default class AddRecord extends Component<any, any> {
         super(props);
         this.state = {
             date: "",
-            description: ""
+            description: "",
+            errors: ""
         };
 
         this.addRecord = this.addRecord.bind(this);
@@ -40,7 +41,8 @@ export default class AddRecord extends Component<any, any> {
                 this.props.history.push(`/patient/record`);
             })
             .catch(error => {
-                this.setState({ loginErrors: error });
+                this.setState({ errors: error });
+                console.log(error);
             })
     }
 
@@ -70,6 +72,7 @@ export default class AddRecord extends Component<any, any> {
     render() {
         return (
             <Div>
+                <h1>ADD RECORD</h1>
                 <form onSubmit={this.addRecord}>
                     <div className="form-group">
                         <div><input
@@ -81,8 +84,9 @@ export default class AddRecord extends Component<any, any> {
                             className="form-control"
                             required
                         /></div>
-                        <div><input
-                            type="text"
+                        <br />
+                        <div><textarea
+                            rows={10}
                             name="description"
                             placeholder="Description"
                             value={this.state.description}
@@ -90,6 +94,7 @@ export default class AddRecord extends Component<any, any> {
                             className="form-control"
                             required
                         /></div>
+                        <br />
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
                 </form>

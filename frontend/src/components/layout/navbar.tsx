@@ -44,10 +44,7 @@ export default class NavbarComponent extends React.Component<any> {
               {this.props.loggedInStatus !== "LOGGED_IN" ? (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/login">Login</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/signup">Signup</Link>
+                    <Link className="nav-link" to="/login">Login | Signup</Link>
                   </li>
                 </>
               ) : (
