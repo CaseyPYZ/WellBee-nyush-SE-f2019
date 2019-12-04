@@ -6,9 +6,12 @@ import { PersonnelDocument } from "./Personnel";
 import { RecordDocument } from "./records/Record";
 
 export interface UserDocument extends PersonnelDocument { 
-
     /* User */
     healthRecord: mongoose.Types.ObjectId[];
+
+    /* User Authorization Lists */
+    holdsAuthList: string[];
+    grantedAuthList: string[];
     
 }
 
