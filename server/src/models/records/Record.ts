@@ -12,8 +12,8 @@ export type RecordType = "COMPLETE_BLOOD_COUNT" | "2" | "3" | "4";
 export interface RecordDocument extends mongoose.Document {
     // RecordDocument interface
     type: RecordType;
-    createdAt: Date;
-    description: String;
+    date: Date;
+    description: string;
 
     entries: Entry[];
 }
@@ -23,6 +23,12 @@ export class RecordBrief {
     type: string;
     date: Date;
     description: string;
+    constructor(recordID: mongoose.Types.ObjectId, type: string, date: Date, description: string){
+        this.recordID = recordID;
+        this.type = type;
+        this.date = date;
+        this.description = description;
+    }
 }
 
 

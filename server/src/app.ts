@@ -112,7 +112,7 @@ app.post("/account/add-record", passportConfig.isAuthenticated, userController.p
 /**
  * API examples routes.
  */
-app.get("/api", apiController.getApi);
+//app.get("/api", apiController.getApi);
 
 /**
  * OAuth authentication routes. (Sign in)

@@ -23,7 +23,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 if (err) { return res.send(err); }
                 if (existingUser) {
                     req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.send({ msg: "User with that email address already exists." });
+                    return res.status(400).send({ msg: "User with that email address already exists." });
                 }
                 user.save((err) => {
                     if (err) { return res.send(err); }

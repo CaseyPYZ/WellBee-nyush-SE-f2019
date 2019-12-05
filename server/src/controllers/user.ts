@@ -358,74 +358,114 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 };
 
 
+// /**
+//  * POST /account/add-record
+//  * User adds new record.
+//  */
+// export const postAddRecord2 = (req: Request, res: Response, next: NextFunction) => {
+//     const bodyData = req.body;
+
+//     const newRecord = new Record({
+//         type: bodyData.recordtype,
+//         createdAt: bodyData.date,
+//     });
+
+//     console.log("1\n");
+
+//     for ( const entry of bodyData.entries ){
+//         //const entryData = JSON.parse(entry);
+//         const newEntry = new Entry(entry.param, entry.val, entry.unit);
+//         newRecord.entries.push(newEntry);
+//     }
+
+//     console.log("2\n");
+
+//     newRecord.save((err) => {
+//         if (err) {
+//             console.log(err);
+//             return next(err);
+//         }
+//     });
+
+//     const user = req.user;
+//     console.log("3\n");
+
+//     User.findOne({email: user}, (err, existingUser: UserDocument) => {
+//         if (err){ 
+//             console.log(err);
+//             return next(err); 
+//         }
+//         if (existingUser){ 
+//             existingUser.recordBriefList.push(newRecord._id);
+//             existingUser.save((err) => {
+//                 return next(err);
+//             });
+//             return res.send("Record successfully added.");
+//         }
+//         return res.send("User not found.");
+//     });
+// };
+
+
+
 /**
  * POST /account/add-record
  * User adds new record.
  */
-export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
-    const bodyData = req.body;
+export const postAddRecord = (req: Request, res: Response, next: NextFunction  )=> {
 
-    const newRecord = new Record({
-        type: bodyData.recordtype,
-        createdAt: bodyData.date,
-    });
+    console.log("********* REQ BODY *********");
+    console.log(req.body);
+    console.log("******************************\n");
 
-    console.log("1\n");
+    /* Create Record -> Records colletcion*/
+    
+    const entriesArray: Entry[] = [];
 
-    for ( const entry of bodyData.entries ){
-        //const entryData = JSON.parse(entry);
+    for ( const entry of req.body.entries ){
         const newEntry = new Entry(entry.param, entry.val, entry.unit);
-        newRecord.entries.push(newEntry);
+        entriesArray.push(newEntry);
     }
 
-    console.log("2\n");
+    const newRecord = new Record({
+        type: req.body.type,
+        date: req.body.date,
+        description: req.body.description,
+        entries: entriesArray
+    });
+
+    console.log("********* NEW RECORD *********");
+    console.log(newRecord);
+    console.log("******************************");
 
     newRecord.save((err) => {
-        if (err) {
-            console.log(err);
-            return next(err);
-        }
+        if (err) { return next(err);}
     });
 
-    const user = req.user;
-    console.log("3\n");
 
-    User.findOne({email: user}, (err, existingUser: UserDocument) => {
-        if (err){ 
-            console.log(err);
-            return next(err); 
-        }
-        if (existingUser){ 
-            existingUser.recordBriefList.push(newRecord._id);
-            existingUser.save((err) => {
-                return next(err);
-            });
-            return res.send("Record successfully added.");
-        }
-        return res.send("User not found.");
-    });
-};
+    /* Create Record Brief -> user */
 
-
-
-
-export const postAddRecord2 = (req: Request, res: Response, next: NextFunction  )=> {
     const user = req.user as UserDocument;
 
     User.findById(user.id, (err, user: UserDocument) => {
         if (err) { return next(err); }
         
-        /* Create Record */
-        
+        const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
 
+        console.log("********* NEW RECORD BRIEF *********");
+        console.log(user.recordBriefList);
+        console.log("******************************");
 
-        /* Create Record Brief */
-
-
+        // This following line evokes error
+            // ASYNC HANDLING NEEDED 
+        //user.recordBriefList.push(newRecordBrief);
+        user.save((err: WriteError) => {
+            return next(err);
+        });
+        req.flash("success", { msg: "New record successfully added." });
+        return res.status(200).send("New record successfully added.");
     });
 };
-
-
 
 
 
@@ -433,18 +473,23 @@ export const postAddRecord2 = (req: Request, res: Response, next: NextFunction  
  * GET / 
  * Get record list of one user
  */
-export const getRecordList_old = (req: Request, res: Response, next: NextFunction) => {
+// export const getRecordList2 = (req: Request, res: Response, next: NextFunction) => {
     
-    User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
-        if (err){ return next(err); }
-        if (existingUser){
-            const records = existingUser.recordBriefList;
-            return res.json(JSON.stringify(records));
-        }
-        return res.send("User not found.");
-    });
-};
+//     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
+//         if (err){ return next(err); }
+//         if (existingUser){
+//             const records = existingUser.recordBriefList;
+//             return res.json(JSON.stringify(records));
+//         }
+//         return res.send("User not found.");
+//     });
+// };
 
+
+/**
+ * GET / 
+ * Get record list of one user
+ */
 export const getRecordList = (req: Request, res: Response, next: NextFunction  )=> {
     const user = req.user as UserDocument;
 
