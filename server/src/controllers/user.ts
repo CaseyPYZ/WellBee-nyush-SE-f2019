@@ -3,7 +3,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
-import { Record, recordSchema, RecordDocument} from "../models/records/Record";
+import { Record, RecordBrief, RecordDocument} from "../models/records/Record";
 import { Entry, EntryDocument} from "../models/records/Entry";
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
@@ -363,7 +363,6 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
  * User adds new record.
  */
 export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
-    // const bodyData = JSON.parse(req.body);
     const bodyData = req.body;
 
     const newRecord = new Record({
@@ -397,7 +396,7 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction) =
             return next(err); 
         }
         if (existingUser){ 
-            existingUser.healthRecord.push(newRecord._id);
+            existingUser.recordBriefList.push(newRecord._id);
             existingUser.save((err) => {
                 return next(err);
             });
@@ -408,20 +407,54 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction) =
 };
 
 
+
+
+export const postAddRecord2 = (req: Request, res: Response, next: NextFunction  )=> {
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+        if (err) { return next(err); }
+        
+        /* Create Record */
+        
+
+
+        /* Create Record Brief */
+
+
+    });
+};
+
+
+
+
+
 /**
- * GET /
- * 
+ * GET / 
+ * Get record list of one user
  */
-export const getRecordList = (req: Request, res: Response, next: NextFunction) => {
+export const getRecordList_old = (req: Request, res: Response, next: NextFunction) => {
+    
     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){
-            const records = existingUser.healthRecord;
+            const records = existingUser.recordBriefList;
             return res.json(JSON.stringify(records));
         }
         return res.send("User not found.");
     });
 };
+
+export const getRecordList = (req: Request, res: Response, next: NextFunction  )=> {
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+        if (err) { return next(err); }
+
+        return res.send(JSON.stringify(user.recordBriefList));
+    });
+};
+
 
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {

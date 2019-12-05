@@ -13,9 +13,16 @@ export interface RecordDocument extends mongoose.Document {
     // RecordDocument interface
     type: RecordType;
     createdAt: Date;
+    description: String;
 
     entries: Entry[];
+}
 
+export class RecordBrief {
+    recordID: mongoose.Types.ObjectId;
+    type: string;
+    date: Date;
+    description: string;
 }
 
 

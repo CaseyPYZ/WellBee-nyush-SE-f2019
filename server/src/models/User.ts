@@ -3,11 +3,12 @@ import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
 import { PersonnelDocument } from "./Personnel";
-import { RecordDocument } from "./records/Record";
+import { RecordBrief } from "./records/Record";
+import { ExecFileOptionsWithStringEncoding } from "child_process";
 
 export interface UserDocument extends PersonnelDocument { 
     /* User */
-    healthRecord: mongoose.Types.ObjectId[];
+    recordBriefList: RecordBrief[];
 
     /* User Authorization Lists */
     holdsAuthList: string[];
@@ -23,11 +24,6 @@ export interface AuthToken {
     kind: string;
 }
 
-export interface HealthRecord {
-    date: string;
-    BloodPressure: string;
-    BloodSugar: string;
-}
 
 /**
  * MongoDB Schema
