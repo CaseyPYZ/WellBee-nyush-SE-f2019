@@ -19,7 +19,7 @@ export default class RecordList extends Component<any, any> {
 
   getRecordList(record: any, i: any) {
     return (
-      <details className="jumbotron" onClick={this.getSingleRecord}>
+      <details key={i} className="jumbotron" onClick={this.getSingleRecord}>
         <summary>{i}</summary>
         <p> RECORD INFORMATION ~ </p>
         <button type="button" className="btn btn-dark" onClick={this.editRecord}>Edit Record</button>

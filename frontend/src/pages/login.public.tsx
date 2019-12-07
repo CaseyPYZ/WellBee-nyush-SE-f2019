@@ -79,10 +79,6 @@ export default class Login extends Component<any, any> {
       width: "50%",
     };
 
-    var horizontalStyle = {
-      width: "33.33%",
-    };
-
     var container, button;
     button =
       <Column>
