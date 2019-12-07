@@ -8,14 +8,9 @@ export default class AddRecord extends Component<any, any> {
         this.state = {
             date: "",
             description: "",
-            entries: [{ param: "", value: "", unit: "" },
-            { param: "", value: "", unit: "" },
-            { param: "", value: "", unit: "" },
-            { param: "", value: "", unit: "" }],
+            entries: [{param:"", value:"", unit:""}],
             errors: "",
-            entryNum: 1,
-            submit: false,
-            entryObj: []
+            recordType: ""
         };
 
         this.addRecord = this.addRecord.bind(this);
@@ -30,22 +25,15 @@ export default class AddRecord extends Component<any, any> {
         });
     }
 
-    addEntry(entry:any) {
-        console.log(this.state.entries)
-        console.log(entry.target.param, entry.target.value, entry.target.unit)
-        console.log(entry.param, entry.value, entry.unit)
+    addEntry(key:any, param:any, value:any, unit:any) {
         this.setState({
-            entries: [...this.state.entries, {param: entry.paran, value:entry.value, unit:entry.unit}],
-            entryObj: [...this.state.entryObj,  <Entry key={this.state.entryNum} addEntry={this.addEntry} submit={this.state.submit} />],
-            submit: false,
-            entryNum: this.state.entryNum + 1
+            entries: [...this.state.entries, {key, param, value, unit}],
         })
+        console.log(this.state)
     }
 
     async addRecord(event: any) {
         event.preventDefault();
-
-        await this.setState({ submit: true });
 
         const headers = {
             "Content-Type": "application/json",
@@ -65,8 +53,8 @@ export default class AddRecord extends Component<any, any> {
                 this.props.history.push(`/patient/record`);
             })
             .catch(error => {
-                this.setState({ errors: error });
                 console.log(error);
+                this.setState({ errors: error });
             })
     }
 
@@ -108,6 +96,15 @@ export default class AddRecord extends Component<any, any> {
                             className="form-control"
                             required
                         /></div>
+                        <div><input
+                            type="text"
+                            name="recordtype"
+                            placeholder="Record Type"
+                            value={this.state.recordType}
+                            onChange={this.handleChange}
+                            className="form-control"
+                            required
+                        /></div>
                         <br />
                         <div><textarea
                             rows={10}
@@ -120,10 +117,10 @@ export default class AddRecord extends Component<any, any> {
                         /></div>
                         <br />
 
-                        < button type="button" onClick={this.addEntry} > +++ </button>
+                        <h2>Add entry to save values</h2>
                         {this.state.entries.map((subform:any , index:any) =>
                             <>
-                                <Entry {...subform} />
+                                <Entry key={index} entryId={index} {...subform} submit={this.state.submit} addEntry={this.addEntry} />
                             </>
                         )}
 
