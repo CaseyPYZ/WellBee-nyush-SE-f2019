@@ -20,19 +20,24 @@ export const postSignup = (req: Request, res: Response, next: NextFunction) => {
 
     /* Global steps */
 
+
     check("email", "Email is not valid").isEmail();
     check("password", "Password must be at least 4 characters long").isLength({ min: 4 });
     check("confirmPassword", "Passwords do not match").equals(req.body.password);
     // eslint-disable-next-line @typescript-eslint/camelcase
     sanitize("email").normalizeEmail({ gmail_remove_dots: false });
 
+    /** 
+     * Add an error handler for usertype?
+     */ 
+
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("/signup");
+        console.log(errors.array());
+        return res.status(400).send(errors);
     }
 
     /* User factory */
-    const user = userFactory.createUser(req, res, next);
+    userFactory.createUser(req, res, next);
 };

@@ -7,6 +7,7 @@ import { PersonnelDocument } from "./Personnel";
 export interface DoctorDocument extends PersonnelDocument {
 
     /* Doctor */
+    position: string;
     
 };
 
@@ -19,13 +20,11 @@ export interface AuthToken {
 
 const doctorSchema = new mongoose.Schema({
     email: { type: String, unique: true },
+    usertype: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-    facebook: String,
-    twitter: String,
-    google: String,
     tokens: Array,
 
     profile: {

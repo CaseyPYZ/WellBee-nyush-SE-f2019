@@ -17,21 +17,25 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             const user = new User({
                 email: req.body.email,
                 password: req.body.password,
+                usertype: req.body.usertype,
             });
 
-            User.findOne({ email: req.body.email }, (err, existingUser) => {
+            User.findOne({ email: req.body.email }, (err, existingUser: UserDocument) => {
                 if (err) { return res.send(err); }
                 if (existingUser) {
-                    req.flash("errors", { msg: "Account with that email address already exists." });
+                    console.log("Account with that email address already exists." );
                     return res.status(400).send({ msg: "User with that email address already exists." });
                 }
                 user.save((err) => {
-                    if (err) { return res.send(err); }
+                    if (err) { return res.status(400).send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
+                            console.log(err);
                             return res.send(err);
                         }
-                        return res.send({ user: req.user, msg: "Success signing up user" });
+                        console.log(user);
+                        console.log(req.user);
+                        return res.status(200).json({ user: req.user, msg: "Success signing up user" });
                     });
                 });
             });
@@ -43,21 +47,25 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             const user = new Doctor({
                 email: req.body.email,
                 password: req.body.password,
+                usertype: req.body.usertype,
             });
 
-            Doctor.findOne({ email: req.body.email }, (err, existingUser) => {
-                if (err) { return res.send(err); }
+            Doctor.findOne({ email: req.body.email }, (err, existingUser: DoctorDocument) => {
+                if (err) { return res.status(400).send(err); }
                 if (existingUser) {
-                    req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.send({ msg: "Doctor with that email address already exists." });
+                    console.log("Account with that email address already exists.");
+                    return res.status(400).json({ msg: "Doctor with that email address already exists." });
                 }
                 user.save((err) => {
                     if (err) { return res.send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
+                            console.log(err);
                             return res.send(err);
                         }
-                        return res.send({ user: req.user, msg: "Success signing up doctor" });
+                        console.log();
+                        console.log(user);
+                        return res.status(200).json({ user: req.user, msg: "Success signing up doctor" });
                     });
                 });
             });
@@ -69,26 +77,32 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             const user = new Admin({
                 email: req.body.email,
                 password: req.body.password,
+                usertype: req.body.usertype,
             });
 
-            Admin.findOne({ email: req.body.email }, (err, existingUser) => {
-                if (err) { return res.send(err); }
+            Admin.findOne({ email: req.body.email }, (err, existingUser: AdminDocument) => {
+                if (err) { return res.status(400).send(err); }
                 if (existingUser) {
-                    req.flash("errors", { msg: "Account with that email address already exists." });
-                    return res.send({ msg: "Admin with that email address already exists." });
+                    console.log("Account with that email address already exists.");
+                    return res.status(400).json({ msg: "Admin with that email address already exists." });
                 }
                 user.save((err) => {
                     if (err) { return res.send(err); }
                     req.logIn(user, (err) => {
                         if (err) {
+                            console.log(err);
                             return res.send(err);
                         }
-                        return res.send({ user: req.user, msg: "Success signing up admin" });
+                        console.log(req.user);
+                        return res.status(200).json({ user: req.user, msg: "Success signing up admin" });
                     });
                 });
             });
 
             break;
+        }
+        default:{
+            return res.status(400).json({msg: "Usertype not supported"});
         }
     }
 };
