@@ -35,6 +35,7 @@ export default class AuthorizeList extends Component<any, any> {
         return (
             <Div>
                 <h1>Authorization</h1>
+                <br />
                 <div>{this.state.authorizeList.map(this.getAuthorizeList)}</div>
             </Div>
         );

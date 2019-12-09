@@ -9,10 +9,9 @@ export const Div = styled.div`
 
 export const Column = styled.div`
     float: left;
-    width: 30%;
-    padding-right: 2.5%;
-    padding-left: 2.5%;
+    width: 33.33%;
+    margin: auto;
   `
-export const Button = styled.div `
+export const Button = styled.div`
     float: left;
 `

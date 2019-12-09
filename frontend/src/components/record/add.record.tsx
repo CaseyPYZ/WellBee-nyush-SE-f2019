@@ -1,24 +1,35 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
+import Entry from "./entry";
 
 export default class AddRecord extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
             date: "",
-            description: ""
+            description: "",
+            entries: [{param:"", value:"", unit:""}],
+            errors: "",
+            recordType: ""
         };
 
         this.addRecord = this.addRecord.bind(this);
         this.editRecord = this.editRecord.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.addEntry = this.addEntry.bind(this);
     }
 
     handleChange(event: any) {
-        console.log("HERE");
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    addEntry(key:any, param:any, value:any, unit:any) {
+        this.setState({
+            entries: [...this.state.entries, {key, param, value, unit}],
+        })
+        console.log(this.state)
     }
 
     async addRecord(event: any) {
@@ -28,6 +39,8 @@ export default class AddRecord extends Component<any, any> {
             "Content-Type": "application/json",
             Accept: "application/json"
         }
+
+        console.log(this.state)
 
         await fetch("http://localhost:5000//account/addrecord", {
             method: "post",
@@ -40,7 +53,8 @@ export default class AddRecord extends Component<any, any> {
                 this.props.history.push(`/patient/record`);
             })
             .catch(error => {
-                this.setState({ loginErrors: error });
+                console.log(error);
+                this.setState({ errors: error });
             })
     }
 
@@ -70,6 +84,7 @@ export default class AddRecord extends Component<any, any> {
     render() {
         return (
             <Div>
+                <h1>ADD RECORD</h1>
                 <form onSubmit={this.addRecord}>
                     <div className="form-group">
                         <div><input
@@ -83,6 +98,16 @@ export default class AddRecord extends Component<any, any> {
                         /></div>
                         <div><input
                             type="text"
+                            name="recordtype"
+                            placeholder="Record Type"
+                            value={this.state.recordType}
+                            onChange={this.handleChange}
+                            className="form-control"
+                            required
+                        /></div>
+                        <br />
+                        <div><textarea
+                            rows={10}
                             name="description"
                             placeholder="Description"
                             value={this.state.description}
@@ -90,10 +115,19 @@ export default class AddRecord extends Component<any, any> {
                             className="form-control"
                             required
                         /></div>
+                        <br />
+
+                        <h2>Add entry to save values</h2>
+                        {this.state.entries.map((subform:any , index:any) =>
+                            <>
+                                <Entry key={index} entryId={index} {...subform} submit={this.state.submit} addEntry={this.addEntry} />
+                            </>
+                        )}
+
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
                 </form>
-            </Div>
+            </Div >
         );
     }
 }

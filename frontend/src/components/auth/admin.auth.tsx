@@ -130,11 +130,9 @@ export default class AdminAuth extends Component<any, any> {
                   required
                 />
               </div>
-              <div className="row align-items-center remember">
-                <input type="checkbox" />Remember Me
-                </div>
+
               <div className="form-group">
-                <input type="submit" value="Login" className="btn float-right login_btn" />
+                <input type="submit" value="Login" className="btn login_btn" />
               </div>
             </form>
           </div>
@@ -162,11 +160,16 @@ export default class AdminAuth extends Component<any, any> {
                   onChange={this.handleChange}
                   required
                 />
-                <div>
-                  <input type="radio" name="gender" value="male" /> Male<></>
-                  <input type="radio" name="gender" value="female" /> Female<></>
-                  <input type="radio" name="gender" value="none" /> None<></>
+
+                <div className="input-group mb-3">
+                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
+                    <option selected>gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="none">None</option>
+                  </select>
                 </div>
+                
                 <div><input
                   type="date"
                   name="Birthday"
@@ -176,6 +179,7 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+
                 <div><input
                   type="email"
                   name="email"
@@ -185,6 +189,7 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+
                 <div><input
                   type="password"
                   name="password"
@@ -194,6 +199,7 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+
                 <div><input
                   type="password"
                   name="password_confirmation"
@@ -203,6 +209,7 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+                
                 <button type="submit" className="form-control">Register</button>
               </div>
             </form>
