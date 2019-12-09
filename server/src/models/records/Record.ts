@@ -35,8 +35,8 @@ export class RecordBrief {
 export const recordSchema = new mongoose.Schema({
     // personnel Schema
     type: String,
-    id: String,
-    createdAt: Date,
+    date: Date,
+    description: String,
 
     entries: Array,
 
