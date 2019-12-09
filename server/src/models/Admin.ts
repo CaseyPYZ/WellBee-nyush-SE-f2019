@@ -7,6 +7,7 @@ import { PersonnelDocument } from "./Personnel";
 export interface AdminDocument extends PersonnelDocument {
 
     /* Admin */
+    position: string;
     
 };
 
@@ -19,6 +20,7 @@ export interface AuthToken {
 
 const adminSchema = new mongoose.Schema({
     email: { type: String, unique: true },
+    usertype: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
