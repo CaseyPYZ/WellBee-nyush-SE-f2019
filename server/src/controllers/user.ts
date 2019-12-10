@@ -1,8 +1,10 @@
-import async from "async";
+import async, { nextTick } from "async";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
+import { Doctor, DoctorDocument } from "../models/Doctor";
+import { Admin, AdminDocument } from "../models/Admin";
 import { Record, RecordBrief, RecordDocument} from "../models/records/Record";
 import { Entry, EntryDocument} from "../models/records/Entry";
 import { Request, Response, NextFunction } from "express";
@@ -10,6 +12,7 @@ import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
 import { check, sanitize, validationResult } from "express-validator";
 import "../config/passport";
+import { profile } from "winston";
 
 /**
  * GET /login
@@ -39,27 +42,78 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
+        console.log(errors.array());
         //return res.redirect("/login");
         return res.status(400).send({msg: "errors"});
     }
-    
-    passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
-        console.log(user);
-        if (err) { return next(err); }
-        if (!user) {
-            console.log("POST LOGIN ERROR");
-            return res.status(400).send({user: null, msg: "Oops something went wrong"});
-        }
-        req.logIn(user, (err) => {
-            if (err) { return next(err); }
-            console.log("POST LOGIN SUCCESS");
-            console.log(user);
-            return res.status(200).send({user: user, msg: "You have logged in!"});
 
-        });
-    })(req, res, next);
-};
+    const usertype = req.body.usertype;
+
+    switch (usertype){
+        case "user": {
+            passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+                console.log(user);
+                if (err) { return next(err); }
+                if (!user) {
+                    console.log("POST LOGIN ERROR");
+                    return res.status(400).send({user: null, msg: "Oops something went wrong"});
+                }
+                req.logIn(user, (err) => {
+                    if (err) { return next(err); }
+                    console.log("POST LOGIN SUCCESS");
+                    console.log(user);
+                    return res.status(200).send({user: user, msg: "You have logged in!"});
+        
+                });
+            })(req, res, next);
+
+            break;
+        }
+        case "doctor": {
+            passport.authenticate("local", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
+                console.log(user);
+                if (err) { return next(err); }
+                if (!user) {
+                    console.log("POST LOGIN ERROR");
+                    return res.status(400).send({user: null, msg: "Oops something went wrong"});
+                }
+                req.logIn(user, (err) => {
+                    if (err) { return next(err); }
+                    console.log("POST LOGIN SUCCESS");
+                    console.log(user);
+                    return res.status(200).send({user: user, msg: "You have logged in!"});
+        
+                });
+            })(req, res, next);
+
+            break;
+        }
+        case "admin": {
+            passport.authenticate("local", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
+                console.log(user);
+                if (err) { return next(err); }
+                if (!user) {
+                    console.log("POST LOGIN ERROR");
+                    return res.status(400).send({user: null, msg: "Oops something went wrong"});
+                }
+                req.logIn(user, (err) => {
+                    if (err) { return next(err); }
+                    console.log("POST LOGIN SUCCESS");
+                    console.log(user);
+                    return res.status(200).send({user: user, msg: "You have logged in!"});
+        
+                });
+            })(req, res, next);
+
+            break;
+        }
+        default:{
+            return res.status(400).json({msg: "Usertype not supported"});
+        }
+
+    }
+ 
+ };
 
 /**
  * GET /logout
@@ -68,7 +122,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 export const logout = (req: Request, res: Response) => {
     req.logout();
     req.session.destroy(function (err) {
-        res.send({ msg: "Logged out!" });
+        res.json({ msg: "Logged out!" });
     });
 };
 
@@ -89,8 +143,19 @@ export const getSignup = (req: Request, res: Response) => {
  * Profile page.
  */
 export const getAccount = (req: Request, res: Response) => {
-    res.render("account/profile", {
-        title: "Account Management"
+    const user = req.user as UserDocument;
+    User.findById(user._id, (err, user: UserDocument) =>{
+        if (err){
+            console.log(err);
+            return res.status(400).send(err);
+        }
+        return res.json({
+            "email": user.email,
+            "name": user.profile.name,
+            "gender": user.profile.gender,
+            "birthday": user.profile.birthday,
+            "age": user.age,
+        });
     });
 };
 
@@ -106,14 +171,17 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("/account");
+        console.log(errors);
+        return res.status(400).send(errors);
     }
 
     const user = req.user as UserDocument;
 
-    User.findById(user.id, (err, user: UserDocument) => {
-        if (err) { return next(err); }
+
+    User.findById(user._id, (err, user: UserDocument) => {
+        if (err) { 
+            console.log(err);
+            return next(err); }
         user.email = req.body.email || "";
         user.profile.name = req.body.name || "";
         user.profile.gender = req.body.gender || "";
@@ -123,13 +191,12 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
         user.save((err: WriteError) => {
             if (err) {
                 if (err.code === 11000) {
-                    req.flash("errors", { msg: "The email address you have entered is already associated with an account." });
-                    return res.redirect("/account");
+                    console.log(err);
+                    return res.status(400).json({msg: "The email address you have entered is already associated with an account."});
                 }
                 return next(err);
             }
-            req.flash("success", { msg: "Profile information has been updated." });
-            res.redirect("/account");
+            res.status(200).json({ msg: "Profile information has been updated." });
         });
     });
 };
@@ -406,8 +473,6 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 //     });
 // };
 
-
-
 /**
  * POST /account/add-record
  * User adds new record.
@@ -446,13 +511,14 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
     /* Create Record Brief -> user */
     const user = req.user as UserDocument;
 
-    User.findById(user.id, (err, user: UserDocument) => {
+    User.findById(user._id, (err, user: UserDocument) => {
         if (err) { return next(err); }
         
         const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
 
         console.log("********* NEW RECORD BRIEF *********");
         console.log(user.recordBriefList);
+        console.log(newRecordBrief);
         console.log("******************************");
 
         // This following line evokes error

@@ -1,9 +1,14 @@
 import mongoose, { Document } from "mongoose";
+import { string } from "prop-types";
+
+
+export type Usertype = "user" | "doctor" | "admin";
 
 export interface PersonnelDocument extends mongoose.Document { 
     name: string;
     ID: string; // UUID;
     email: string;
+    usertype: Usertype;
     age: string;
     password: string;
     passwordResetToken: string;
@@ -25,7 +30,6 @@ export interface PersonnelDocument extends mongoose.Document {
     gravatar: (size: number) => string;
 
 }
-
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
 

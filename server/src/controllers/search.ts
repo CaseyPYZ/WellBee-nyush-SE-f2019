@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
+import { PersonnelDocument } from "../models/Personnel";
 
 
 /**/
@@ -14,6 +15,7 @@ export const postSearchUser = (req: Request, res: Response, next: NextFunction) 
 
     //This key word can be ID, name, email;
 
+
     User.findOne({email: key}, (err: Error, existingUser: UserDocument) => {
         if (err){ return next(err); }
         if (existingUser){ 
@@ -23,7 +25,7 @@ export const postSearchUser = (req: Request, res: Response, next: NextFunction) 
                 age: existingUser.age
             });
         }
-        return res.send("User not found.");
+        return res.status(404).send("User not found.");
     });
 };
 
@@ -49,7 +51,16 @@ export const postSearchDoctor = (req: Request, res: Response, next: NextFunction
 //TO-DO: Merge postSearchAllUser and postSearchAllDoctor.
 //       Add a wrapper to deal with different types of searching requirement.
 
-export const postSearchAllUser = (req: Request, res: Response, next: NextFunction) => {
+export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
+
+    //Need to check if the user is admin
+    //if req.user.usertype == "admin":
+
+    // const user = req.user as PersonnelDocument;
+    // if (user.usertype != "admin"){
+    //     res.status(400).json({msg: "You do not have access to the user list."});
+    // }
+
     User.find({}, (err: Error, data: Array<UserDocument>) => {
         if (err){
             console.log(err);
@@ -72,7 +83,17 @@ export const postSearchAllUser = (req: Request, res: Response, next: NextFunctio
     });
 };
 
-export const postSearchAllDoctor = (req: Request, res: Response, next: NextFunction) => {
+
+export const getAllDoctor = (req: Request, res: Response, next: NextFunction) => {
+
+    //Need to check if the use is admin
+    //if req.user.usertype == "admin"
+
+    // const user = req.user as PersonnelDocument;
+    // if (user.usertype != "admin"){
+    //     res.status(400).json({msg: "You do not have access to the doctor list."});
+    // }
+
     Doctor.find({}, (err: Error, data: Array<UserDocument>) => {
         if (err){
             console.log(err);
