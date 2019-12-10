@@ -47,7 +47,7 @@ app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -112,6 +112,7 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
+
 /**
  * API examples routes.
  */

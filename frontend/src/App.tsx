@@ -42,7 +42,7 @@ export default class App extends Component<any, any> {
   }
 
   handleLogin(data: any, usertype: string) {
-    console.log('LOGIN')
+    console.log(this.state.user)
     this.setState({
       loggedInStatus: "LOGGED_IN",
       user: data.user,
@@ -58,7 +58,7 @@ export default class App extends Component<any, any> {
           <SidebarComponent loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} />
 
           <Switch>
-            <PrivatePatientRoute path="/patient/addrecord" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AddRecord} />
+            <PrivatePatientRoute path="/patient/addrecord" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} user={this.state.user} component={AddRecord} />
             <PrivatePatientRoute path="/patient/record" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={RecordList} />
             <PrivatePatientRoute path="/patient/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AccessList} />
             <PrivatePatientRoute path="/patient/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AuthorizeList} />
