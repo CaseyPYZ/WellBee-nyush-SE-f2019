@@ -33,5 +33,6 @@ export const postSignup = (req: Request, res: Response, next: NextFunction) => {
         return res.redirect("/signup");
     }
 
+    /* User factory */
     const user = userFactory.createUser(req, res, next);
 };

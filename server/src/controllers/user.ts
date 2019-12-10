@@ -3,7 +3,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
 import { User, UserDocument, AuthToken } from "../models/User";
-import { Record, recordSchema, RecordDocument} from "../models/records/Record";
+import { Record, RecordBrief, RecordDocument} from "../models/records/Record";
 import { Entry, EntryDocument} from "../models/records/Entry";
 import { Request, Response, NextFunction } from "express";
 import { IVerifyOptions } from "passport-local";
@@ -17,16 +17,11 @@ import "../config/passport";
  */
 export const getLogin = (req: Request, res: Response) => {
     if (req.user) {
-        // send req.user
-        // return res.redirect("/");
         console.log("GET LOGIN WITH USER");
         return res.send({user: req.user});
     }
     console.log("GET LOGIN WITHOUT USER");
     return res.send();
-    // res.render("account/login", {
-    //     title: "Login"
-    // });
 };
 
 /**
@@ -45,7 +40,8 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash("errors", errors.array());
-        return res.redirect("/login");
+        //return res.redirect("/login");
+        return res.status(400).send({msg: "errors"});
     }
     
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
@@ -53,16 +49,14 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         if (err) { return next(err); }
         if (!user) {
             console.log("POST LOGIN ERROR");
-            return res.send({user: null, msg: "Oops something went wrong"});
+            return res.status(400).send({user: null, msg: "Oops something went wrong"});
         }
         req.logIn(user, (err) => {
             if (err) { return next(err); }
             console.log("POST LOGIN SUCCESS");
             console.log(user);
-            return res.send({user: user, msg: "You have logged in!"});
+            return res.status(200).send({user: user, msg: "You have logged in!"});
 
-            // req.flash("success", { msg: "Success! You are logged in." });
-            // res.redirect(req.session.returnTo || "/");
         });
     })(req, res, next);
 };
@@ -74,11 +68,11 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 export const logout = (req: Request, res: Response) => {
     req.logout();
     req.session.destroy(function (err) {
-        res.send({ msg: 'Logged out!' })
+        res.send({ msg: "Logged out!" });
     });
 };
 
-/**
+/**a
  * GET /signup
  * Signup page.
  */
@@ -87,9 +81,7 @@ export const getSignup = (req: Request, res: Response) => {
         return res.redirect("/");
     }
     res.json({status: "NOT_LOGGED_IN"});
-    // res.render("account/signup", {
-    //     title: "Create Account"
-    // });
+
 };
 
 /**
@@ -119,6 +111,7 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
     }
 
     const user = req.user as UserDocument;
+
     User.findById(user.id, (err, user: UserDocument) => {
         if (err) { return next(err); }
         user.email = req.body.email || "";
@@ -346,8 +339,8 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
             });
             const mailOptions = {
                 to: user.email,
-                from: "hackathon@starter.com",
-                subject: "Reset your password on Hackathon Starter",
+                from: "casey.yzpan@gmail.com",
+                subject: "Reset your password on WellBee",
                 text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
           http://${req.headers.host}/reset/${token}\n\n
@@ -364,56 +357,148 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const postAddRecord = (req: Request, res: Response, next: NextFunction) => {
-    const bodyData = JSON.parse(req.body);
-    //const bodyData = req.body;
 
-    const newRecord = new Record({
-        type: bodyData.recordtype,
-        createdAt: bodyData.date,
-    });
+// /**
+//  * POST /account/add-record
+//  * User adds new record.
+//  */
+// export const postAddRecord2 = (req: Request, res: Response, next: NextFunction) => {
+//     const bodyData = req.body;
 
-    for ( const entry of bodyData.entries ){
-        const entryData = JSON.parse(entry);
-        const newEntry = new Entry(entryData.param, entryData.val, entryData.unit);
-        newRecord.entries.push(newEntry);
+//     const newRecord = new Record({
+//         type: bodyData.recordtype,
+//         createdAt: bodyData.date,
+//     });
+
+//     console.log("1\n");
+
+//     for ( const entry of bodyData.entries ){
+//         //const entryData = JSON.parse(entry);
+//         const newEntry = new Entry(entry.param, entry.val, entry.unit);
+//         newRecord.entries.push(newEntry);
+//     }
+
+//     console.log("2\n");
+
+//     newRecord.save((err) => {
+//         if (err) {
+//             console.log(err);
+//             return next(err);
+//         }
+//     });
+
+//     const user = req.user;
+//     console.log("3\n");
+
+//     User.findOne({email: user}, (err, existingUser: UserDocument) => {
+//         if (err){ 
+//             console.log(err);
+//             return next(err); 
+//         }
+//         if (existingUser){ 
+//             existingUser.recordBriefList.push(newRecord._id);
+//             existingUser.save((err) => {
+//                 return next(err);
+//             });
+//             return res.send("Record successfully added.");
+//         }
+//         return res.send("User not found.");
+//     });
+// };
+
+
+
+/**
+ * POST /account/add-record
+ * User adds new record.
+ */
+export const postAddRecord = (req: Request, res: Response, next: NextFunction  )=> {
+
+    console.log("********* REQ BODY *********");
+    console.log(req.body);
+    console.log("******************************\n");
+
+    /* Create Record -> Records colletcion*/
+    
+    const entriesArray: Entry[] = [];
+
+    for ( const entry of req.body.entries ){
+        const newEntry = new Entry(entry.param, entry.val, entry.unit);
+        entriesArray.push(newEntry);
     }
 
-    // for ( const entry of bodyData.entries ){
-    //     //const entryData = JSON.parse(entry);
-    //     const newEntry = new Entry(entry.param, entry.val, entry.unit);
-    //     newRecord.entries.push(newEntry);
-    // }
+    const newRecord = new Record({
+        type: req.body.type,
+        date: req.body.date,
+        description: req.body.description,
+        entries: entriesArray
+    });
+
+    console.log("********* NEW RECORD *********");
+    console.log(newRecord);
+    console.log("******************************");
 
     newRecord.save((err) => {
-        return next(err);
+        if (err) { return next(err);}
     });
 
-    const user = req.user;
 
-    User.findOne({email: user}, (err, existingUser: UserDocument) => {
-        if (err){ return next(err); }
-        if (existingUser){ 
-            existingUser.healthRecord.push(newRecord._id);
-            existingUser.save((err) => {
-                return next(err);
-            });
-            return res.send("Record successfully added.");
-        }
-        return res.send("User not found.");
+    /* Create Record Brief -> user */
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+        if (err) { return next(err); }
+        
+        const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
+
+        console.log("********* NEW RECORD BRIEF *********");
+        console.log(user.recordBriefList);
+        console.log("******************************");
+
+        // This following line evokes error
+            // ASYNC HANDLING NEEDED 
+        //user.recordBriefList.push(newRecordBrief);
+        user.save((err: WriteError) => {
+            return next(err);
+        });
+        req.flash("success", { msg: "New record successfully added." });
+        return res.status(200).send("New record successfully added.");
+    });
+};
+
+
+
+/**
+ * GET / 
+ * Get record list of one user
+ */
+// export const getRecordList2 = (req: Request, res: Response, next: NextFunction) => {
+    
+//     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
+//         if (err){ return next(err); }
+//         if (existingUser){
+//             const records = existingUser.recordBriefList;
+//             return res.json(JSON.stringify(records));
+//         }
+//         return res.send("User not found.");
+//     });
+// };
+
+
+/**
+ * GET / 
+ * Get record list of one user
+ */
+export const getRecordList = (req: Request, res: Response, next: NextFunction  )=> {
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+        if (err) { return next(err); }
+
+        return res.send(JSON.stringify(user.recordBriefList));
     });
 };
 
-export const getRecordList = (req: Request, res: Response, next: NextFunction) => {
-    User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
-        if (err){ return next(err); }
-        if (existingUser){
-            const records = existingUser.healthRecord;
-            return res.json(JSON.stringify(records));
-        }
-        return res.send("User not found.");
-    });
-};
 
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {

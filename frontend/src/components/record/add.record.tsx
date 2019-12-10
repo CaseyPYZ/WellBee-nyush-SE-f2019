@@ -8,9 +8,10 @@ export default class AddRecord extends Component<any, any> {
         this.state = {
             date: "",
             description: "",
-            entries: [{param:"", value:"", unit:""}],
+            entries: [{ param: "", value: "", unit: "" }],
             errors: "",
-            recordType: ""
+            type: "",
+            user: {}
         };
 
         this.addRecord = this.addRecord.bind(this);
@@ -25,11 +26,10 @@ export default class AddRecord extends Component<any, any> {
         });
     }
 
-    addEntry(key:any, param:any, value:any, unit:any) {
+    addEntry(key: any, param: any, value: any, unit: any) {
         this.setState({
-            entries: [...this.state.entries, {key, param, value, unit}],
+            entries: [...this.state.entries, { key, param, value, unit }],
         })
-        console.log(this.state)
     }
 
     async addRecord(event: any) {
@@ -40,9 +40,7 @@ export default class AddRecord extends Component<any, any> {
             Accept: "application/json"
         }
 
-        console.log(this.state)
-
-        await fetch("http://localhost:5000//account/addrecord", {
+        await fetch("http://localhost:5000/account/add-record", {
             method: "post",
             headers: headers,
             body: JSON.stringify(this.state)
@@ -59,31 +57,32 @@ export default class AddRecord extends Component<any, any> {
     }
 
     async editRecord(event: any) {
-        event.preventDefault();
+        // event.preventDefault();
 
-        const headers = {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        }
+        // const headers = {
+        //     "Content-Type": "application/json",
+        //     Accept: "application/json"
+        // }
 
-        await fetch("http://localhost:5000/account/updaterecord", {
-            method: "post",
-            headers: headers,
-            body: JSON.stringify(this.state)
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
-                this.props.history.push(`/patient/record`);
-            })
-            .catch(error => {
-                this.setState({ loginErrors: error });
-            })
+        // await fetch("http://localhost:5000/account/updaterecord", {
+        //     method: "post",
+        //     headers: headers,
+        //     body: JSON.stringify(this.state)
+        // })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         console.log(response);
+        //         this.props.history.push(`/patient/record`);
+        //     })
+        //     .catch(error => {
+        //         this.setState({ loginErrors: error });
+        //     })
     }
 
     render() {
         return (
             <Div>
+                {this.props.loggedInStatus}
                 <h1>ADD RECORD</h1>
                 <form onSubmit={this.addRecord}>
                     <div className="form-group">
@@ -97,10 +96,10 @@ export default class AddRecord extends Component<any, any> {
                             required
                         /></div>
                         <div><input
-                            type="text"
-                            name="recordtype"
+                            type="type"
+                            name="type"
                             placeholder="Record Type"
-                            value={this.state.recordType}
+                            value={this.state.type}
                             onChange={this.handleChange}
                             className="form-control"
                             required
@@ -118,7 +117,7 @@ export default class AddRecord extends Component<any, any> {
                         <br />
 
                         <h2>Add entry to save values</h2>
-                        {this.state.entries.map((subform:any , index:any) =>
+                        {this.state.entries.map((subform: any, index: any) =>
                             <>
                                 <Entry key={index} entryId={index} {...subform} submit={this.state.submit} addEntry={this.addEntry} />
                             </>

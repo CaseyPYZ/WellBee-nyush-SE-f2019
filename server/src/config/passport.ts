@@ -3,7 +3,6 @@ import passportLocal from "passport-local";
 import passportFacebook from "passport-facebook";
 import _ from "lodash";
 
-// import { User, UserType } from '../models/User';
 import { User, UserDocument } from "../models/User";
 import { Request, Response, NextFunction } from "express";
 
@@ -124,7 +123,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
     if (req.isAuthenticated()) {
         return next();
     }
-    res.json({redirect: true});
+    res.json({isAuthenticated: false, redirect: true});
 };
 
 /**

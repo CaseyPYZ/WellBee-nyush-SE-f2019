@@ -33,7 +33,7 @@ export default class Entry extends Component<any, any> {
             )
         } else if (this.state.submit === "EMPTY") {
             return (
-                <form onSubmit={this.onSubmit}>
+                <div onSubmit={this.onSubmit}>
                     <input
                         type="text"
                         name="param"
@@ -55,8 +55,8 @@ export default class Entry extends Component<any, any> {
                         value={this.state.unit}
                         onChange={this.handleEntryChange}
                     />
-                    <button type="submit">Add entry</button>
-                </form>
+                    <button>Add entry</button>
+                </div>
             )
         }
     }

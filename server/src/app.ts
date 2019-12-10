@@ -47,7 +47,7 @@ app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -100,7 +100,7 @@ app.post("/reset/:token", userController.postReset);
 app.get("/signup", userController.getSignup);
 app.post("/signup", signUp.postSignup);
 //app.get("/search", searchController.getSearch);
-app.post("/search", searchController.postSearch);
+//app.post("/search", searchController.postSearch);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
 app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
@@ -108,11 +108,11 @@ app.post("/account/profile", passportConfig.isAuthenticated, userController.post
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
-app.post("/account/addrecord", passportConfig.isAuthenticated, userController.postAddRecord);
+app.post("/account/add-record", userController.postAddRecord);
 /**
  * API examples routes.
  */
-app.get("/api", apiController.getApi);
+//app.get("/api", apiController.getApi);
 
 /**
  * OAuth authentication routes. (Sign in)
