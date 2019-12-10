@@ -38,16 +38,20 @@ passport.deserializeUser((user: UserInfo, done) => {
             User.findById(user.id, (err, user: UserDocument) => {
                 done(err, user);
             });
+
+            break;
         }
         case "doctor": {
             Doctor.findById(user.id, (err, doctor: DoctorDocument) =>{
                 done(err, doctor);
             });
+            break;
         }
         case "admin": {
             Admin.findById(user.id, (err, admin: AdminDocument) =>{
                 done(err, admin);
             });
+            break;
         }
     }
 });

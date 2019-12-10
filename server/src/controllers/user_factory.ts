@@ -65,7 +65,10 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                     if (err) { return res.status(400).send(err); }
                     console.log("[[[]]] Save user succeed.");
                     req.logIn(user, (err) => {
-                        if (res.headersSent) return res;
+                        if (res.headersSent) {
+                            console.log(res);
+                            return res;
+                        }
                         console.log("[[[]]] Login user.");
                         if (err) {
                             console.log(err);
