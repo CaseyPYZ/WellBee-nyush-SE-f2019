@@ -57,7 +57,7 @@ export default class App extends Component<any, any> {
           <SidebarComponent loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} />
 
           <Switch>
-            <PrivatePatientRoute path="/patient/addrecord" loggedInStatus={this.state.loggedInStatus} user={this.state.user} usertype={this.state.usertype} component={AddRecord} />
+            <PrivatePatientRoute path="/:id/addrecord" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={() => <AddRecord user={this.state.user} />} />
             <PrivatePatientRoute path="/patient/record" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={RecordList} />
             <PrivatePatientRoute path="/patient/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AccessList} />
             <PrivatePatientRoute path="/patient/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AuthorizeList} />
