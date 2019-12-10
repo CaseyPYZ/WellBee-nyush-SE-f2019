@@ -2,13 +2,16 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
-import { PersonnelDocument } from "./Personnel";
+import { PersonnelDocument, comparePassword } from "./Personnel";
 import { RecordBrief } from "./records/Record";
 import { ExecFileOptionsWithStringEncoding } from "child_process";
+import { ObjectId } from "bson";
+
 
 export interface UserDocument extends PersonnelDocument { 
     /* User */
     recordBriefList: RecordBrief[];
+    recordList: ObjectId[];
 
     /* User Authorization Lists */
     holdsAuthList: string[];
@@ -16,30 +19,18 @@ export interface UserDocument extends PersonnelDocument {
     
 }
 
-type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
-
-
-export interface AuthToken {
-    accessToken: string;
-    kind: string;
-}
-
-
 /**
  * MongoDB Schema
  */
 
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
-    ID: {type: String, unique: true}, //UUID
+    usertype: String,
+    age: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-
-    facebook: String,
-    twitter: String,
-    google: String,
     tokens: Array,
 
     profile: {
@@ -51,9 +42,11 @@ const userSchema = new mongoose.Schema({
         picture: String
     },
 
-    healthrecord: Array,
+    recordBriefList: Array,
+    recordList: Array
 
 }, { timestamps: true });
+
 
 /**
  * Password hash middleware.
@@ -71,12 +64,6 @@ userSchema.pre("save", function save(next) {
         });
     });
 });
-
-const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
-        cb(err, isMatch);   //callback function
-    });
-};
 
 userSchema.methods.comparePassword = comparePassword;
 

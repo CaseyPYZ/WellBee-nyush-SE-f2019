@@ -18,6 +18,7 @@ export interface RecordDocument extends mongoose.Document {
     entries: Entry[];
 }
 
+
 export class RecordBrief {
     recordID: mongoose.Types.ObjectId;
     type: string;

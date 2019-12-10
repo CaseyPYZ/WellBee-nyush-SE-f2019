@@ -1,12 +1,13 @@
+import bcrypt from "bcrypt-nodejs";
+import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
-import { string } from "prop-types";
+//import { string } from "prop-types";
 
 
 export type Usertype = "user" | "doctor" | "admin";
 
 export interface PersonnelDocument extends mongoose.Document { 
     name: string;
-    ID: string; // UUID;
     email: string;
     usertype: Usertype;
     age: string;
@@ -14,13 +15,12 @@ export interface PersonnelDocument extends mongoose.Document {
     passwordResetToken: string;
     passwordResetExpires: Date;
 
-    facebook: string;
     tokens: AuthToken[];
 
     profile: {
         name: string;
         gender: string;
-        birthday: string; // added birthday attribute for age
+        birthday: string;
         location: string;
         website: string;
         picture: string;
@@ -32,6 +32,12 @@ export interface PersonnelDocument extends mongoose.Document {
 }
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
+
+export const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
+        cb(err, isMatch);   //callback function
+    });
+};
 
 export interface AuthToken {
     accessToken: string;

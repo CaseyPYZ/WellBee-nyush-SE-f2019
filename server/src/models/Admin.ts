@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import { PersonnelDocument } from "./Personnel";
+import { PersonnelDocument, comparePassword } from "./Personnel";
 
 // @ts-ignore
 export interface AdminDocument extends PersonnelDocument {
@@ -10,8 +10,6 @@ export interface AdminDocument extends PersonnelDocument {
     position: string;
     
 };
-
-type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
 
 export interface AuthToken {
     accessToken: string;
@@ -25,9 +23,6 @@ const adminSchema = new mongoose.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-    facebook: String,
-    twitter: String,
-    google: String,
     tokens: Array,
 
     profile: {
@@ -40,6 +35,26 @@ const adminSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+
+/**
+ * Password hash middleware.
+ */
+
+adminSchema.pre("save", function save(next) {
+    const user = this as AdminDocument;
+    if (!user.isModified("password")) { return next(); }
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) { return next(err); }
+        bcrypt.hash(user.password, salt, undefined, (err: mongoose.Error, hash) => {
+            if (err) { return next(err); }
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+
+adminSchema.methods.comparePassword = comparePassword;
 
 
 /**
