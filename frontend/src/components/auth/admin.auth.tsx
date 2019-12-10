@@ -49,6 +49,8 @@ export default class AdminAuth extends Component<any, any> {
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log(event.target.name)
+    console.log(event.target.value)
   }
 
   async handleLoginSubmit(event: any) {
@@ -151,25 +153,26 @@ export default class AdminAuth extends Component<any, any> {
           <div className="card-body">
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
-                <input
-                  type="string"
-                  name="full name"
-                  placeholder="full name"
-                  className="form-control"
+
+                <div><input
+                  type="text"
+                  name="name"
+                  placeholder="name"
                   value={this.state.profile.name}
                   onChange={this.handleChange}
+                  className="form-control"
                   required
-                />
+                /></div>
 
                 <div className="input-group mb-3">
                   <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
-                    <option selected>gender</option>
+                    <option >gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="none">None</option>
                   </select>
                 </div>
-                
+
                 <div><input
                   type="date"
                   name="Birthday"
@@ -209,7 +212,7 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
-                
+
                 <button type="submit" className="form-control">Register</button>
               </div>
             </form>

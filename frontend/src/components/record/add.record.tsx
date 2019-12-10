@@ -11,13 +11,13 @@ export default class AddRecord extends Component<any, any> {
             entries: [{ param: "", value: "", unit: "" }],
             errors: "",
             type: "",
-            user: {}
         };
 
         this.addRecord = this.addRecord.bind(this);
         this.editRecord = this.editRecord.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.addEntry = this.addEntry.bind(this);
+        this.getUser = this.getUser.bind(this);
     }
 
     handleChange(event: any) {
@@ -32,17 +32,25 @@ export default class AddRecord extends Component<any, any> {
         })
     }
 
+    getUser () {
+        console.log("HERE" + this.props.user._id)
+        console.log(document.cookie)
+    }
+
     async addRecord(event: any) {
         event.preventDefault();
 
         const headers = {
             "Content-Type": "application/json",
-            Accept: "application/json"
+            Accept: "application/json",
         }
+
+        await this.getUser()
 
         await fetch("http://localhost:5000/account/add-record", {
             method: "post",
             headers: headers,
+            credentials: "include",
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())

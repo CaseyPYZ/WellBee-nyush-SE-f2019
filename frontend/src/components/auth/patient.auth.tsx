@@ -10,7 +10,7 @@ export default class PatientAuth extends Component<any, any> {
       email: String,
       password: String,
       password_confirmation: String,
-      usertype: "patient",
+      usertype: "user",
       facebook: String,
       twitter: String,
       google: String,
@@ -65,6 +65,7 @@ export default class PatientAuth extends Component<any, any> {
       .then(response => response.json())
       .then(response => {
         console.log(response);
+        console.log(document.cookie)
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
@@ -150,16 +151,7 @@ export default class PatientAuth extends Component<any, any> {
           <div className="card-body">
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
-                <input
-                  type="string"
-                  name="full name"
-                  placeholder="full name"
-                  className="form-control"
-                  value={this.state.profile.name}
-                  onChange={this.handleChange}
-                  required
-                />
-
+              
                 <div className="input-group mb-3">
                   <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
                     <option selected>gender</option>
@@ -168,6 +160,16 @@ export default class PatientAuth extends Component<any, any> {
                     <option value="none">None</option>
                   </select>
                 </div>
+
+                <input
+                  type="name"
+                  name="name"
+                  placeholder="name"
+                  className="form-control"
+                  value={this.state.profile.name}
+                  onChange={this.handleChange}
+                  required
+                />
 
                 <div><input
                   type="date"
