@@ -113,9 +113,8 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
 
     }
-    
-    
-};
+ 
+ };
 
 /**
  * GET /logout
@@ -128,7 +127,7 @@ export const logout = (req: Request, res: Response) => {
     });
 };
 
-/**
+/**a
  * GET /signup
  * Signup page.
  */
@@ -178,6 +177,7 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
     }
 
     const user = req.user as UserDocument;
+
 
     User.findById(user._id, (err, user: UserDocument) => {
         if (err) { 
@@ -474,8 +474,6 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 //     });
 // };
 
-
-
 /**
  * POST /account/add-record
  * User adds new record.
@@ -495,7 +493,6 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         entriesArray.push(newEntry);
     }
 
-
     const newRecord = new Record({
         type: req.body.type,
         date: req.body.date,
@@ -513,7 +510,6 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
 
 
     /* Create Record Brief -> user */
-
     const user = req.user as UserDocument;
 
     User.findById(user._id, (err, user: UserDocument) => {

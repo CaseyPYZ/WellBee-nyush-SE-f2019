@@ -83,6 +83,7 @@ export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+
 export const getAllDoctor = (req: Request, res: Response, next: NextFunction) => {
 
     //Need to check if the use is admin

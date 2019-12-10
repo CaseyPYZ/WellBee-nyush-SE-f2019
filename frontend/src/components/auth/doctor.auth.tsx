@@ -57,7 +57,7 @@ export default class DoctorAuth extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/login", {
+    await fetch("/login", {
       method: "post",
       headers: headers,
       body: JSON.stringify(this.state)
