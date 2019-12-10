@@ -53,7 +53,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     switch (usertype){
         case "user": {
             passport.authenticate("userLocal", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+                console.log("\n***************USER LOGIN***************");
                 console.log(user);
+                console.log("****************************************\n");
+
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -72,7 +75,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "doctor": {
             passport.authenticate("doctorLocal", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
+                console.log("\n***************DOCT LOGIN***************");
                 console.log(user);
+                console.log("****************************************\n");
+
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -91,7 +97,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "admin": {
             passport.authenticate("adminLocal", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
-                console.log("Admin: %s", user);
+                console.log("\n***************ADMIN LOGIN***************");
+                console.log(user);
+                console.log("****************************************\n");
+
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -508,7 +517,6 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         if (err) { return next(err);}
     });
 
-
     /* Create Record Brief -> user */
     const user = req.user as UserDocument;
 
@@ -518,16 +526,23 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
 
         console.log("********* NEW RECORD BRIEF *********");
+        console.log("BEFORE");
         console.log(user.recordBriefList);
+        console.log("NEW R BRIEF");
         console.log(newRecordBrief);
         console.log("******************************");
 
         // This following line evokes error
             // ASYNC HANDLING NEEDED 
-        //user.recordBriefList.push(newRecordBrief);
+        user.recordBriefList.push(newRecordBrief);
         user.save((err: WriteError) => {
             return next(err);
         });
+
+        console.log("\nAFTER");
+        console.log(user.recordBriefList);
+        console.log("******************************");
+
         req.flash("success", { msg: "New record successfully added." });
         return res.status(200).send("New record successfully added.");
     });

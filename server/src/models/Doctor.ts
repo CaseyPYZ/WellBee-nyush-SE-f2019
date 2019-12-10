@@ -49,7 +49,6 @@ doctorSchema.pre("save", function save(next) {
     });
 });
 
-
 doctorSchema.methods.comparePassword = comparePassword;
 
 /**

@@ -9,42 +9,45 @@ import { Admin, AdminDocument } from "../models/Admin";
 import { Request, Response, NextFunction } from "express";
 
 const LocalStrategy = passportLocal.Strategy;
-//const FacebookStrategy = passportFacebook.Strategy;
+
+interface UserInfoTuple{
+    type: string;
+    id: any;
+}
 
 passport.serializeUser<any, any>((user, done) => {
+    console.log("\n********SERIALIZED USER********");
+    console.log(user);
+    console.log("user.id: %s\n", user.id);
+    console.log("*********************************\n");
     done(undefined, user.id);
 });
 
 passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
+        console.log("\n********DESERIALIZED USER********");
+        console.log(user);
+        console.log("*********************************\n");
         done(err, user);
     });
+    // switch(tuple.type){
+    //     case "user":{
+    //         User.findById(tuple.id, (err, user) => {
+    //             done(err, user);
+    //         });
+    //         break;
+    //     }
+    //     case "doctor":{break;}
+    //     case "admin": {break;}
+    //     default:{//err}
+    // }    
 });
 
 
-/**
- * Sign in using Email and Password.
- */
-// passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-//     User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
-//         if (err) { return done(err); }
-//         if (!user) {
-//             return done(undefined, false, { message: `Email ${email} not found.` });
-//         }
-//         user.comparePassword(password, (err: Error, isMatch: boolean) => {
-//             if (err) { return done(err); }
-//             if (isMatch) {
-//                 return done(undefined, user);
-//             }
-//             return done(undefined, false, { message: "Invalid email or password." });
-//         });
-//     });
-// }));
 
 /**
- * Sign in for muiltiple user types
+ * Log in for muiltiple user types
  */
-
 passport.use("userLocal", new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
     User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
         if (err) { return done(err); }
@@ -62,7 +65,7 @@ passport.use("userLocal", new LocalStrategy({ usernameField: "email" }, (email, 
 }));
 
 passport.use("doctorLocal", new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-    User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
+    Doctor.findOne({ email: email.toLowerCase() }, (err, user: any) => {
         if (err) { return done(err); }
         if (!user) {
             return done(undefined, false, { message: `Email ${email} not found.` });
@@ -176,6 +179,7 @@ passport.use("adminLocal", new LocalStrategy({ usernameField: "email" }, (email,
  */
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isAuthenticated()) {
+        console.log(req)
         return next();
     }
     res.json({isAuthenticated: false, redirect: true});
