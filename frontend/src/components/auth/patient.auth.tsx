@@ -65,7 +65,6 @@ export default class PatientAuth extends Component<any, any> {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        console.log(document.cookie)
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
