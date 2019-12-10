@@ -2,7 +2,8 @@ import async, { nextTick } from "async";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import passport from "passport";
-import { User, UserDocument, AuthToken } from "../models/User";
+import { AuthToken } from "../models/Admin";
+import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
 import { Record, RecordBrief, RecordDocument} from "../models/records/Record";
@@ -51,7 +52,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 
     switch (usertype){
         case "user": {
-            passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+            passport.authenticate("userLocal", (err: Error, user: UserDocument, info: IVerifyOptions) => {
                 console.log(user);
                 if (err) { return next(err); }
                 if (!user) {
@@ -70,7 +71,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
             break;
         }
         case "doctor": {
-            passport.authenticate("local", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
+            passport.authenticate("doctorLocal", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
                 console.log(user);
                 if (err) { return next(err); }
                 if (!user) {
@@ -89,8 +90,8 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
             break;
         }
         case "admin": {
-            passport.authenticate("local", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
-                console.log(user);
+            passport.authenticate("adminLocal", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
+                console.log("Admin: %s", user);
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -99,7 +100,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
                 req.logIn(user, (err) => {
                     if (err) { return next(err); }
                     console.log("POST LOGIN SUCCESS");
-                    console.log(user);
+                    console.log("Admin: %s", user);
                     return res.status(200).send({user: user, msg: "You have logged in!"});
         
                 });
@@ -479,7 +480,7 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
  */
 export const postAddRecord = (req: Request, res: Response, next: NextFunction  )=> {
 
-    console.log("********* REQ BODY *********");
+    console.log("\n********* REQ BODY ***********");
     console.log(req.body);
     console.log("******************************\n");
 
