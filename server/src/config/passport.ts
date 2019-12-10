@@ -1,12 +1,12 @@
 import passport from "passport";
 import passportLocal from "passport-local";
-import passportFacebook from "passport-facebook";
 import _ from "lodash";
 
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
 import { Request, Response, NextFunction } from "express";
+import { DocumentProvider } from "mongoose";
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -15,21 +15,49 @@ interface UserInfoTuple{
     id: any;
 }
 
+export type UserInfo= {
+    id: string;
+    usertype: string;
+};
+
 passport.serializeUser<any, any>((user, done) => {
-    console.log("\n********SERIALIZED USER********");
+    console.log("=====serializeUser=====");
     console.log(user);
-    console.log("user.id: %s\n", user.id);
-    console.log("*********************************\n");
-    done(undefined, user.id);
+    console.log(user.usertype);
+    console.log("=======================");
+    const userinfo: UserInfo = {
+        id: user.id,
+        usertype: user.usertype,
+    };
+    done(undefined, userinfo);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        console.log("\n********DESERIALIZED USER********");
-        console.log(user);
-        console.log("*********************************\n");
-        done(err, user);
-    });   
+passport.deserializeUser((user: UserInfo, done) => {
+    console.log("=====deserializeUser=====");
+    console.log(user);
+    console.log(user.usertype);
+    console.log("=========================");
+    switch (user.usertype){
+        case "user": {
+            User.findById(user.id, (err, user: UserDocument) => {
+                done(err, user);
+            });
+
+            break;
+        }
+        case "doctor": {
+            Doctor.findById(user.id, (err, doctor: DoctorDocument) =>{
+                done(err, doctor);
+            });
+            break;
+        }
+        case "admin": {
+            Admin.findById(user.id, (err, admin: AdminDocument) =>{
+                done(err, admin);
+            });
+            break;
+        }
+    }
 });
 
 
@@ -182,7 +210,7 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
 
     const user = req.user as UserDocument;
     if (_.find(user.tokens, { kind: provider })) {
-        next();
+        return next();
     } else {
         res.redirect(`/auth/${provider}`);
     }
