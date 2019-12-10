@@ -150,9 +150,9 @@ export default class DoctorAuth extends Component<any, any> {
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
                 <input
-                  type="string"
-                  name="full name"
-                  placeholder="full name"
+                  type="name"
+                  name="name"
+                  placeholder="name"
                   className="form-control"
                   value={this.state.profile.name}
                   onChange={this.handleChange}

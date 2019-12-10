@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-// import Background from '../components/auth/img/background.jpg';
 import Patient from '../components/auth/img/patient.jpg';
 import Admin from '../components/auth/img/admin.png';
 import Doctor from '../components/auth/img/doctor.png';
@@ -37,7 +36,7 @@ export default class Login extends Component<any, any> {
       this.props.history.push(`/admin`);
     } else if (usertype === 'doctor') {
       this.props.history.push(`/doctor`);
-    } else if (usertype === 'patient') {
+    } else if (usertype === 'user') {
       this.props.history.push(`/patient`);
     }
     console.log('USER: ' + usertype);
@@ -68,13 +67,6 @@ export default class Login extends Component<any, any> {
   }
 
   render() {
-    // var sectionStyle = {
-    //   backgroundImage: `url(${Background})`,
-    //   backgroundPosition: 'center',
-    //   backgroundSize: 'cover',
-    //   backgroundRepeat: 'no-repeat'
-    // };
-
     var verticalStyle = {
       width: "50%",
     };
@@ -94,7 +86,7 @@ export default class Login extends Component<any, any> {
       container = <DoctorAuth patientLogin={this.state.doctor} handleSuccessfulAuth={this.handleSuccessfulAuth} />
     } else {
       button =
-        <>
+        <div>
           <Column>
             <input type="image" id="image" alt="admin" src={Admin} style={verticalStyle} onClick={this.showAdmin} /><br />
             <h3>ADMIN</h3>
@@ -107,7 +99,7 @@ export default class Login extends Component<any, any> {
             <input type="image" id="image" alt="patient" src={Patient} style={verticalStyle} onClick={this.showPatient} />
             <h3>PATIENT</h3>
           </Column>
-        </>
+        </div>
     }
 
     return (

@@ -10,7 +10,7 @@ export default class PatientAuth extends Component<any, any> {
       email: String,
       password: String,
       password_confirmation: String,
-      usertype: "patient",
+      usertype: "user",
       facebook: String,
       twitter: String,
       google: String,
@@ -151,9 +151,9 @@ export default class PatientAuth extends Component<any, any> {
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
                 <input
-                  type="string"
-                  name="full name"
-                  placeholder="full name"
+                  type="name"
+                  name="name"
+                  placeholder="name"
                   className="form-control"
                   value={this.state.profile.name}
                   onChange={this.handleChange}

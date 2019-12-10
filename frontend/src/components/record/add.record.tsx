@@ -11,7 +11,6 @@ export default class AddRecord extends Component<any, any> {
             entries: [{ param: "", value: "", unit: "" }],
             errors: "",
             type: "",
-            user: {}
         };
 
         this.addRecord = this.addRecord.bind(this);
