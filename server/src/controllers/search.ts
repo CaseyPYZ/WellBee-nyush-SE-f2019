@@ -56,10 +56,10 @@ export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
     //Need to check if the user is admin
     //if req.user.usertype == "admin":
 
-    // const user = req.user as PersonnelDocument;
-    // if (user.usertype != "admin"){
-    //     res.status(400).json({msg: "You do not have access to the user list."});
-    // }
+    const user = req.user as PersonnelDocument;
+    if (user.usertype != "admin"){
+        res.status(400).json({msg: "You do not have access to the user list."});
+    }
 
     User.find({}, (err: Error, data: Array<UserDocument>) => {
         if (err){
@@ -89,10 +89,10 @@ export const getAllDoctor = (req: Request, res: Response, next: NextFunction) =>
     //Need to check if the use is admin
     //if req.user.usertype == "admin"
 
-    // const user = req.user as PersonnelDocument;
-    // if (user.usertype != "admin"){
-    //     res.status(400).json({msg: "You do not have access to the doctor list."});
-    // }
+    const user = req.user as PersonnelDocument;
+    if (user.usertype != "admin"){
+        res.status(400).json({msg: "You do not have access to the doctor list."});
+    }
 
     Doctor.find({}, (err: Error, data: Array<UserDocument>) => {
         if (err){
