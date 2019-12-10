@@ -29,18 +29,7 @@ passport.deserializeUser((id, done) => {
         console.log(user);
         console.log("*********************************\n");
         done(err, user);
-    });
-    // switch(tuple.type){
-    //     case "user":{
-    //         User.findById(tuple.id, (err, user) => {
-    //             done(err, user);
-    //         });
-    //         break;
-    //     }
-    //     case "doctor":{break;}
-    //     case "admin": {break;}
-    //     default:{//err}
-    // }    
+    });   
 });
 
 
