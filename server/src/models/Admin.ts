@@ -19,6 +19,7 @@ export interface AuthToken {
 const adminSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     usertype: String,
+    name: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
