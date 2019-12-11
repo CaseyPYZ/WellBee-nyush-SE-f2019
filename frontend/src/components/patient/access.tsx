@@ -6,7 +6,7 @@ export default class AccessList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            accessList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            accessList: []
         };
 
         this.getAccessList = this.getAccessList.bind(this);
