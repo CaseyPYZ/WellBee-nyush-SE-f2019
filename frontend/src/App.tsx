@@ -14,7 +14,6 @@ import RecordList from "./components/patient/record/list.record.tsx";
 import AddRecord from "./components/patient/record/add.record";
 import AccessList from "./components/patient/access";
 import AuthorizeList from "./components/patient/authorize";
-import Family from "./components/patient/family";
 import Login from "./pages/login.public";
 import HomePublic from "./pages/home.public";
 import SearchPatient from "./components/doctor/search.patient";
@@ -58,14 +57,13 @@ export default class App extends Component<any, any> {
           <SidebarComponent loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} />
 
           <Switch>
-            <PrivatePatientRoute path="/patient/addrecord" history={this.props.history} loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AddRecord} />} />
-            <PrivatePatientRoute path="/patient/record" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={RecordList} />
-            <PrivatePatientRoute path="/patient/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AccessList} />
-            <PrivatePatientRoute path="/patient/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AuthorizeList} />
-            <PrivatePatientRoute path="/patient/family" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={Family} />
-            <PrivatePatientRoute path="/patient" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientPrivate} />
+            <PrivatePatientRoute path="/user/addrecord" history={this.props.history} loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AddRecord} />} />
+            <PrivatePatientRoute path="/user/record" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={RecordList} />
+            <PrivatePatientRoute path="/user/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AccessList} />
+            <PrivatePatientRoute path="/user/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AuthorizeList} />
+            <PrivatePatientRoute path="/user" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientPrivate} />
 
-            <PrivateAdminRoute path="/admin/patient-list" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientList} />
+            <PrivateAdminRoute path="/admin/user-list" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientList} />
             <PrivateAdminRoute path="/admin/doctor-list" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={DoctorList} />
             <PrivateAdminRoute path="/admin" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AdminPrivate} />
 

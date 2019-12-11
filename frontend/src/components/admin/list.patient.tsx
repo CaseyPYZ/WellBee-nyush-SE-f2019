@@ -23,7 +23,6 @@ export default class PatientList extends Component<any, any> {
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
-            mode: 'cors',
         })
             .then(response => response.json())
             .then(response => {
@@ -61,7 +60,6 @@ export default class PatientList extends Component<any, any> {
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
-            mode: 'cors',
         })
             .then(response => response.json())
             .then(response => {
@@ -86,7 +84,7 @@ export default class PatientList extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Patient List</h1>
+                <h1>User List</h1>
                 <form className="input-group md-form form-sm form-1 pl-0" onSubmit={this.searchPatient}>
                     <input
                         className="form-control my-0 py-1"
