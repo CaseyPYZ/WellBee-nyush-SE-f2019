@@ -65,13 +65,16 @@ export default class AdminAuth extends Component<any, any> {
   async handleLoginSubmit(event: any) {
     event.preventDefault();
 
-    const headers = {
+    const headers = new Headers({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
 
-    await fetch("http://localhost:5000/login", {
+    fetch("http://localhost:5000/login", {
       method: "post",
+
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -87,12 +90,16 @@ export default class AdminAuth extends Component<any, any> {
 
   async handleSignupSubmit(event: any) {
     event.preventDefault();
-    const headers = {
+
+    const headers = new Headers ({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }
-    await fetch("http://localhost:5000/signup", {
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
+
+    fetch("http://localhost:5000/signup", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })

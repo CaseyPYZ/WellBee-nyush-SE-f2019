@@ -23,12 +23,14 @@ export default class Profile extends Component<any, any> {
   }
 
   async getProfile() {
-    const headers = {
+    const headers = new Headers({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }
-    await fetch("http://localhost:5000/account", {
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
+    fetch("http://localhost:5000/account", {
       method: "get",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -42,12 +44,14 @@ export default class Profile extends Component<any, any> {
   }
 
   async updateProfile() {
-    const headers = {
+    const headers = new Headers({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }
-    await fetch("http://localhost:5000/account/profile", {
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
+    fetch("http://localhost:5000/account/profile", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -65,12 +69,14 @@ export default class Profile extends Component<any, any> {
   }
 
   async deleteAccount() {
-    const headers = {
+    const headers = new Headers({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }
-    await fetch("http://localhost:5000/account/delete", {
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
+    fetch("http://localhost:5000/account/delete", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })

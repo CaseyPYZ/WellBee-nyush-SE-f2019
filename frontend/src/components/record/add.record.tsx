@@ -56,15 +56,26 @@ export default class AddRecord extends Component<any, any> {
     async addRecord(event: any) {
         event.preventDefault();
 
-        const headers = {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        }
+        // const headers = {
+        //     "Content-Type": "application/json",
+        //     Accept: "application/json",
+        // }
 
-        await fetch("http://localhost:5000/account/add-record", {
+        const headers = new Headers({
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": 'http://localhost:5000/'
+        });
+
+        fetch("http://localhost:5000/account/add-record", {
             method: "post",
-            headers: headers,
             credentials: "include",
+            headers: headers,
+<<<<<<< HEAD
+            credentials: "include",
+=======
+            mode: 'cors',
+>>>>>>> bc6861d3e1067171289b169a329d30c453d9bfc5
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())

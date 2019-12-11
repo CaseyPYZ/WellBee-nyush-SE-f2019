@@ -55,12 +55,19 @@ app.use(session({
     store: new MongoStore({
         url: mongoUrl,
         autoReconnect: true
-    })
+    }
+    )
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(cors());
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
@@ -85,14 +92,6 @@ app.use((req, res, next) => {
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
 );
-app.use((req, res, next) => {
-    res.set("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.set("Access-Control-Allow-Credentials", "true");
-    // res.set("Access-Control-Allow-Headers", "*");
-    // res.set("Access-Control-Allow-Headers", "*")
-    // Access-Control-Allow-Methods: *
-    next();
-});
 
 /**
  * Primary app routes.
