@@ -25,7 +25,6 @@ export default class AuthorizeList extends Component<any, any> {
             method: "get",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
         })
             .then(response => response.json())
             .then(response => {
@@ -62,7 +61,6 @@ export default class AuthorizeList extends Component<any, any> {
             method: "post",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())
@@ -88,7 +86,6 @@ export default class AuthorizeList extends Component<any, any> {
             method: "post",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())

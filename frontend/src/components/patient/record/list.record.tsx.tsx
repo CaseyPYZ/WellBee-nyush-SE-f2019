@@ -24,7 +24,6 @@ export default class RecordList extends Component<any, any> {
     fetch("http://localhost:5000/account/get-recordlist", {
       method: "get",
       credentials: "include",
-      mode: 'cors',
     })
       .then(response => response.json())
       .then(response => {
@@ -58,7 +57,6 @@ export default class RecordList extends Component<any, any> {
       method: "get",
       credentials: "include",
       headers: headers,
-      mode: 'cors',
     })
       .then(response => response.json())
       .then(response => {

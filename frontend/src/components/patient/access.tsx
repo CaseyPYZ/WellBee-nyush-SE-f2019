@@ -24,7 +24,6 @@ export default class AccessList extends Component<any, any> {
             method: "post",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())

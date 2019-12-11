@@ -23,7 +23,6 @@ export default class PatientList extends Component<any, any> {
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
-            mode: 'cors',
         })
             .then(response => response.json())
             .then(response => {
@@ -61,7 +60,6 @@ export default class PatientList extends Component<any, any> {
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
-            mode: 'cors',
         })
             .then(response => response.json())
             .then(response => {
