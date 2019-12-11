@@ -33,6 +33,7 @@ export default class DoctorAuth extends Component<any, any> {
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSignupSubmit = this.handleSignupSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleProfileChange = this.handleProfileChange.bind(this);
     this.getSignup = this.getSignup.bind(this);
   }
 
@@ -49,6 +50,16 @@ export default class DoctorAuth extends Component<any, any> {
     this.setState({
       [event.target.name]: event.target.value
     });
+  }
+
+
+  handleProfileChange(event: any) {
+    this.setState({
+      profile: {
+        ...this.state.profile,
+        [event.target.name]: event.target.value
+      }
+    })
   }
 
   async handleLoginSubmit(event: any) {
@@ -149,34 +160,6 @@ export default class DoctorAuth extends Component<any, any> {
           <div className="card-body">
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
-                <input
-                  type="name"
-                  name="name"
-                  placeholder="name"
-                  className="form-control"
-                  value={this.state.profile.name}
-                  onChange={this.handleChange}
-                  required
-                />
-
-                <div className="input-group mb-3">
-                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
-                    <option selected>gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="none">None</option>
-                  </select>
-                </div>
-
-                <div><input
-                  type="date"
-                  name="Birthday"
-                  placeholder="birthday"
-                  value={this.state.profile.birthday}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                /></div>
 
                 <div><input
                   type="email"
@@ -207,6 +190,35 @@ export default class DoctorAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+
+                <input
+                  type="name"
+                  name="name"
+                  placeholder="name"
+                  className="form-control"
+                  value={this.state.profile.name}
+                  onChange={this.handleProfileChange}
+                  required
+                />
+
+                <div><input
+                  type="date"
+                  name="Birthday"
+                  placeholder="birthday"
+                  value={this.state.profile.birthday}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+                
+                <div className="input-group mb-3">
+                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleProfileChange}>
+                    <option selected>gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="none">None</option>
+                  </select>
+                </div>
 
                 <button type="submit" className="form-control">Register</button>
               </div>
