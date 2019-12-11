@@ -6,7 +6,7 @@ export default class AccessList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            accessList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            accessList: []
         };
 
         this.getAccessList = this.getAccessList.bind(this);
@@ -20,7 +20,7 @@ export default class AccessList extends Component<any, any> {
         });
 
         console.log("IN HERE")
-        fetch("http://localhost:5000/account/accessList", {
+        fetch("http://localhost:5000/view-authorized-users", {
             method: "post",
             headers: headers,
             credentials: "include",

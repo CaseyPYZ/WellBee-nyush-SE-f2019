@@ -18,7 +18,9 @@ export default class SearchPatient extends Component<any, any> {
         });
     }
 
-    searchPatient() {
+    searchPatient(event:any) {
+        event.preventDefault();
+
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",

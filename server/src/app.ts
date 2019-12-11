@@ -125,10 +125,10 @@ app.post("/account/delete", passportConfig.isAuthenticated, userController.postD
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
 app.get("/account/get-recordlist", passportConfig.isAuthenticated, userController.getRecordList);
-app.get("/account/get-record", passportConfig.isAuthenticated, userController.getRecord);
+app.post("/account/get-record", passportConfig.isAuthenticated, userController.getRecord);
 app.post("/authorize-user", passportConfig.isAuthenticated, userController.authorizeRecord);
-app.get("/view-authorized-users", passportConfig.isAuthenticated, userController.viewAuthUser);
-app.get("/view-user-record", passportConfig.isAuthenticated, userController.ViewuserRecord);
+app.post("/view-authorized-users", passportConfig.isAuthenticated, userController.viewAuthUser);
+app.post("/view-user-records", passportConfig.isAuthenticated, userController.ViewuserRecord);
 app.get("/view-authorizing-users", passportConfig.isAuthenticated, userController.ViewAuthedUser);
 app.post("/remove-auth", passportConfig.isAuthenticated, userController.RemoveAuth);
 
