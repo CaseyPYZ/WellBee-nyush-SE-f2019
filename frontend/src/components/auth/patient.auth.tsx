@@ -86,6 +86,7 @@ export default class PatientAuth extends Component<any, any> {
 
   async handleSignupSubmit(event: any) {
     event.preventDefault();
+    console.log("HERE")
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
