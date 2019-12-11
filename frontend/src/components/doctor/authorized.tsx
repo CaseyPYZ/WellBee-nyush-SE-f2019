@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
 
-export default class AccessList extends Component<any, any> {
+export default class Authorized extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -73,6 +74,7 @@ export default class AccessList extends Component<any, any> {
         })
             .then(response => response.json())
             .then(response => {
+                console.log("REPONSE")
                 console.log(response);
                 this.setState({ userRecord: response })
             })

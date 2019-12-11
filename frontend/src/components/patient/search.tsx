@@ -23,30 +23,53 @@ export default class Search extends Component<any, any> {
         });
     }
 
-    handleSubmit(event: any) {
+    async handleSubmit(event: any) {
         event.preventDefault();
 
+        await this.setState({
+            targetUserEmail: this.state.keyword
+        })
+
+        console.log(this.state)
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
 
-        fetch("http://localhost:5000/searchUser", {
-            method: "post",
-            headers: headers,
-            credentials: "include",
-            body: JSON.stringify(this.state)
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
-                this.setState({ search: response })
+        if (this.state.targetUsertype === 'user') {
+            fetch("http://localhost:5000/searchUser", {
+                method: "post",
+                headers: headers,
+                credentials: "include",
+                body: JSON.stringify(this.state)
             })
-            .catch(error => {
-                console.log(error);
-                this.setState({ errors: error });
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                    this.setState({ search: response })
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({ errors: error });
+                })
+        } else if (this.state.targetUsertype === 'doctor') {
+            fetch("http://localhost:5000/searchDoctor", {
+                method: "post",
+                headers: headers,
+                credentials: "include",
+                body: JSON.stringify(this.state)
             })
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                    this.setState({ search: response })
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({ errors: error });
+                })
+        }
     }
 
     // usertype / email
@@ -54,9 +77,10 @@ export default class Search extends Component<any, any> {
         event.preventDefault();
 
         await this.setState({
-            targetUsertype: this.props.usertype,
             targetUserEmail: this.state.keyword
         })
+
+        console.log(this.state)
 
         const headers = new Headers({
             "Content-Type": "application/json",
@@ -95,6 +119,13 @@ export default class Search extends Component<any, any> {
                         value={this.state.keyword}
                         onChange={this.handleChange}
                     />
+
+                    <select defaultValue={this.state.targetUsertype}
+                        onChange={(e) => this.setState({ targetUsertype: e.target.value })}>
+                        <option value="doctor">Doctor</option>
+                        <option value="user">User</option>
+                    </select>
+
                     <div className="input-group-prepend">
                         <button className="input-group-text cyan lighten-2" id="basic-text1"><FaSearch /></button>
                     </div>
