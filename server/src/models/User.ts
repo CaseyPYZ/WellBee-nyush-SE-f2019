@@ -2,20 +2,19 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Document } from "mongoose";
 
-import { PersonnelDocument, comparePassword } from "./Personnel";
+import { PersonnelDocument, comparePassword, UserInfo } from "./Personnel";
 import { RecordBrief } from "./records/Record";
 import { ExecFileOptionsWithStringEncoding } from "child_process";
-import { ObjectId } from "bson";
 
 
 export interface UserDocument extends PersonnelDocument { 
     /* User */
     recordBriefList: RecordBrief[];
-    recordList: ObjectId[];
+    recordList: mongoose.Types.ObjectId[];
 
     /* User Authorization Lists */
-    holdsAuthList: string[];
-    grantedAuthList: string[];
+    holdsAuthList: UserInfo[];
+    grantedAuthList: UserInfo[];
     
 }
 
@@ -43,7 +42,9 @@ const userSchema = new mongoose.Schema({
     },
 
     recordBriefList: Array,
-    recordList: Array
+    recordList: Array,
+    holdsAuthList: Array,
+    grantedAuthList: Array
 
 }, { timestamps: true });
 

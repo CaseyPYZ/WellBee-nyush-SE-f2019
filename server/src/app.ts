@@ -125,6 +125,8 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
+app.get("/account/get-recordlist", passportConfig.isAuthenticated, userController.getRecordList);
+app.get("/account/get-record", passportConfig.isAuthenticated, userController.getRecord);
 
 //app.use(cors(corsOptions));
 

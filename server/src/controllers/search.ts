@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
-import { PersonnelDocument } from "../models/Personnel";
+import { PersonnelDocument, UserInfo } from "../models/Personnel";
 
 
 /**/
@@ -104,7 +104,7 @@ export const getAllDoctor = (req: Request, res: Response, next: NextFunction) =>
             return res.status(404).send("No Doctor found");
         }
         else{
-            const userdata: { "name": string; "email": string; "age": string }[] = [];
+            const userdata: UserInfo[] = [];
             data.forEach((userdoc: UserDocument, index) => {
                 const userinfo = {"name": userdoc.name,
                                 "email": userdoc.email,
