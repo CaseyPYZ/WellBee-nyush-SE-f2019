@@ -31,7 +31,6 @@ export default class SearchPatient extends Component<any, any> {
             method: "post",
             credentials: "include",
             headers: headers,
-            mode: 'cors',
         })
             .then(response => response.text())
             .then(response => {

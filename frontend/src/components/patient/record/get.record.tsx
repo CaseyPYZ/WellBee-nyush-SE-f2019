@@ -21,7 +21,6 @@ export default class GetRecord extends Component<any, any> {
       method: "post",
       credentials: "include",
       headers: headers,
-      mode: 'cors',
     })
       .then(response => response.json())
       .then(response => {

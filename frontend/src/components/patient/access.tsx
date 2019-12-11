@@ -20,11 +20,10 @@ export default class AccessList extends Component<any, any> {
         });
 
         console.log("IN HERE")
-        fetch("http://localhost:5000/account/accessList", {
+        fetch("http://localhost:5000/view-authorized-users", {
             method: "post",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())
