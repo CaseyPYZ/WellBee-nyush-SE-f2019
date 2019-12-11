@@ -18,12 +18,6 @@ export default class RecordList extends Component<any, any> {
   componentDidMount() {
     this._isMounted = true;
 
-    const headers = new Headers({
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Access-Control-Allow-Origin": 'http://localhost:5000/'
-    });
-
     console.log("IN HERE")
     fetch("http://localhost:5000/account/get-recordlist", {
       method: "get",
@@ -31,7 +25,7 @@ export default class RecordList extends Component<any, any> {
       .then(response => response.text())
       .then(response => {
         console.log(response);
-        this.setState({ recordList: response })
+        // this.setState({ recordList: response })
         console.log(this.state.recordList)
       })
       .catch(error => {
@@ -45,19 +39,9 @@ export default class RecordList extends Component<any, any> {
   }
 
   getSingleRecord() {
-    const headers = new Headers({
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Access-Control-Allow-Origin": 'http://localhost:5000/'
-    });
-
     console.log("IN HERE")
     fetch("http://localhost:5000/account/get-record", {
       method: "get",
-      headers: headers,
-      credentials: "include",
-      mode: 'cors',
-      body: JSON.stringify(this.state)
     })
       .then(response => response.json())
       .then(response => {

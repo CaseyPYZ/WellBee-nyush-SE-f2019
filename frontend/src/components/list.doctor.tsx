@@ -6,31 +6,21 @@ export default class DoctorList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            doctorList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            doctorList: []
         };
 
         this.getDoctorList = this.getDoctorList.bind(this);
     }
 
     componentDidMount() {
-        const headers = new Headers({
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": 'http://localhost:5000'
-        });
-
         console.log("IN HERE")
         fetch("http://localhost:5000/getAllDoctor", {
-            method: "post",
-            headers: headers,
-            credentials: "include",
-            mode: 'cors',
-            body: JSON.stringify(this.state)
+            method: "get",
         })
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.setState({ doctorList: response })
+                // this.setState({ doctorList: response })
                 console.log(this.state.doctorList);
             })
             .catch(error => {
@@ -59,7 +49,7 @@ export default class DoctorList extends Component<any, any> {
                     </div>
                 </div>
                 <br />
-                <div>{this.state.doctorList.map(this.getDoctorList)}</div>
+                {this.state.doctorList.length ? "" : <div>{this.state.doctorList.map(this.getDoctorList)}</div>}
             </Div>
         );
     }

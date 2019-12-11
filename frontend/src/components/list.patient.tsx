@@ -3,40 +3,39 @@ import { FaSearch } from 'react-icons/fa';
 import { Div } from "../styles/pages.style";
 
 export default class PatientList extends Component<any, any> {
+    _isMounted = false;
+
     constructor(props: any) {
         super(props);
         this.state = {
-            patientList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            patientList: []
         };
 
         this.getPatientList = this.getPatientList.bind(this);
     }
 
     componentDidMount() {
-        const headers = new Headers({
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": 'http://localhost:5000/'
-        });
+        this._isMounted = true;
 
         console.log("IN HERE")
-        fetch("http://localhost:5000/account/patients", {
-            method: "post",
-            headers: headers,
-            credentials: "include",
-            mode: 'cors',
-            body: JSON.stringify(this.state)
+        fetch("http://localhost:5000/getAllUser", {
+            method: "get",
         })
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.setState({ patientList: response.patientList })
+                // this.setState({ patientList: response })
             })
             .catch(error => {
                 console.log(error);
                 this.setState({ errors: error });
             })
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
 
     getPatientList(patient: any, i: any) {
         return (
@@ -58,7 +57,7 @@ export default class PatientList extends Component<any, any> {
                     </div>
                 </div>
                 <br />
-                <div>{this.state.patientList.map(this.getPatientList)}</div>
+                {this.state.patientList.length ? "" :  <div>{this.state.patientList.map(this.getPatientList)}</div>}
             </Div>
         );
     }
