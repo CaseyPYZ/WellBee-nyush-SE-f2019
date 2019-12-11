@@ -16,11 +16,11 @@ export default class DoctorList extends Component<any, any> {
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": 'http://localhost:5000/'
+            "Access-Control-Allow-Origin": 'http://localhost:5000'
         });
 
         console.log("IN HERE")
-        fetch("http://localhost:5000/account/doctors", {
+        fetch("http://localhost:5000/getAllDoctor", {
             method: "post",
             headers: headers,
             credentials: "include",
@@ -30,7 +30,8 @@ export default class DoctorList extends Component<any, any> {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.setState({ doctorList: response.doctorList })
+                this.setState({ doctorList: response })
+                console.log(this.state.doctorList);
             })
             .catch(error => {
                 console.log(error);

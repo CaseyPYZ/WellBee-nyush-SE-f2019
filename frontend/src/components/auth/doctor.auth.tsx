@@ -207,8 +207,8 @@ export default class DoctorAuth extends Component<any, any> {
 
                 <div><input
                   type="date"
-                  name="Birthday"
-                  placeholder="birthday"
+                  name="birthday"
+                  placeholder="Birthday"
                   value={this.state.profile.birthday}
                   onChange={this.handleProfileChange}
                   className="form-control"

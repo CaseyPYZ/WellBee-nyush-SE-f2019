@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { Div } from "../../styles/pages.style";
 
 export default class RecordList extends Component<any, any> {
+  _isMounted = false;
+
   constructor(props: any) {
     super(props);
     this.state = {
-      recordList: [],
+      recordList: [{}],
       errors: []
     };
 
@@ -14,6 +16,8 @@ export default class RecordList extends Component<any, any> {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -22,21 +26,22 @@ export default class RecordList extends Component<any, any> {
 
     console.log("IN HERE")
     fetch("http://localhost:5000/account/get-recordlist", {
-      method: "post",
-      headers: headers,
-      credentials: "include",
-      mode: 'cors',
-      body: JSON.stringify(this.state)
+      method: "get",
     })
-      .then(response => response.json())
+      .then(response => response.text())
       .then(response => {
         console.log(response);
         this.setState({ recordList: response })
+        console.log(this.state.recordList)
       })
       .catch(error => {
         console.log(error);
         this.setState({ errors: error });
       })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   getSingleRecord() {
@@ -47,8 +52,8 @@ export default class RecordList extends Component<any, any> {
     });
 
     console.log("IN HERE")
-    fetch("http://localhost:5000/account/get-recordlist", {
-      method: "post",
+    fetch("http://localhost:5000/account/get-record", {
+      method: "get",
       headers: headers,
       credentials: "include",
       mode: 'cors',
@@ -89,7 +94,7 @@ export default class RecordList extends Component<any, any> {
       <Div>
         <h1>Personal Records</h1>
         <button type="button" className="btn btn-dark"><Link to="/patient/addrecord"> Add Record </Link></button>
-        <div>{this.state.recordList.map(this.getRecordList)}</div>
+        {this.state.recordList.length ? "" :  <div>{this.state.recordList.map(this.getRecordList)}</div>}
       </Div>
     );
   }
