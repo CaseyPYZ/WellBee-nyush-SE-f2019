@@ -91,7 +91,7 @@ export default class AdminAuth extends Component<any, any> {
   async handleSignupSubmit(event: any) {
     event.preventDefault();
 
-    const headers = new Headers ({
+    const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
@@ -212,8 +212,8 @@ export default class AdminAuth extends Component<any, any> {
 
                 <div><input
                   type="date"
-                  name="Birthday"
-                  placeholder="birthday"
+                  name="birthday"
+                  placeholder="Birthday"
                   value={this.state.profile.birthday}
                   onChange={this.handleProfileChange}
                   className="form-control"

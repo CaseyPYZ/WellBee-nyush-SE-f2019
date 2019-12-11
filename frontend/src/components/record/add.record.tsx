@@ -56,21 +56,17 @@ export default class AddRecord extends Component<any, any> {
     async addRecord(event: any) {
         event.preventDefault();
 
-        // const headers = {
-        //     "Content-Type": "application/json",
-        //     Accept: "application/json",
-        // }
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
 
+        console.log("IN HERE")
         fetch("http://localhost:5000/account/add-record", {
             method: "post",
-            credentials: "include",
             headers: headers,
+            credentials: "include",
             mode: 'cors',
             body: JSON.stringify(this.state)
         })
@@ -159,7 +155,7 @@ export default class AddRecord extends Component<any, any> {
                         <button type="button" onClick={this.handleAddEntry} className="small">
                             Add Entry
                         </button>
-
+                        <div></div>
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
                 </form>

@@ -11,6 +11,32 @@ export default class AuthorizeList extends Component<any, any> {
         this.getAuthorizeList = this.getAuthorizeList.bind(this);
     }
 
+    componentDidMount() {
+        const headers = new Headers({
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": 'http://localhost:5000/'
+        });
+
+        console.log("IN HERE")
+        fetch("http://localhost:5000/account/authorizeList", {
+            method: "post",
+            headers: headers,
+            credentials: "include",
+            mode: 'cors',
+            body: JSON.stringify(this.state)
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                this.setState({ authorizeList: response.authorizeList })
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({ errors: error });
+            })
+    }
+
     getAuthorizeList(record: any, i: any) {
         return (
             <div className="jumbotron">
