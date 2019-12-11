@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
-import Entry from "./entry";
+
+//https://codesandbox.io/s/00xq32n3pn?from-embed
 
 export default class AddRecord extends Component<any, any> {
     constructor(props: any) {
@@ -8,16 +9,22 @@ export default class AddRecord extends Component<any, any> {
         this.state = {
             date: "",
             description: "",
-            entries: [{ param: "", value: "", unit: "" }],
+            entries: [
+                { param: "", value: "", unit: "" },
+                { param: "", value: "", unit: "" },
+                { param: "", value: "", unit: "" },
+                { param: "", value: "", unit: "" },
+                { param: "", value: "", unit: "" }
+            ],
             errors: "",
             type: "",
-            user: {}
         };
 
         this.addRecord = this.addRecord.bind(this);
-        this.editRecord = this.editRecord.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.addEntry = this.addEntry.bind(this);
+        this.handleEntryChange = this.handleEntryChange.bind(this);
+        this.handleAddEntry = this.handleAddEntry.bind(this);
+        this.handleRemoveEntry = this.handleRemoveEntry.bind(this);
     }
 
     handleChange(event: any) {
@@ -26,24 +33,39 @@ export default class AddRecord extends Component<any, any> {
         });
     }
 
-    addEntry(key: any, param: any, value: any, unit: any) {
+    handleEntryChange = (idx: any) => (event: any) => {
+        const newEntry = this.state.entries.map((entry: any, index: any) => {
+            if (idx !== index) return entry;
+            return { ...entry, [event.target.name]: event.target.value };
+        });
+        this.setState({ entries: newEntry });
+    };
+
+    handleAddEntry = () => {
         this.setState({
-            entries: [...this.state.entries, { key, param, value, unit }],
-        })
-    }
+            entries: this.state.entries.concat([{ param: "", value: "", unit: "" }])
+        });
+    };
+
+    handleRemoveEntry = (idx: any) => () => {
+        this.setState({
+            entries: this.state.entries.filter((s: any, sidx: any) => idx !== sidx)
+        });
+    };
 
     async addRecord(event: any) {
         event.preventDefault();
 
         const headers = {
             "Content-Type": "application/json",
-            Accept: "application/json"
+            Accept: "application/json",
         }
 
         fetch("http://localhost:5000/account/add-record", {
             method: "post",
             credentials: "include",
             headers: headers,
+            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())
@@ -55,30 +77,6 @@ export default class AddRecord extends Component<any, any> {
                 console.log(error);
                 this.setState({ errors: error });
             })
-    }
-
-    async editRecord(event: any) {
-        // event.preventDefault();
-
-        // const headers = {
-        //     "Content-Type": "application/json",
-        //     Accept: "application/json"
-        // }
-
-        // fetch("http://localhost:5000/account/updaterecord", {
-        //     method: "post",
-        //     credentials: "include",
-        //     headers: headers,
-        //     body: JSON.stringify(this.state)
-        // })
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         console.log(response);
-        //         this.props.history.push(`/patient/record`);
-        //     })
-        //     .catch(error => {
-        //         this.setState({ loginErrors: error });
-        //     })
     }
 
     render() {
@@ -118,12 +116,43 @@ export default class AddRecord extends Component<any, any> {
                         /></div>
                         <br />
 
-                        <h2>Add entry to save values</h2>
-                        {this.state.entries.map((subform: any, index: any) =>
-                            <>
-                                <Entry key={index} entryId={index} {...subform} submit={this.state.submit} addEntry={this.addEntry} />
-                            </>
-                        )}
+                        {this.state.entries.map((entry: any, idx: any) => (
+                            <div >
+                                <input
+                                    type="text"
+                                    name="param"
+                                    placeholder="Parameter"
+                                    value={this.state.param}
+                                    className="form-check-inline"
+                                    onChange={this.handleEntryChange(idx)}
+                                />
+                                <input
+                                    type="text"
+                                    name="value"
+                                    placeholder="Value"
+                                    value={this.state.value}
+                                    className="form-check-inline"
+                                    onChange={this.handleEntryChange(idx)}
+                                />
+                                <input
+                                    type="text"
+                                    name="unit"
+                                    placeholder="Unit"
+                                    value={this.state.unit}
+                                    className="form-check-inline"
+                                    onChange={this.handleEntryChange(idx)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={this.handleRemoveEntry(idx)}
+                                    className="small"
+                                > - </button>
+                                <br />
+                            </div>
+                        ))}
+                        <button type="button" onClick={this.handleAddEntry} className="small">
+                            Add Entry
+                        </button>
 
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
