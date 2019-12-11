@@ -615,7 +615,7 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
         if (existingRecord){
             return res.status(200).json(existingRecord);
         }
-        return res.status(400).json({msg: "User not found"});
+        return res.status(400).json({msg: "Record not found"});
     });
 };
 
@@ -649,20 +649,26 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
             }
             targetUser.holdsAuthList.push(userInfo);
             const targetUserInfo: UserInfo = {name: targetUser.name, email: targetUser.email, usertype: targetUser.usertype};
-            user.grantedAuthList.push(targetUserInfo);
             targetUser.save((err: WriteError) => {
                 if (err){
                     console.log(err);
                     return next(err);
                 }
-                user.save((err: WriteError)=>{
+                User.findById(user.id, (err, user: UserDocument) => {
                     if (err){
-                        console.log(err);
                         return next(err);
                     }
-                    return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
+                    if (user){
+                        user.grantedAuthList.push(targetUserInfo);
+                        user.save((err: WriteError)=>{
+                            if (err){
+                                console.log(err);
+                                return next(err);
+                            }
+                            return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
+                        });
+                    }
                 });
-                
             });
             
         });
@@ -689,18 +695,25 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
             targetDoctor.holdsAuthList.push(userInfo);
             const targetUserInfo: UserInfo = {name: targetDoctor.name, email: targetDoctor.email, usertype: targetDoctor.usertype};
             console.log(targetUserInfo);
-            user.grantedAuthList.push(targetUserInfo);
             targetDoctor.save((err: WriteError) => {
                 if (err){
                     console.log(err);
                     return next(err);
                 }
-                user.save((err: WriteError)=>{
+                User.findById(user.id, (err, user: UserDocument) => {
                     if (err){
-                        console.log(err);
                         return next(err);
                     }
-                    return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the doctor"});
+                    if (user){
+                        user.grantedAuthList.push(targetUserInfo);
+                        user.save((err: WriteError)=>{
+                            if (err){
+                                console.log(err);
+                                return next(err);
+                            }
+                            return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
+                        });
+                    }
                 });
             });
         });
@@ -794,67 +807,71 @@ export const ViewAuthedUser = (req: Request, res: Response, next: NextFunction) 
 
  export const RemoveAuth = (req: Request, res: Response, next: NextFunction) => {
      const user = req.user as UserDocument;
-     let idx = -1;
-     for (let index=0; index < user.grantedAuthList.length; index ++){
-         if (user.grantedAuthList[index].email == req.body.targetUserEmail){
-             idx = index;
-             break;
-         }
-     }
-     if (idx >= 0){
-        user.grantedAuthList.splice(idx, 1);
-        user.save((err: WriteError) => {
-            if (err) {return next(err);}
-            if (req.body.targetUsertype == "user"){
-                User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) => {
-                    let targetidx = -1;
-                    for (let index=0; index < targetUser.holdsAuthList.length; index ++){
-                        if (targetUser.holdsAuthList[index].email == user.email){
-                            targetidx = index;
-                            break;
-                        }
-                    }
-                    if (targetidx >= 0){
-                        targetUser.holdsAuthList.splice(targetidx, 1);
-                        targetUser.save((err: WriteError) => {
-                            if (err){
-                                console.log(err);
-                                return next(err);
-                            }
-                            console.log(user);
-                            console.log(targetUser);
-                            return res.status(200).json({msg: "You have successfully remove the user's access to your records"});
-                        });
-                    }
-                });
+
+     User.findById(user.id, (err, user: UserDocument) => {
+        let idx = -1;
+        for (let index=0; index < user.grantedAuthList.length; index ++){
+            if (user.grantedAuthList[index].email == req.body.targetUserEmail){
+                idx = index;
+                break;
             }
-            else if (req.body.targetUsertype == "doctor"){
-                Doctor.findOne({email: req.body.targetUserEmail}, (err, targetDoctor: DoctorDocument) => {
-                    let targetidx = -1;
-                    for (let index=0; index < targetDoctor.holdsAuthList.length; index ++){
-                        if (targetDoctor.holdsAuthList[index].email == user.email){
-                            targetidx = index;
-                            break;
-                        }
-                    }
-                    if (targetidx >= 0){
-                        targetDoctor.holdsAuthList.splice(targetidx, 1);
-                        targetDoctor.save((err: WriteError) => {
-                            if (err){
-                                console.log(err);
-                                return next(err);
+        }
+        if (idx >= 0){
+            user.grantedAuthList.splice(idx, 1);
+            user.save((err: WriteError) => {
+                if (err) {return next(err);}
+                if (req.body.targetUsertype == "user"){
+                    User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) => {
+                        let targetidx = -1;
+                        for (let index=0; index < targetUser.holdsAuthList.length; index ++){
+                            if (targetUser.holdsAuthList[index].email == user.email){
+                                targetidx = index;
+                                break;
                             }
-                            console.log(user);
-                            console.log(targetDoctor);
-                            return res.status(200).json({msg: "You have successfully remove the doctor's access to your records"});
-                        });
-                    }
-                });
-            }
-        });
+                        }
+                        if (targetidx >= 0){
+                            targetUser.holdsAuthList.splice(targetidx, 1);
+                            targetUser.save((err: WriteError) => {
+                                if (err){
+                                    console.log(err);
+                                    return next(err);
+                                }
+                                console.log(user);
+                                console.log(targetUser);
+                                return res.status(200).json({msg: "You have successfully remove the user's access to your records"});
+                            });
+                        }
+                    });
+                }
+                else if (req.body.targetUsertype == "doctor"){
+                    Doctor.findOne({email: req.body.targetUserEmail}, (err, targetDoctor: DoctorDocument) => {
+                        let targetidx = -1;
+                        for (let index=0; index < targetDoctor.holdsAuthList.length; index ++){
+                            if (targetDoctor.holdsAuthList[index].email == user.email){
+                                targetidx = index;
+                                break;
+                            }
+                        }
+                        if (targetidx >= 0){
+                            targetDoctor.holdsAuthList.splice(targetidx, 1);
+                            targetDoctor.save((err: WriteError) => {
+                                if (err){
+                                    console.log(err);
+                                    return next(err);
+                                }
+                                console.log(user);
+                                console.log(targetDoctor);
+                                return res.status(200).json({msg: "You have successfully remove the doctor's access to your records"});
+                            });
+                        }
+                    });
+                }
+            });
         
-     }
-     else{
-         res.status(400).json({msg: "The user does not have access to your records"});
-     }
+        }
+        else{
+            res.status(400).json({msg: "The user does not have access to your records"});
+        }
+     });
+     
  };
