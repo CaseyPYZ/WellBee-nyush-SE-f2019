@@ -58,11 +58,6 @@ export default class Search extends Component<any, any> {
             targetUserEmail: this.state.keyword
         })
 
-        console.log(this.props.usertype)
-        console.log(this.state.keyword)
-
-        console.log(this.state)
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",

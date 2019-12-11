@@ -73,7 +73,6 @@ export default class AdminAuth extends Component<any, any> {
 
     fetch("http://localhost:5000/login", {
       method: "post",
-
       credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
@@ -159,7 +158,7 @@ export default class AdminAuth extends Component<any, any> {
               Don't have an account?<button onClick={this.getSignup}>Sign Up</button>
             </div>
             <div className="d-flex justify-content-center">
-              <Link to="/">Forgot your password?</Link>
+              <Link to="/forgot">Forgot your password?</Link>
             </div>
           </div>
         </>
