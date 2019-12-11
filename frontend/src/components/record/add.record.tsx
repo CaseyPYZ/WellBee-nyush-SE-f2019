@@ -62,7 +62,8 @@ export default class AddRecord extends Component<any, any> {
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
 
-        await fetch("http://localhost:5000/account/add-record", {
+        console.log("IN HERE")
+        fetch("http://localhost:5000/account/add-record", {
             method: "post",
             headers: headers,
             credentials: "include",
@@ -154,7 +155,7 @@ export default class AddRecord extends Component<any, any> {
                         <button type="button" onClick={this.handleAddEntry} className="small">
                             Add Entry
                         </button>
-
+                        <div></div>
                         <button type="submit" className="form-control">Add Record</button>
                     </div>
                 </form>
