@@ -582,7 +582,7 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction  )
 
     User.findById(user.id, (err, user: UserDocument) => {
         if (err) { return next(err); }
-        return res.status(200).send(JSON.stringify(user.recordBriefList));
+        return res.status(200).json(user.recordBriefList);
     });
 };
 
@@ -598,7 +598,7 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const authorizeRecord = (req: Request, res: Response, next: NextFunction) => {
-    let user = req.user as UserDocument;
+    const user = req.user as UserDocument;
     const userInfo: UserInfo = {name: user.name, email: user.email, age: user.age};
     
     if (req.body.targetUsertype = "user"){
@@ -623,7 +623,7 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
                         console.log(err);
                         return next(err);
                     }
-                })
+                });
             });
             
         });
@@ -650,7 +650,7 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
                         console.log(err);
                         return next(err);
                     }
-                })
+                });
             });
         });
         
@@ -659,7 +659,7 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
 };
 
 export const viewAuthUser = (req: Request, res: Response, next: NextFunction) => {
-    let user = req.user as PersonnelDocument;
+    const user = req.user as PersonnelDocument;
     if (user.usertype == "user"){
         User.findById(user._id, (err, user: UserDocument)=>{
             if (err){
@@ -672,7 +672,7 @@ export const viewAuthUser = (req: Request, res: Response, next: NextFunction) =>
                 return res.status(200).json(user.holdsAuthList);
             }
             return;
-        })
+        });
     }
     else if (user.usertype == "doctor"){
         Doctor.findById(user._id, (err, user: DoctorDocument)=>{
@@ -686,11 +686,11 @@ export const viewAuthUser = (req: Request, res: Response, next: NextFunction) =>
                 return res.status(200).json(user.holdsAuthList);
             }
             return;
-        })
+        });
     }
     return;
-}
+};
 
 export const ViewuserRecord = (req: Request, res: Response, next: NextFunction) => {
-    let user = req.user as PersonnelDocument;
-}
+    const user = req.user as PersonnelDocument;
+};
