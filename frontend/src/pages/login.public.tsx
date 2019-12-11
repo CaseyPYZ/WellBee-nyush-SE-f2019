@@ -96,7 +96,7 @@ export default class Login extends Component<any, any> {
           </Column>
           <Column>
             <input type="image" id="image" alt="patient" src={Patient} style={verticalStyle} onClick={this.showPatient} />
-            <h3>PATIENT</h3>
+            <h3>USER</h3>
           </Column>
         </div>
     }

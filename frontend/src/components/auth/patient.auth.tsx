@@ -234,7 +234,7 @@ export default class PatientAuth extends Component<any, any> {
     return (
       <div className="card">
         <div className="card-header">
-          <h3>PATIENT</h3>
+          <h3>USER</h3>
         </div>
         {show}
       </div>
