@@ -16,6 +16,7 @@ import "../config/passport";
 import { profile } from "winston";
 import { PersonnelDocument, UserInfo } from "../models/Personnel";
 import { DocumentProvider } from "mongoose";
+import { userInfo } from "os";
 
 /**
  * GET /login
@@ -243,15 +244,49 @@ export const postUpdatePassword = (req: Request, res: Response, next: NextFuncti
 /**
  * POST /account/delete
  * Delete user account.
+ * TODO: We need to delete the records associated with the account for users
  */
 export const postDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user as UserDocument;
-    User.remove({ _id: user.id }, (err) => {
-        if (err) { return next(err); }
-        req.logout();
-        req.flash("info", { msg: "Your account has been deleted." });
-        res.redirect("/");
-    });
+    const user = req.user as PersonnelDocument;
+    switch (user.usertype){
+        case "user": {
+            User.findById(user.id, (err, user: UserDocument) => {
+                if (err){
+                    console.log(err);
+                    next(err);
+                }
+                if (user){
+                    user.recordList.forEach((id)=>{
+                        User.remove({_id: id}, (err) => {
+                            if (err) {return next(err);}
+                        });
+                    });
+                }
+                User.remove({ _id: user.id }, (err) => {
+                    if (err) { return next(err); }
+                    req.logout();
+                });
+                return res.status(200).json({msg: "Account successfully deleted"});              
+            });
+            break;
+        }
+        case "doctor": {
+            Doctor.remove({ _id: user.id }, (err) => {
+                if (err) { return next(err); }
+                req.logout();
+            });
+            break;
+        }
+        case "admin": {
+            Admin.remove({ _id: user.id }, (err) => {
+                if (err) { return next(err); }
+                req.logout();
+            });
+            break;
+        }
+    }
+    return; 
+    
 };
 
 /**
@@ -591,11 +626,10 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
  */
 export const authorizeRecord = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserDocument;
-    const userInfo: UserInfo = {name: user.name, email: user.email, age: user.age};
+    const userInfo: UserInfo = {name: user.name, email: user.email, usertype: user.usertype};
     
 
-    console.log(userInfo);
-    if (req.body.targetUsertype = "user"){
+    if (req.body.targetUsertype == "user"){
         User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) =>{
             if (err){
                 console.log(err);
@@ -604,8 +638,17 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
             if (!targetUser){
                 return res.status(400).json({msg: "Target User not found."});
             }
+            let existed = false;
+            targetUser.holdsAuthList.forEach((AuthUser: UserInfo)=>{
+                if (AuthUser.email == user.email){
+                    existed = true;
+                }
+            });
+            if (existed){
+                return res.status(400).json({msg: "This user already has access to your records"});
+            }
             targetUser.holdsAuthList.push(userInfo);
-            const targetUserInfo: UserInfo = {name: targetUser.name, email: targetUser.email, age: targetUser.age};
+            const targetUserInfo: UserInfo = {name: targetUser.name, email: targetUser.email, usertype: targetUser.usertype};
             user.grantedAuthList.push(targetUserInfo);
             targetUser.save((err: WriteError) => {
                 if (err){
@@ -617,23 +660,35 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
                         console.log(err);
                         return next(err);
                     }
+                    return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
                 });
-                return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
+                
             });
             
         });
     }
-    else if (req.body.targetUsertype = "doctor"){
+    else if (req.body.targetUsertype == "doctor"){
         Doctor.findOne({email: req.body.targetUserEmail}, (err, targetDoctor: DoctorDocument)=>{
             if (err){
                 console.log(err);
                 return next(err);
             }
+            console.log(targetDoctor);
             if (!targetDoctor){
-                return res.status(400).json({msg: "Target User not found."});
+                return res.status(400).json({msg: "Target Doctor not found."});
+            }
+            let existed = false;
+            targetDoctor.holdsAuthList.forEach((AuthUser: UserInfo)=>{
+                if (AuthUser.email == user.email){
+                    existed = true;
+                }
+            });
+            if (existed){
+                return res.status(400).json({msg: "This doctor already has access to your records"});
             }
             targetDoctor.holdsAuthList.push(userInfo);
-            const targetUserInfo: UserInfo = {name: targetDoctor.name, email: targetDoctor.email, age: targetDoctor.age};
+            const targetUserInfo: UserInfo = {name: targetDoctor.name, email: targetDoctor.email, usertype: targetDoctor.usertype};
+            console.log(targetUserInfo);
             user.grantedAuthList.push(targetUserInfo);
             targetDoctor.save((err: WriteError) => {
                 if (err){
@@ -645,12 +700,15 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
                         console.log(err);
                         return next(err);
                     }
+                    return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the doctor"});
                 });
             });
         });
         
     }
-    
+    else{
+        return res.status(400).json({msg: "User type not supported"});
+    }
 };
 
 
@@ -692,7 +750,7 @@ export const viewAuthUser = (req: Request, res: Response, next: NextFunction) =>
 };
 
 /**
- * Get /
+ * GET /
  * Get the recordBrief List of a specific User.
  */
 export const ViewuserRecord = (req: Request, res: Response, next: NextFunction) => {
@@ -709,10 +767,94 @@ export const ViewuserRecord = (req: Request, res: Response, next: NextFunction) 
                     flag = true;
                 }
             });
-            if (flag){
+            if (flag || srcuser.usertype == "admin"){
                 return res.status(200).json(user.recordBriefList);
             }
             return res.status(400).json({msg: "Permission denied."});
         }
     });
 };
+
+/**
+ * GET /
+ * Get all users who can access your records.
+ * Only User have this functionality.
+ */
+
+export const ViewAuthedUser = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserDocument;
+    return res.status(200).json(user.grantedAuthList);
+};
+
+/**
+ * POST /
+ * Remove the authorization of a particular user
+ * req.body.targetUserEmail, req.body.targetUsertype
+ */
+
+ export const RemoveAuth = (req: Request, res: Response, next: NextFunction) => {
+     const user = req.user as UserDocument;
+     let idx = -1;
+     for (let index=0; index < user.grantedAuthList.length; index ++){
+         if (user.grantedAuthList[index].email == req.body.targetUserEmail){
+             idx = index;
+             break;
+         }
+     }
+     if (idx >= 0){
+        user.grantedAuthList.splice(idx, 1);
+        user.save((err: WriteError) => {
+            if (err) {return next(err);}
+            if (req.body.targetUsertype == "user"){
+                User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) => {
+                    let targetidx = -1;
+                    for (let index=0; index < targetUser.holdsAuthList.length; index ++){
+                        if (targetUser.holdsAuthList[index].email == user.email){
+                            targetidx = index;
+                            break;
+                        }
+                    }
+                    if (targetidx >= 0){
+                        targetUser.holdsAuthList.splice(targetidx, 1);
+                        targetUser.save((err: WriteError) => {
+                            if (err){
+                                console.log(err);
+                                return next(err);
+                            }
+                            console.log(user);
+                            console.log(targetUser);
+                            return res.status(200).json({msg: "You have successfully remove the user's access to your records"});
+                        });
+                    }
+                });
+            }
+            else if (req.body.targetUsertype == "doctor"){
+                Doctor.findOne({email: req.body.targetUserEmail}, (err, targetDoctor: DoctorDocument) => {
+                    let targetidx = -1;
+                    for (let index=0; index < targetDoctor.holdsAuthList.length; index ++){
+                        if (targetDoctor.holdsAuthList[index].email == user.email){
+                            targetidx = index;
+                            break;
+                        }
+                    }
+                    if (targetidx >= 0){
+                        targetDoctor.holdsAuthList.splice(targetidx, 1);
+                        targetDoctor.save((err: WriteError) => {
+                            if (err){
+                                console.log(err);
+                                return next(err);
+                            }
+                            console.log(user);
+                            console.log(targetDoctor);
+                            return res.status(200).json({msg: "You have successfully remove the doctor's access to your records"});
+                        });
+                    }
+                });
+            }
+        });
+        
+     }
+     else{
+         res.status(400).json({msg: "The user does not have access to your records"});
+     }
+ };

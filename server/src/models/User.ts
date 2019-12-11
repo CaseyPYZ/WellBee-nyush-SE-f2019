@@ -25,6 +25,7 @@ export interface UserDocument extends PersonnelDocument {
 const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     usertype: String,
+    name: String,
     age: String,
     password: String,
     passwordResetToken: String,

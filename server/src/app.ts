@@ -129,6 +129,8 @@ app.get("/account/get-record", passportConfig.isAuthenticated, userController.ge
 app.post("/authorize-user", passportConfig.isAuthenticated, userController.authorizeRecord);
 app.get("/view-authorized-users", passportConfig.isAuthenticated, userController.viewAuthUser);
 app.get("/view-user-record", passportConfig.isAuthenticated, userController.ViewuserRecord);
+app.get("/view-authorizing-users", passportConfig.isAuthenticated, userController.ViewAuthedUser);
+app.post("/remove-auth", passportConfig.isAuthenticated, userController.RemoveAuth);
 
 //app.use(cors(corsOptions));
 

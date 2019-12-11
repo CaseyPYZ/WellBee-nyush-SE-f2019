@@ -16,6 +16,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             console.log("SIGNUP USER");
             const user = new User({
                 email: req.body.email,
+                name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
             });
@@ -50,6 +51,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             console.log("SIGNUP DOCTOR");
             const user = new Doctor({
                 email: req.body.email,
+                name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
             });
@@ -87,6 +89,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             console.log("SIGNUP ADMIN");
             const user = new Admin({
                 email: req.body.email,
+                name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
             });

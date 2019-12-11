@@ -108,7 +108,7 @@ export const getAllDoctor = (req: Request, res: Response, next: NextFunction) =>
             data.forEach((userdoc: UserDocument, index) => {
                 const userinfo = {"name": userdoc.name,
                                 "email": userdoc.email,
-                                "age": userdoc.age};
+                                "usertype": userdoc.usertype};
                 userdata.push(userinfo);
             });
             return res.status(200).send(userdata);

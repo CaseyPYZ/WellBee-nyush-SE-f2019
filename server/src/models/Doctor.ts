@@ -14,6 +14,7 @@ export interface DoctorDocument extends PersonnelDocument {
 
 const doctorSchema = new mongoose.Schema({
     email: { type: String, unique: true },
+    name: String,
     usertype: String,
     password: String,
     passwordResetToken: String,
