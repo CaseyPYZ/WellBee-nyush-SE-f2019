@@ -14,7 +14,7 @@ export default class RecordList extends Component<any, any> {
     };
 
     this.getRecordList = this.getRecordList.bind(this);
-    this.redirect = this.redirect.bind(this);
+    this.getSingleRecord = this.getSingleRecord.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +41,13 @@ export default class RecordList extends Component<any, any> {
     this._isMounted = false;
   }
 
-  getSingleRecord() {
+
+  async getSingleRecord(i:any) {
+
+    await this.setState({recordID: this.state.recordList[i].recordID})
+    console.log(this.state.recordList[i].recordID)
+    console.log(this.state.recordID)
+
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -49,7 +55,7 @@ export default class RecordList extends Component<any, any> {
     });
 
     fetch("http://localhost:5000/account/get-record", {
-      method: "post",
+      method: "get",
       credentials: "include",
       headers: headers,
       mode: 'cors',
@@ -61,22 +67,18 @@ export default class RecordList extends Component<any, any> {
       })
       .catch(error => {
         console.log(error);
-        // this.setState({ errors: error });
+        this.setState({ errors: error });
       })
   }
 
   getRecordList(record: any, i: any) {
     return (
-      <button key={i} className="jumbotron" onClick={this.getSingleRecord}>
+      <button key={i} className="jumbotron" onClick={() => this.getSingleRecord(i)}>
         <h2>{record.recordID}</h2>
         <h2>{record.description}</h2>
         <h2>{record.date}</h2>
       </button>
     )
-  }
-
-  redirect() {
-
   }
 
   render() {

@@ -5,7 +5,7 @@ export default class AuthorizeList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            authorizeList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
+            authorizeList: []
         };
 
         this.getAuthorizeList = this.getAuthorizeList.bind(this);
@@ -22,11 +22,10 @@ export default class AuthorizeList extends Component<any, any> {
 
         console.log("IN HERE")
         fetch("http://localhost:5000/account/authorizeList", {
-            method: "post",
+            method: "get",
             headers: headers,
             credentials: "include",
             mode: 'cors',
-            body: JSON.stringify(this.state)
         })
             .then(response => response.json())
             .then(response => {
