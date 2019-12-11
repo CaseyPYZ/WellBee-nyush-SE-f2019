@@ -57,8 +57,9 @@ export default class PatientAuth extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/login", {
+    fetch("http://localhost:5000/login", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -78,8 +79,9 @@ export default class PatientAuth extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/signup", {
+    fetch("http://localhost:5000/signup", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })

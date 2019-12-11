@@ -27,8 +27,9 @@ export default class Profile extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/account", {
+    fetch("http://localhost:5000/account", {
       method: "get",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -46,8 +47,9 @@ export default class Profile extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/account/profile", {
+    fetch("http://localhost:5000/account/profile", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
@@ -69,8 +71,9 @@ export default class Profile extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("http://localhost:5000/account/delete", {
+    fetch("http://localhost:5000/account/delete", {
       method: "post",
+      credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })

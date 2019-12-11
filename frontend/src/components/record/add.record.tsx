@@ -40,8 +40,9 @@ export default class AddRecord extends Component<any, any> {
             Accept: "application/json"
         }
 
-        await fetch("http://localhost:5000/account/add-record", {
+        fetch("http://localhost:5000/account/add-record", {
             method: "post",
+            credentials: "include",
             headers: headers,
             body: JSON.stringify(this.state)
         })
@@ -64,8 +65,9 @@ export default class AddRecord extends Component<any, any> {
         //     Accept: "application/json"
         // }
 
-        // await fetch("http://localhost:5000/account/updaterecord", {
+        // fetch("http://localhost:5000/account/updaterecord", {
         //     method: "post",
+        //     credentials: "include",
         //     headers: headers,
         //     body: JSON.stringify(this.state)
         // })

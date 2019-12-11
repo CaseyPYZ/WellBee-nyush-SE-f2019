@@ -55,12 +55,19 @@ app.use(session({
     store: new MongoStore({
         url: mongoUrl,
         autoReconnect: true
-    })
+    }
+    )
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(cors());
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
