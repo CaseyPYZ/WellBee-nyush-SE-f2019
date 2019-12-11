@@ -39,7 +39,6 @@ export default class Login extends Component<any, any> {
     } else if (usertype === 'user') {
       this.props.history.push(`/patient`);
     }
-    console.log('USER: ' + usertype);
   }
 
   showAdmin() {

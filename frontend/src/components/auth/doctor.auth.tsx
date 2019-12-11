@@ -69,7 +69,7 @@ export default class DoctorAuth extends Component<any, any> {
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
     });
-    fetch("/login", {
+    fetch("http://localhost:5000/login", {
       method: "post",
       credentials: "include",
       headers: headers,
@@ -81,7 +81,7 @@ export default class DoctorAuth extends Component<any, any> {
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
-        this.setState({ loginErrors: error });
+        this.setState({ errors: error });
       })
   }
 
@@ -104,7 +104,7 @@ export default class DoctorAuth extends Component<any, any> {
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
-        this.setState({ loginErrors: error });
+        this.setState({ errors: error });
       })
   }
 

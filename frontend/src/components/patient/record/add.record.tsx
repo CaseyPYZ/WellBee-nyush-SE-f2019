@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Div } from "../../styles/pages.style";
+import { Div } from "../../../styles/pages.style";
 
 //https://codesandbox.io/s/00xq32n3pn?from-embed
 
@@ -73,6 +73,7 @@ export default class AddRecord extends Component<any, any> {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
+                console.log(this.props.history)
                 this.props.history.push(`/patient/record`);
             })
             .catch(error => {

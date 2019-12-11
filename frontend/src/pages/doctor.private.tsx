@@ -8,13 +8,6 @@ export default class DoctorPrivate extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
-    this.state = {
-      profile: false,
-      record: false,
-      access: false,
-      authorized: false,
-      emergency: false,
-    }
   }
 
   render() {

@@ -8,16 +8,6 @@ export default class AdminPrivate extends Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this.state = {
-            profile: false,
-            doctor: false,
-            patient: false
-        }
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
-
-    handleSubmit() {
-        this.props.handleLogout();
     }
 
     render() {
