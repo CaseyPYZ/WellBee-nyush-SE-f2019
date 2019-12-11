@@ -593,6 +593,8 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
     const user = req.user as UserDocument;
     const userInfo: UserInfo = {name: user.name, email: user.email, age: user.age};
     
+
+    console.log(userInfo);
     if (req.body.targetUsertype = "user"){
         User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) =>{
             if (err){
@@ -616,6 +618,7 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
                         return next(err);
                     }
                 });
+                return res.status(200).json({msg: "User successfully authorized. Now all your record can be seen by the user"});
             });
             
         });

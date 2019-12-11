@@ -126,8 +126,9 @@ app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userControl
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
 app.get("/account/get-recordlist", passportConfig.isAuthenticated, userController.getRecordList);
 app.get("/account/get-record", passportConfig.isAuthenticated, userController.getRecord);
-app.post("authorize-user", passportConfig.isAuthenticated, userController.authorizeRecord);
-app.get("/view-authorized-users", passportConfig.isAuthenticated);
+app.post("/authorize-user", passportConfig.isAuthenticated, userController.authorizeRecord);
+app.get("/view-authorized-users", passportConfig.isAuthenticated, userController.viewAuthUser);
+app.get("/view-user-record", passportConfig.isAuthenticated, userController.ViewuserRecord);
 
 //app.use(cors(corsOptions));
 
