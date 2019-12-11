@@ -556,22 +556,6 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
 
 
 
-/**
- * GET / 
- * Get record list of one user
- */
-// export const getRecordList2 = (req: Request, res: Response, next: NextFunction) => {
-    
-//     User.findOne({email: req.user}, (err, existingUser: UserDocument) => {
-//         if (err){ return next(err); }
-//         if (existingUser){
-//             const records = existingUser.recordBriefList;
-//             return res.json(JSON.stringify(records));
-//         }
-//         return res.send("User not found.");
-//     });
-// };
-
 
 /**
  * GET / 
@@ -586,7 +570,10 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction  )
     });
 };
 
-
+/**
+ * GET / 
+ * Get a specific record by recordID
+ */
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {
         if (err){ return next(err); }
@@ -597,6 +584,11 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+
+/**
+ * POST /
+ * Give a user/doctor the access to view the record;
+ */
 export const authorizeRecord = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserDocument;
     const userInfo: UserInfo = {name: user.name, email: user.email, age: user.age};
@@ -658,6 +650,11 @@ export const authorizeRecord = (req: Request, res: Response, next: NextFunction)
     
 };
 
+
+/** 
+ * Get /
+ * Get all the users received authorization from.
+ */
 export const viewAuthUser = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as PersonnelDocument;
     if (user.usertype == "user"){
@@ -691,6 +688,28 @@ export const viewAuthUser = (req: Request, res: Response, next: NextFunction) =>
     return;
 };
 
+/**
+ * Get /
+ * Get the recordBrief List of a specific User.
+ */
 export const ViewuserRecord = (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user as PersonnelDocument;
+    const srcuser = req.user as PersonnelDocument;
+    User.findOne({email: req.body.targetUserEmail}, (err, user: UserDocument) => {
+        if (err){
+            console.log(err);
+            return next(err);
+        }
+        if (user){
+            let flag = false;
+            user.grantedAuthList.forEach((user: UserInfo) => {
+                if (user.email == srcuser.email){
+                    flag = true;
+                }
+            });
+            if (flag){
+                return res.status(200).json(user.recordBriefList);
+            }
+            return res.status(400).json({msg: "Permission denied."});
+        }
+    });
 };
