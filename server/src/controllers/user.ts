@@ -582,7 +582,7 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction  )
 
     User.findById(user.id, (err, user: UserDocument) => {
         if (err) { return next(err); }
-        return res.status(200).send(JSON.stringify(user.recordBriefList));
+        return res.status(200).json(user.recordBriefList);
     });
 };
 
