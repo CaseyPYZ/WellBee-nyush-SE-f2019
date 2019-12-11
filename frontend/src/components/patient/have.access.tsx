@@ -6,20 +6,27 @@ export default class AccessList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            accessList: []
+            accessList: [],
+            usertype: "",
+            user: {}
         };
 
         this.getAccessList = this.getAccessList.bind(this);
     }
 
     componentDidMount() {
+
+        this.setState({
+            usertype: this.props.usertype,
+            user: this.props.user
+        })
+
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000'
         });
 
-        console.log("IN HERE")
         fetch("http://localhost:5000/view-authorized-users", {
             method: "post",
             headers: headers,
@@ -29,7 +36,7 @@ export default class AccessList extends Component<any, any> {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.setState({ accessList: response.accessList })
+                this.setState({ accessList: response })
             })
             .catch(error => {
                 console.log(error);
@@ -37,11 +44,10 @@ export default class AccessList extends Component<any, any> {
             })
     }
 
-    getAccessList(record: any, i: any) {
+    getAccessList(access: any, i: any) {
         return (
             <div className="jumbotron">
-                <img alt=""></img>
-                {i}
+                {access.email}
             </div>
         )
     }
@@ -49,14 +55,8 @@ export default class AccessList extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Access</h1>
-                <div className="input-group md-form form-sm form-1 pl-0">
-                    <input className="form-control my-0 py-1" type="text" placeholder="Search" aria-label="Search" />
-                    <div className="input-group-prepend">
-                        <span className="input-group-text cyan lighten-2" id="basic-text1"><FaSearch /></span>
-                    </div>
-                </div>
-                <br />
+                <h1>Authorized</h1>
+                
                 <div>{this.state.accessList.map(this.getAccessList)}</div>
             </Div>
         );
