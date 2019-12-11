@@ -7,23 +7,23 @@ export default class PatientAuth extends Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      email: String,
-      password: String,
-      password_confirmation: String,
+      email: "",
+      password: "",
+      password_confirmation: "",
       usertype: "user",
-      facebook: String,
-      twitter: String,
-      google: String,
-      tokens: Array,
+      facebook: "",
+      twitter: "",
+      google: "",
+      tokens: [],
       profile: {
-        name: String,
-        gender: String,
-        birthday: String,
-        location: String,
-        website: String,
-        picture: String
+        name: "",
+        gender: "",
+        birthday: "",
+        location: "",
+        website: "",
+        picture: ""
       },
-      errors: String,
+      errors: [],
       auth: {
         login: true,
         signup: false
@@ -33,6 +33,7 @@ export default class PatientAuth extends Component<any, any> {
     this.handleSignupSubmit = this.handleSignupSubmit.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleProfileChange = this.handleProfileChange.bind(this);
     this.getSignup = this.getSignup.bind(this);
   }
 
@@ -49,6 +50,20 @@ export default class PatientAuth extends Component<any, any> {
     this.setState({
       [event.target.name]: event.target.value
     });
+    console.log(this.state);
+    console.log(event.target.name)
+    console.log(event.target.value)
+
+  }
+
+  handleProfileChange(event: any) {
+    this.setState({
+      profile: {
+        ...this.state.profile,
+        [event.target.name]: event.target.value
+      }
+    })
+    console.log(this.state.profile)
   }
 
   async handleLoginSubmit(event: any) {
@@ -150,35 +165,6 @@ export default class PatientAuth extends Component<any, any> {
           <div className="card-body">
             <form onSubmit={this.handleSignupSubmit}>
               <div className="form-group">
-              
-                <div className="input-group mb-3">
-                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
-                    <option selected>gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="none">None</option>
-                  </select>
-                </div>
-
-                <input
-                  type="name"
-                  name="name"
-                  placeholder="name"
-                  className="form-control"
-                  value={this.state.profile.name}
-                  onChange={this.handleChange}
-                  required
-                />
-
-                <div><input
-                  type="date"
-                  name="Birthday"
-                  placeholder="birthday"
-                  value={this.state.profile.birthday}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                /></div>
 
                 <div><input
                   type="email"
@@ -209,6 +195,34 @@ export default class PatientAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
+                <input
+                  type="name"
+                  name="name"
+                  placeholder="Name"
+                  className="form-control"
+                  value={this.state.profile.name}
+                  onChange={this.handleProfileChange}
+                  required
+                />
+
+                <div><input
+                  type="date"
+                  name="birthday"
+                  placeholder="Birthday"
+                  value={this.state.profile.birthday}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+
+                <div className="input-group mb-3">
+                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleProfileChange}>
+                    <option >gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="none">None</option>
+                  </select>
+                </div>
 
                 <button type="submit" className="form-control">Register</button>
               </div>
