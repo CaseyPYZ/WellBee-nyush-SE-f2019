@@ -1,27 +1,36 @@
 import React, { Component } from "react";
 import { FaSearch } from 'react-icons/fa';
-import { Div } from "../styles/pages.style";
+import { Div } from "../../styles/pages.style";
 
-export default class DoctorList extends Component<any, any> {
+export default class AccessList extends Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            doctorList: []
+            accessList: [{ 1: 2 }, { 3: 4 }, { 5: 6 }]
         };
 
-        this.getDoctorList = this.getDoctorList.bind(this);
+        this.getAccessList = this.getAccessList.bind(this);
     }
 
     componentDidMount() {
+        const headers = new Headers({
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": 'http://localhost:5000'
+        });
+
         console.log("IN HERE")
-        fetch("http://localhost:5000/getAllDoctor", {
-            method: "get",
+        fetch("http://localhost:5000/account/accessList", {
+            method: "post",
+            headers: headers,
+            credentials: "include",
+            mode: 'cors',
+            body: JSON.stringify(this.state)
         })
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                // this.setState({ doctorList: response })
-                console.log(this.state.doctorList);
+                this.setState({ accessList: response.accessList })
             })
             .catch(error => {
                 console.log(error);
@@ -29,7 +38,7 @@ export default class DoctorList extends Component<any, any> {
             })
     }
 
-    getDoctorList(doctor: any, i: any) {
+    getAccessList(record: any, i: any) {
         return (
             <div className="jumbotron">
                 <img alt=""></img>
@@ -41,7 +50,7 @@ export default class DoctorList extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Doctor List</h1>
+                <h1>Access</h1>
                 <div className="input-group md-form form-sm form-1 pl-0">
                     <input className="form-control my-0 py-1" type="text" placeholder="Search" aria-label="Search" />
                     <div className="input-group-prepend">
@@ -49,7 +58,7 @@ export default class DoctorList extends Component<any, any> {
                     </div>
                 </div>
                 <br />
-                {this.state.doctorList.length ? "" : <div>{this.state.doctorList.map(this.getDoctorList)}</div>}
+                <div>{this.state.accessList.map(this.getAccessList)}</div>
             </Div>
         );
     }

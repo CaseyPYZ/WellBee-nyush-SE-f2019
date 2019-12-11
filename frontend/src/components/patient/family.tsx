@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Div } from "../styles/pages.style";
+import { Div } from "../../styles/pages.style";
 
 export default class Family extends Component<any, any> {
     constructor(props: any) {

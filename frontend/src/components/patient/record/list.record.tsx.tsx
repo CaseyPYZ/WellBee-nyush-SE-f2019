@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Div } from "../../styles/pages.style";
+import { Div } from "../../../styles/pages.style";
 
 export default class RecordList extends Component<any, any> {
   _isMounted = false;
@@ -8,11 +8,13 @@ export default class RecordList extends Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      recordList: [{}],
-      errors: []
+      recordList: [],
+      errors: [],
+      recordID: ""
     };
 
     this.getRecordList = this.getRecordList.bind(this);
+    this.redirect = this.redirect.bind(this);
   }
 
   componentDidMount() {
@@ -21,12 +23,13 @@ export default class RecordList extends Component<any, any> {
     console.log("IN HERE")
     fetch("http://localhost:5000/account/get-recordlist", {
       method: "get",
+      credentials: "include",
+      mode: 'cors',
     })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(response => {
-        console.log(response);
-        // this.setState({ recordList: response })
-        console.log(this.state.recordList)
+        console.log(response)
+        this.setState({ recordList: response })
       })
       .catch(error => {
         console.log(error);
@@ -39,38 +42,41 @@ export default class RecordList extends Component<any, any> {
   }
 
   getSingleRecord() {
-    console.log("IN HERE")
+    const headers = new Headers({
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Access-Control-Allow-Origin": 'http://localhost:5000/'
+    });
+
     fetch("http://localhost:5000/account/get-record", {
-      method: "get",
+      method: "post",
+      credentials: "include",
+      headers: headers,
+      mode: 'cors',
     })
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        this.setState({ recordList: response })
+        // this.setState({ recordList: response })
       })
       .catch(error => {
         console.log(error);
-        this.setState({ errors: error });
+        // this.setState({ errors: error });
       })
   }
 
   getRecordList(record: any, i: any) {
     return (
-      <details key={i} className="jumbotron" onClick={this.getSingleRecord}>
-        <summary>{i}</summary>
-        <p> RECORD INFORMATION ~ </p>
-        <button type="button" className="btn btn-dark" onClick={this.editRecord}>Edit Record</button>
-        <button type="button" className="btn btn-dark" onClick={this.deleteRecord}>Delete Record</button>
-      </details>
+      <button key={i} className="jumbotron" onClick={this.getSingleRecord}>
+        <h2>{record.recordID}</h2>
+        <h2>{record.description}</h2>
+        <h2>{record.date}</h2>
+      </button>
     )
   }
 
-  deleteRecord() {
-    // talk to backend
-  }
+  redirect() {
 
-  editRecord() {
-    // talk to backend
   }
 
   render() {
@@ -78,7 +84,7 @@ export default class RecordList extends Component<any, any> {
       <Div>
         <h1>Personal Records</h1>
         <button type="button" className="btn btn-dark"><Link to="/patient/addrecord"> Add Record </Link></button>
-        {this.state.recordList.length ? "" :  <div>{this.state.recordList.map(this.getRecordList)}</div>}
+        <div>{this.state.recordList.map(this.getRecordList)}</div>
       </Div>
     );
   }
