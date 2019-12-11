@@ -112,7 +112,6 @@ app.get("/reset/:token", userController.getReset);
 app.post("/reset/:token", userController.postReset);
 app.get("/signup", userController.getSignup);
 app.post("/signup", signUp.postSignup);
-//app.get("/search", searchController.getSearch);
 app.post("/searchUser", searchController.postSearchUser);
 app.post("/searchDoctor", searchController.postSearchDoctor);
 app.get("/contact", contactController.getContact);
@@ -127,6 +126,11 @@ app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userControl
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
 app.get("/account/get-recordlist", passportConfig.isAuthenticated, userController.getRecordList);
 app.get("/account/get-record", passportConfig.isAuthenticated, userController.getRecord);
+app.post("/authorize-user", passportConfig.isAuthenticated, userController.authorizeRecord);
+app.get("/view-authorized-users", passportConfig.isAuthenticated, userController.viewAuthUser);
+app.get("/view-user-record", passportConfig.isAuthenticated, userController.ViewuserRecord);
+app.get("/view-authorizing-users", passportConfig.isAuthenticated, userController.ViewAuthedUser);
+app.post("/remove-auth", passportConfig.isAuthenticated, userController.RemoveAuth);
 
 //app.use(cors(corsOptions));
 
