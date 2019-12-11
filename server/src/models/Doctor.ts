@@ -2,12 +2,14 @@ import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose from "mongoose";
 import { PersonnelDocument, comparePassword } from "./Personnel";
+import { ObjectId } from "bson";
 
 // @ts-ignore
 export interface DoctorDocument extends PersonnelDocument {
 
     /* Doctor */
     position: string;
+    holdsAuthList: ObjectId[];
     
 };
 
@@ -28,7 +30,10 @@ const doctorSchema = new mongoose.Schema({
         location: String,
         website: String,
         picture: String
-    }
+    },
+
+    holdsAuthList: Array
+
 }, { timestamps: true });
 
 

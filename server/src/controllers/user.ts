@@ -53,10 +53,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     switch (usertype){
         case "user": {
             passport.authenticate("userLocal", (err: Error, user: UserDocument, info: IVerifyOptions) => {
-                console.log("\n***************USER LOGIN***************");
                 console.log(user);
-                console.log("****************************************\n");
-
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -75,10 +72,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "doctor": {
             passport.authenticate("doctorLocal", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
-                console.log("\n***************DOCT LOGIN***************");
                 console.log(user);
-                console.log("****************************************\n");
-
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -97,10 +91,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "admin": {
             passport.authenticate("adminLocal", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
-                console.log("\n***************ADMIN LOGIN***************");
-                console.log(user);
-                console.log("****************************************\n");
-
+                console.log("Admin: %s", user);
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
@@ -526,29 +517,18 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
 
         console.log("********* NEW RECORD BRIEF *********");
-        console.log("BEFORE");
         console.log(user.recordBriefList);
-        console.log("NEW R BRIEF");
         console.log(newRecordBrief);
         console.log("******************************");
 
         // This following line evokes error
             // ASYNC HANDLING NEEDED 
-        user.recordBriefList.push(newRecordBrief);
+        //user.recordBriefList.push(newRecordBrief);
         user.save((err: WriteError) => {
             return next(err);
         });
-
-        console.log("\nAFTER");
-        console.log(user.recordBriefList);
-        console.log("******************************");
-
-        // *** flash not showding => frontend?
         req.flash("success", { msg: "New record successfully added." });
-        return res.status(200).send({ 
-            newRB: newRecordBrief,
-            msg: "New record successfully added." 
-        });
+        return res.status(200).send("New record successfully added.");
     });
 };
 
@@ -594,4 +574,50 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
         }
         return res.send("User not found");
     });
+};
+
+
+export const authorizeRecord = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserDocument;
+    User.findById(user._id, (err, user: UserDocument)=>{
+        if (err){
+            console.log(err);
+            return next(err);
+        }
+        if (user){
+            user.grantedAuthList.push(req.body.targetUserId);
+            user.save(err => {
+                if (err){
+                    console.log(err);
+                    return next(err);
+                }
+            });
+        }
+    });
+    
+    
+    if (req.body.targetUsertype = "user"){
+        User.findById(req.body.targetUserId, (err, targetUser: UserDocument) =>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (!targetUser){
+                return res.status(400).json({msg: "Target User not found."});
+            }
+            targetUser.holdsAuthList.push(user._id);
+        });
+    }
+    else if (req.body.targetUsertype = "doctor"){
+        Doctor.findById(req.body.targetUserId, (err, targetDoctor: DoctorDocument)=>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (!targetDoctor){
+                return res.status(400).json({msg: "Target Doctor not found."};
+            }
+            targetDoctor.holdsAuthList.push(user._id);
+        });
+    }
 };

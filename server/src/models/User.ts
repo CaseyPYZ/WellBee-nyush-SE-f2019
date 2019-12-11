@@ -43,7 +43,10 @@ const userSchema = new mongoose.Schema({
     },
 
     recordBriefList: Array,
-    recordList: Array
+    recordList: Array,
+    /* User Authorization Lists */
+    holdsAuthList: Array,
+    grantedAuthList: Array
 
 }, { timestamps: true });
 
