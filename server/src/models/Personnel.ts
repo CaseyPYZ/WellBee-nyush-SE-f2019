@@ -6,6 +6,8 @@ import mongoose, { Document } from "mongoose";
 
 export type Usertype = "user" | "doctor" | "admin";
 
+export type UserInfo = { "name": string; "email": string; "age": string };
+
 export interface PersonnelDocument extends mongoose.Document { 
     name: string;
     email: string;

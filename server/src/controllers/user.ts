@@ -14,6 +14,8 @@ import { WriteError } from "mongodb";
 import { check, sanitize, validationResult } from "express-validator";
 import "../config/passport";
 import { profile } from "winston";
+import { PersonnelDocument, UserInfo } from "../models/Personnel";
+import { DocumentProvider } from "mongoose";
 
 /**
  * GET /login
@@ -34,7 +36,7 @@ export const getLogin = (req: Request, res: Response) => {
  */
 export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     console.log("POST LOGIN");
-    console.log(req.body);
+    // console.log(req.body);
     
     check("email", "Email is not valid").isEmail();
     check("password", "Password cannot be blank").isLength({min: 1});
@@ -490,7 +492,7 @@ export const postForgot = (req: Request, res: Response, next: NextFunction) => {
 export const postAddRecord = (req: Request, res: Response, next: NextFunction  )=> {
 
     console.log("\n********* REQ BODY ***********");
-    console.log(req.body);
+    // console.log(req.body);
     console.log("******************************\n");
 
     /* Create Record -> Records colletcion*/
@@ -580,8 +582,7 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction  )
 
     User.findById(user.id, (err, user: UserDocument) => {
         if (err) { return next(err); }
-
-        return res.send(JSON.stringify(user.recordBriefList));
+        return res.status(200).send(JSON.stringify(user.recordBriefList));
     });
 };
 
@@ -590,8 +591,106 @@ export const getRecord = (req: Request, res: Response, next: NextFunction) => {
     Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {
         if (err){ return next(err); }
         if (existingRecord){
-            return res.json(JSON.stringify(existingRecord));
+            return res.status(200).json(existingRecord);
         }
-        return res.send("User not found");
+        return res.status(400).json({msg: "User not found"});
     });
 };
+
+export const authorizeRecord = (req: Request, res: Response, next: NextFunction) => {
+    let user = req.user as UserDocument;
+    const userInfo: UserInfo = {name: user.name, email: user.email, age: user.age};
+    
+    if (req.body.targetUsertype = "user"){
+        User.findOne({email: req.body.targetUserEmail}, (err, targetUser: UserDocument) =>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (!targetUser){
+                return res.status(400).json({msg: "Target User not found."});
+            }
+            targetUser.holdsAuthList.push(userInfo);
+            const targetUserInfo: UserInfo = {name: targetUser.name, email: targetUser.email, age: targetUser.age};
+            user.grantedAuthList.push(targetUserInfo);
+            targetUser.save((err: WriteError) => {
+                if (err){
+                    console.log(err);
+                    return next(err);
+                }
+                user.save((err: WriteError)=>{
+                    if (err){
+                        console.log(err);
+                        return next(err);
+                    }
+                })
+            });
+            
+        });
+    }
+    else if (req.body.targetUsertype = "doctor"){
+        Doctor.findOne({email: req.body.targetUserEmail}, (err, targetDoctor: DoctorDocument)=>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (!targetDoctor){
+                return res.status(400).json({msg: "Target User not found."});
+            }
+            targetDoctor.holdsAuthList.push(userInfo);
+            const targetUserInfo: UserInfo = {name: targetDoctor.name, email: targetDoctor.email, age: targetDoctor.age};
+            user.grantedAuthList.push(targetUserInfo);
+            targetDoctor.save((err: WriteError) => {
+                if (err){
+                    console.log(err);
+                    return next(err);
+                }
+                user.save((err: WriteError)=>{
+                    if (err){
+                        console.log(err);
+                        return next(err);
+                    }
+                })
+            });
+        });
+        
+    }
+    
+};
+
+export const viewAuthUser = (req: Request, res: Response, next: NextFunction) => {
+    let user = req.user as PersonnelDocument;
+    if (user.usertype == "user"){
+        User.findById(user._id, (err, user: UserDocument)=>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (user){
+                console.log("======Authorized Users======");
+                console.log(user.holdsAuthList);
+                return res.status(200).json(user.holdsAuthList);
+            }
+            return;
+        })
+    }
+    else if (user.usertype == "doctor"){
+        Doctor.findById(user._id, (err, user: DoctorDocument)=>{
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            if (user){
+                console.log("======Authorized Users======");
+                console.log(user.holdsAuthList);
+                return res.status(200).json(user.holdsAuthList);
+            }
+            return;
+        })
+    }
+    return;
+}
+
+export const ViewuserRecord = (req: Request, res: Response, next: NextFunction) => {
+    let user = req.user as PersonnelDocument;
+}

@@ -21,10 +21,10 @@ export type UserInfo= {
 };
 
 passport.serializeUser<any, any>((user, done) => {
-    console.log("=====serializeUser=====");
-    console.log(user);
-    console.log(user.usertype);
-    console.log("=======================");
+    // console.log("=====serializeUser=====");
+    // console.log(user);
+    // console.log(user.usertype);
+    // console.log("=======================");
     const userinfo: UserInfo = {
         id: user.id,
         usertype: user.usertype,
@@ -33,10 +33,10 @@ passport.serializeUser<any, any>((user, done) => {
 });
 
 passport.deserializeUser((user: UserInfo, done) => {
-    console.log("=====deserializeUser=====");
-    console.log(user);
-    console.log(user.usertype);
-    console.log("=========================");
+    // console.log("=====deserializeUser=====");
+    // console.log(user);
+    // console.log(user.usertype);
+    // console.log("=========================");
     switch (user.usertype){
         case "user": {
             User.findById(user.id, (err, user: UserDocument) => {
@@ -195,7 +195,6 @@ passport.use("adminLocal", new LocalStrategy({ usernameField: "email" }, (email,
  */
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isAuthenticated()) {
-        console.log(req);
         return next();
     }
     res.json({isAuthenticated: false, redirect: true});
