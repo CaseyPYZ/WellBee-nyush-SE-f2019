@@ -25,11 +25,11 @@ export default class GetRecord extends Component<any, any> {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        // this.setState({ recordList: response })
+        this.setState({ recordList: response })
       })
       .catch(error => {
         console.log(error);
-        // this.setState({ errors: error });
+        this.setState({ errors: error });
       })
   }
 
