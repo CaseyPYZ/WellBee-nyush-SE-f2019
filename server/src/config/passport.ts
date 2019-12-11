@@ -9,7 +9,11 @@ import { Request, Response, NextFunction } from "express";
 import { DocumentProvider } from "mongoose";
 
 const LocalStrategy = passportLocal.Strategy;
-//const FacebookStrategy = passportFacebook.Strategy;
+
+interface UserInfoTuple{
+    type: string;
+    id: any;
+}
 
 export type UserInfo= {
     id: string;
@@ -38,7 +42,6 @@ passport.deserializeUser((user: UserInfo, done) => {
             User.findById(user.id, (err, user: UserDocument) => {
                 done(err, user);
             });
-
             break;
         }
         case "doctor": {
@@ -57,29 +60,10 @@ passport.deserializeUser((user: UserInfo, done) => {
 });
 
 
-/**
- * Sign in using Email and Password.
- */
-// passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-//     User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
-//         if (err) { return done(err); }
-//         if (!user) {
-//             return done(undefined, false, { message: `Email ${email} not found.` });
-//         }
-//         user.comparePassword(password, (err: Error, isMatch: boolean) => {
-//             if (err) { return done(err); }
-//             if (isMatch) {
-//                 return done(undefined, user);
-//             }
-//             return done(undefined, false, { message: "Invalid email or password." });
-//         });
-//     });
-// }));
 
 /**
- * Sign in for muiltiple user types
+ * Log in for muiltiple user types
  */
-
 passport.use("userLocal", new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
     User.findOne({ email: email.toLowerCase() }, (err, user: any) => {
         if (err) { return done(err); }
@@ -211,6 +195,7 @@ passport.use("adminLocal", new LocalStrategy({ usernameField: "email" }, (email,
  */
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isAuthenticated()) {
+        console.log(req)
         return next();
     }
     res.json({isAuthenticated: false, redirect: true});
