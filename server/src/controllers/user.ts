@@ -543,8 +543,12 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         console.log(user.recordBriefList);
         console.log("******************************");
 
+        // *** flash not showding => frontend?
         req.flash("success", { msg: "New record successfully added." });
-        return res.status(200).send("New record successfully added.");
+        return res.status(200).send({ 
+            newRB: newRecordBrief,
+            msg: "New record successfully added." 
+        });
     });
 };
 

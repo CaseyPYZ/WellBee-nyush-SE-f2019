@@ -26,6 +26,7 @@ import * as signUp from "./controllers/signUp";
 
 // API keys and Passport configuration
 import * as passportConfig from "./config/passport";
+import { nextTick } from "async";
 
 // Create Express server
 const app = express();
@@ -63,13 +64,13 @@ app.use(passport.session());
 app.use(flash());
 
 const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true
-}
+    "origin": "http://localhost:3000",
+    "credentials": true
+};
 
 app.use(cors(corsOptions));
-app.use(lusca.xframe("SAMEORIGIN"));
-app.use(lusca.xssProtection(true));
+// app.use(lusca.xframe("SAMEORIGIN"));
+// app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
     res.locals.user = req.user;
     next();
@@ -88,14 +89,19 @@ app.use((req, res, next) => {
     }
     next();
 });
-
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
 );
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:3000/"); // update to match the domain you will make the request from
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 /**
  * Primary app routes.
  */
+// app.options("*");
 //app.get("/", homeController.index);
 app.get("/login", userController.getLogin);
 app.post("/login", userController.postLogin);
@@ -119,6 +125,8 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.post("/account/add-record", passportConfig.isAuthenticated, userController.postAddRecord);
+
+//app.use(cors(corsOptions));
 
 /**
  * API examples routes.

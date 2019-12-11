@@ -195,7 +195,7 @@ passport.use("adminLocal", new LocalStrategy({ usernameField: "email" }, (email,
  */
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     if (req.isAuthenticated()) {
-        console.log(req)
+        console.log(req);
         return next();
     }
     res.json({isAuthenticated: false, redirect: true});
