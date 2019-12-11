@@ -85,6 +85,14 @@ app.use((req, res, next) => {
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
 );
+app.use((req, res, next) => {
+    res.set("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.set("Access-Control-Allow-Credentials", "true");
+    // res.set("Access-Control-Allow-Headers", "*");
+    // res.set("Access-Control-Allow-Headers", "*")
+    // Access-Control-Allow-Methods: *
+    next();
+});
 
 /**
  * Primary app routes.

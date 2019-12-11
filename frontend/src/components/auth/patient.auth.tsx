@@ -50,10 +50,6 @@ export default class PatientAuth extends Component<any, any> {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log(this.state);
-    console.log(event.target.name)
-    console.log(event.target.value)
-
   }
 
   handleProfileChange(event: any) {
@@ -63,7 +59,6 @@ export default class PatientAuth extends Component<any, any> {
         [event.target.name]: event.target.value
       }
     })
-    console.log(this.state.profile)
   }
 
   async handleLoginSubmit(event: any) {

@@ -64,7 +64,6 @@ export default class AddRecord extends Component<any, any> {
         await fetch("http://localhost:5000/account/add-record", {
             method: "post",
             headers: headers,
-            mode: 'cors',
             credentials: "include",
             body: JSON.stringify(this.state)
         })

@@ -68,7 +68,7 @@ export default class DoctorAuth extends Component<any, any> {
       "Content-Type": "application/json",
       Accept: "application/json"
     }
-    await fetch("/login", {
+    await fetch("http://localhost:5000/login", {
       method: "post",
       headers: headers,
       body: JSON.stringify(this.state)
@@ -210,7 +210,7 @@ export default class DoctorAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
-                
+
                 <div className="input-group mb-3">
                   <select className="custom-select" id="inputGroupSelect02" onChange={this.handleProfileChange}>
                     <option selected>gender</option>
