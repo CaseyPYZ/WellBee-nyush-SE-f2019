@@ -9,11 +9,12 @@ export default class AccessList extends Component<any, any> {
             usertype: "",
             user: {},
             userRecord: [],
-            targetUserEmail: ""
+            targetUserEmail: "",
         };
 
         this.getAccessList = this.getAccessList.bind(this);
         this.userRecords = this.userRecords.bind(this);
+        this.getRecord = this.getRecord.bind(this);
     }
 
     componentDidMount() {
@@ -48,8 +49,19 @@ export default class AccessList extends Component<any, any> {
 
     getAccessList(access: any, i: any) {
         return (
-            <button className="jumbotron" onClick = {() => {this.userRecords(access)}}>
+            <button className="jumbotron" onClick={() => { this.userRecords(access) }}>
                 {access.email}
+            </button>
+        )
+    }
+
+    getRecord(record: any, i: any) {
+        return (
+            <button className="jumbotron" onClick={() => { this.userRecords(record) }}>
+                <p>Type: {record.type}</p>
+                <p>Date:  {record.date}</p>
+                <p>Record ID: {record.recordID}</p>
+                <p>Description:  {record.description}</p>
             </button>
         )
     }
@@ -87,8 +99,7 @@ export default class AccessList extends Component<any, any> {
             <Div>
                 <h1>Authorized</h1>
                 <div>{this.state.accessList.map(this.getAccessList)}</div>
-                <div>{this.state.userRecord.map(this.getAccessList)}</div>
-
+                <div>{this.state.userRecord.map(this.getRecord)}</div>
             </Div>
         );
     }

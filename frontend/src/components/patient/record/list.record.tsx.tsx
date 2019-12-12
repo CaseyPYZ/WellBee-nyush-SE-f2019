@@ -89,6 +89,9 @@ export default class RecordList extends Component<any, any> {
   }
 
   getEntries(entries: any, i: any) {
+    // if ((entries.param === "" || entries.param === null) && (entries.value === "" || entries.value === null) && (entries.unit === null || entries.unit === "")){
+    //   return (<></>)
+    // }
     return (
       <div>
         <button key={i} className="jumbotron" onClick={() => this.getSingleRecord(i)}>
