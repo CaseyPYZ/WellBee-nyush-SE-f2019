@@ -65,19 +65,11 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 
                 user.save(err => {
                     if (err) { return res.status(400).send(err); }
-                    console.log("[[[]]] Save user succeed.");
                     req.logIn(user, (err) => {
-                        if (res.headersSent) {
-                            console.log(res);
-                            return res;
-                        }
-                        console.log("[[[]]] Login user.");
                         if (err) {
                             console.log(err);
                             return res.send(err);
                         }
-                        console.log("[[[]]] Login user success.");
-                        console.log(user);
                         return res.status(200).json({ user: req.user, msg: "Success signing up doctor" });
                     });
                 });
@@ -107,7 +99,6 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                             console.log(err);
                             return res.status(400).send(err);
                         }
-                        console.log(req.user);
                         return res.status(200).json({ user: req.user, msg: "Success signing up admin" });
                     });
                 });

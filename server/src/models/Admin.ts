@@ -28,6 +28,7 @@ const adminSchema = new mongoose.Schema({
 
     profile: {
         name: String,
+        age: String,
         gender: String,
         birthday: String,
         location: String,

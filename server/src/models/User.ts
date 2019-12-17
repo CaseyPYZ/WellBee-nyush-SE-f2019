@@ -6,6 +6,14 @@ import { PersonnelDocument, comparePassword, UserInfo } from "./Personnel";
 import { RecordBrief } from "./records/Record";
 import { ExecFileOptionsWithStringEncoding } from "child_process";
 
+export type EmergencyPROFILE = {
+    name: string;
+    age: string;
+    BloodType: string;
+    Allergies: string;
+    DiseaseHistory: string;
+}
+
 
 export interface UserDocument extends PersonnelDocument { 
     /* User */
@@ -15,8 +23,11 @@ export interface UserDocument extends PersonnelDocument {
     /* User Authorization Lists */
     holdsAuthList: UserInfo[];
     grantedAuthList: UserInfo[];
-    
+
+    EmergencyProfile: EmergencyPROFILE;
 }
+
+
 
 /**
  * MongoDB Schema
@@ -26,7 +37,6 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     usertype: String,
     name: String,
-    age: String,
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -35,17 +45,25 @@ const userSchema = new mongoose.Schema({
 
     profile: {
         name: String,
+        age: String,
         gender: String,
         birthday: String,
         location: String,
         website: String,
-        picture: String
     },
 
     recordBriefList: Array,
     recordList: Array,
     holdsAuthList: Array,
-    grantedAuthList: Array
+    grantedAuthList: Array,
+
+    EmergencyProfile: {
+        name: String,
+        age: String,
+        BloodType: String,
+        Allergies: String,
+        DiseaseHistory: String
+    }
 
 }, { timestamps: true });
 
