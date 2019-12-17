@@ -24,11 +24,11 @@ const doctorSchema = new mongoose.Schema({
 
     profile: {
         name: String,
+        age: String,
         gender: String,
         birthday: String,
         location: String,
         website: String,
-        picture: String
     },
 
     holdsAuthList: Array

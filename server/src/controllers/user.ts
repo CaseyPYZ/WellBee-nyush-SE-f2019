@@ -51,7 +51,11 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         return res.status(400).send({msg: "errors"});
     }
 
+    console.log(req.body);
+
     const usertype = req.body.usertype;
+
+    console.log(usertype);
 
     switch (usertype){
         case "user": {
@@ -155,21 +159,33 @@ export const getSignup = (req: Request, res: Response) => {
  * GET /account
  * Profile page.
  */
-export const getAccount = (req: Request, res: Response) => {
-    const user = req.user as UserDocument;
-    User.findById(user._id, (err, user: UserDocument) =>{
-        if (err){
-            console.log(err);
-            return res.status(400).send(err);
-        }
-        return res.json({
-            "email": user.email,
-            "name": user.profile.name,
-            "gender": user.profile.gender,
-            "birthday": user.profile.birthday,
-            "age": user.age,
+export const getAccount = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as PersonnelDocument;
+    if (user.usertype == "user"){
+        User.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json(user.profile);
         });
-    });
+    }
+    else if (user.usertype == "doctor"){
+        Doctor.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json(user.profile);
+        });
+    }
+    else if (user.usertype == "admin"){
+        User.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
+                return next(err);
+            }
+            return res.json(user.profile);
+        });
+    }
+    
 };
 
 /**
@@ -177,42 +193,122 @@ export const getAccount = (req: Request, res: Response) => {
  * Update profile information.
  */
 export const postUpdateProfile = (req: Request, res: Response, next: NextFunction) => {
-    check("email", "Please enter a valid email address.").isEmail();
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    sanitize("email").normalizeEmail({ gmail_remove_dots: false });
+    const user = req.user as PersonnelDocument;
 
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        console.log(errors);
-        return res.status(400).send(errors);
-    }
-
-    const user = req.user as UserDocument;
-
-
-    User.findById(user._id, (err, user: UserDocument) => {
-        if (err) { 
-            console.log(err);
-            return next(err); }
-        user.email = req.body.email || "";
-        user.profile.name = req.body.name || "";
-        user.profile.gender = req.body.gender || "";
-        user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
-        user.profile.location = req.body.location || "";
-        user.profile.website = req.body.website || "";
-        user.save((err: WriteError) => {
-            if (err) {
-                if (err.code === 11000) {
-                    console.log(err);
-                    return res.status(400).json({msg: "The email address you have entered is already associated with an account."});
+    if (user.usertype == "user"){
+        User.findById(user._id, (err, user: UserDocument) => {
+            if (err) { 
+                console.log(err);
+                return next(err); }
+            user.name = req.body.name || "";
+            user.profile.name = req.body.name || "";
+            user.profile.age = req.body.age || "";
+            user.profile.gender = req.body.gender || "";
+            user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
+            user.profile.location = req.body.location || "";
+            user.profile.website = req.body.website || "";
+            user.save((err: WriteError) => {
+                if (err) {
+                    return next(err);
                 }
+                return res.status(200).json({ profile: user.profile, msg: "Profile information has been updated." });
+            });
+        });
+    }
+    else if (user.usertype == "doctor"){
+        Doctor.findById(user._id, (err, user: DoctorDocument) => {
+            if (err) { 
+                console.log(err);
+                return next(err); }
+            user.name = req.body.name || "";
+            user.profile.name = req.body.name || "";
+            user.profile.age = req.body.age || "";
+            user.profile.gender = req.body.gender || "";
+            user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
+            user.profile.location = req.body.location || "";
+            user.profile.website = req.body.website || "";
+            user.save((err: WriteError) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).json({ profile: user.profile, msg: "Profile information has been updated." });
+            });
+        });
+    }
+    else if (user.usertype == "admin"){
+        Admin.findById(user._id, (err, user: AdminDocument) => {
+            if (err) { 
+                console.log(err);
+                return next(err); }
+            user.name = req.body.name || "";
+            user.profile.name = req.body.name || "";
+            user.profile.age = req.body.age || "";
+            user.profile.gender = req.body.gender || "";
+            user.profile.birthday = req.body.birthday || "";  // update birthday attribute value - success
+            user.profile.location = req.body.location || "";
+            user.profile.website = req.body.website || "";
+            user.save((err: WriteError) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).json({ profile: user.profile, msg: "Profile information has been updated." });
+            });
+        });
+    }
+};
+
+/**
+ * GET /account
+ * Profile page.
+ */
+export const getEmergencyProfile = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as PersonnelDocument;
+    if (user.usertype == "user"){
+        User.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
                 return next(err);
             }
-            res.status(200).json({ msg: "Profile information has been updated." });
+            return res.json(user.EmergencyProfile);
         });
-    });
-};
+    }
+    else{
+        return res.status(400).json({msg: "Usertype is not user. Only users have emergency profile"});
+    }
+}
+
+/**
+ * POST /account/password
+ * Update Emergency profile.
+ */
+
+export const UpdateEmergencyProfile = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as PersonnelDocument;
+
+    if (user.usertype == "user"){
+        User.findById(user._id, (err, user: UserDocument) => {
+            if (err){
+                console.log(err);
+                return next(err);
+            }
+            user.EmergencyProfile.name = req.body.name;
+            user.EmergencyProfile.age = req.body.age;
+            user.EmergencyProfile.Allergies = req.body.Allergies;
+            user.EmergencyProfile.BloodType = req.body.BloodType;
+            user.EmergencyProfile.DiseaseHistory = req.body.DiseaseHistory;
+            user.save((err: WriteError) =>{
+                if (err){
+                    return next(err);
+                }
+                return res.status(200).json({EmergencyProfile: user.EmergencyProfile, msg: "Emergency profile has been updated"})
+            })
+        })
+    }
+    else{
+        return res.status(400).json({msg: "Usertype is not user. Only users have emergency profile"});
+    }
+}
+
+
 
 /**
  * POST /account/password
@@ -275,6 +371,7 @@ export const postDeleteAccount = (req: Request, res: Response, next: NextFunctio
                 if (err) { return next(err); }
                 req.logout();
             });
+            return res.status(200).json({msg: "Account successfully deleted"});  
             break;
         }
         case "admin": {
@@ -282,243 +379,12 @@ export const postDeleteAccount = (req: Request, res: Response, next: NextFunctio
                 if (err) { return next(err); }
                 req.logout();
             });
+            return res.status(200).json({msg: "Account successfully deleted"});  
             break;
         }
     }
-    return; 
-    
 };
 
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth provider.
- */
-export const getOauthUnlink = (req: Request, res: Response, next: NextFunction) => {
-    const provider = req.params.provider;
-    const user = req.user as UserDocument;
-    User.findById(user.id, (err, user: any) => {
-        if (err) { return next(err); }
-        user[provider] = undefined;
-        user.tokens = user.tokens.filter((token: AuthToken) => token.kind !== provider);
-        user.save((err: WriteError) => {
-            if (err) { return next(err); }
-            req.flash("info", { msg: `${provider} account has been unlinked.` });
-            res.redirect("/account");
-        });
-    });
-};
-
-/**
- * GET /reset/:token
- * Reset Password page.
- */
-export const getReset = (req: Request, res: Response, next: NextFunction) => {
-    if (req.isAuthenticated()) {
-        return res.redirect("/");
-    }
-    User
-        .findOne({ passwordResetToken: req.params.token })
-        .where("passwordResetExpires").gt(Date.now())
-        .exec((err, user) => {
-            if (err) { return next(err); }
-            if (!user) {
-                req.flash("errors", { msg: "Password reset token is invalid or has expired." });
-                return res.redirect("/forgot");
-            }
-            res.render("account/reset", {
-                title: "Password Reset"
-            });
-        });
-};
-
-/**
- * POST /reset/:token
- * Process the reset password request.
- */
-export const postReset = (req: Request, res: Response, next: NextFunction) => {
-    check("password", "Password must be at least 4 characters long.").isLength({ min: 4 });
-    check("confirm", "Passwords must match.").equals(req.body.password);
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("back");
-    }
-
-    async.waterfall([
-        function resetPassword(done: Function) {
-            User
-                .findOne({ passwordResetToken: req.params.token })
-                .where("passwordResetExpires").gt(Date.now())
-                .exec((err, user: any) => {
-                    if (err) { return next(err); }
-                    if (!user) {
-                        req.flash("errors", { msg: "Password reset token is invalid or has expired." });
-                        return res.redirect("back");
-                    }
-                    user.password = req.body.password;
-                    user.passwordResetToken = undefined;
-                    user.passwordResetExpires = undefined;
-                    user.save((err: WriteError) => {
-                        if (err) { return next(err); }
-                        req.logIn(user, (err) => {
-                            done(err, user);
-                        });
-                    });
-                });
-        },
-        function sendResetPasswordEmail(user: UserDocument, done: Function) {
-            const transporter = nodemailer.createTransport({
-                service: "SendGrid",
-                auth: {
-                    user: process.env.SENDGRID_USER,
-                    pass: process.env.SENDGRID_PASSWORD
-                }
-            });
-            const mailOptions = {
-                to: user.email,
-                from: "express-ts@starter.com",
-                subject: "Your password has been changed",
-                text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
-            };
-            transporter.sendMail(mailOptions, (err) => {
-                req.flash("success", { msg: "Success! Your password has been changed." });
-                done(err);
-            });
-        }
-    ], (err) => {
-        if (err) { return next(err); }
-        res.redirect("/");
-    });
-};
-
-/**
- * GET /forgot
- * Forgot Password page.
- */
-export const getForgot = (req: Request, res: Response) => {
-    if (req.isAuthenticated()) {
-        return res.redirect("/");
-    }
-    res.render("account/forgot", {
-        title: "Forgot Password"
-    });
-};
-
-/**
- * POST /forgot
- * Create a random token, then the send user an email with a reset link.
- */
-export const postForgot = (req: Request, res: Response, next: NextFunction) => {
-    check("email", "Please enter a valid email address.").isEmail();
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    sanitize("email").normalizeEmail({ gmail_remove_dots: false });
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("/forgot");
-    }
-
-    async.waterfall([
-        function createRandomToken(done: Function) {
-            crypto.randomBytes(16, (err, buf) => {
-                const token = buf.toString("hex");
-                done(err, token);
-            });
-        },
-        function setRandomToken(token: AuthToken, done: Function) {
-            User.findOne({ email: req.body.email }, (err, user: any) => {
-                if (err) { return done(err); }
-                if (!user) {
-                    req.flash("errors", { msg: "Account with that email address does not exist." });
-                    return res.redirect("/forgot");
-                }
-                user.passwordResetToken = token;
-                user.passwordResetExpires = Date.now() + 3600000; // 1 hour
-                user.save((err: WriteError) => {
-                    done(err, token, user);
-                });
-            });
-        },
-        function sendForgotPasswordEmail(token: AuthToken, user: UserDocument, done: Function) {
-            const transporter = nodemailer.createTransport({
-                service: "SendGrid",
-                auth: {
-                    user: process.env.SENDGRID_USER,
-                    pass: process.env.SENDGRID_PASSWORD
-                }
-            });
-            const mailOptions = {
-                to: user.email,
-                from: "casey.yzpan@gmail.com",
-                subject: "Reset your password on WellBee",
-                text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
-          Please click on the following link, or paste this into your browser to complete the process:\n\n
-          http://${req.headers.host}/reset/${token}\n\n
-          If you did not request this, please ignore this email and your password will remain unchanged.\n`
-            };
-            transporter.sendMail(mailOptions, (err) => {
-                req.flash("info", { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
-                done(err);
-            });
-        }
-    ], (err) => {
-        if (err) { return next(err); }
-        res.redirect("/forgot");
-    });
-};
-
-
-// /**
-//  * POST /account/add-record
-//  * User adds new record.
-//  */
-// export const postAddRecord2 = (req: Request, res: Response, next: NextFunction) => {
-//     const bodyData = req.body;
-
-//     const newRecord = new Record({
-//         type: bodyData.recordtype,
-//         createdAt: bodyData.date,
-//     });
-
-//     console.log("1\n");
-
-//     for ( const entry of bodyData.entries ){
-//         //const entryData = JSON.parse(entry);
-//         const newEntry = new Entry(entry.param, entry.val, entry.unit);
-//         newRecord.entries.push(newEntry);
-//     }
-
-//     console.log("2\n");
-
-//     newRecord.save((err) => {
-//         if (err) {
-//             console.log(err);
-//             return next(err);
-//         }
-//     });
-
-//     const user = req.user;
-//     console.log("3\n");
-
-//     User.findOne({email: user}, (err, existingUser: UserDocument) => {
-//         if (err){ 
-//             console.log(err);
-//             return next(err); 
-//         }
-//         if (existingUser){ 
-//             existingUser.recordBriefList.push(newRecord._id);
-//             existingUser.save((err) => {
-//                 return next(err);
-//             });
-//             return res.send("Record successfully added.");
-//         }
-//         return res.send("User not found.");
-//     });
-// };
 
 /**
  * POST /account/add-record

@@ -6,13 +6,12 @@ import mongoose, { Document } from "mongoose";
 
 export type Usertype = "user" | "doctor" | "admin";
 
-export type UserInfo = { "name": string; "email": string; "usertype": Usertype};
+export type UserInfo = { "name": string; "email": string; "usertype": Usertype };
 
 export interface PersonnelDocument extends mongoose.Document { 
     name: string;
     email: string;
     usertype: Usertype;
-    age: string;
     password: string;
     passwordResetToken: string;
     passwordResetExpires: Date;
@@ -21,11 +20,11 @@ export interface PersonnelDocument extends mongoose.Document {
 
     profile: {
         name: string;
+        age: string;
         gender: string;
         birthday: string;
         location: string;
         website: string;
-        picture: string;
     };
 
     comparePassword: comparePasswordFunction;
