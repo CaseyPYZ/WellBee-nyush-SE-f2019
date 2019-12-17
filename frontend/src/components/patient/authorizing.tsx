@@ -81,10 +81,9 @@ export default class AuthorizeList extends Component<any, any> {
     getAuthorizingList(record: any, i: any) {
         return (
             <div className="jumbotron">
-                {record.email}
-                {record.usertype}
-
-                <button onClick={() => this.removeAuthorization(record)}> Remove </button>
+                <h3>{record.email}</h3>
+                <br />
+                <button className="btn btn-secondary btn-sm" onClick={() => this.removeAuthorization(record)}> Remove </button>
             </div>
         )
     }

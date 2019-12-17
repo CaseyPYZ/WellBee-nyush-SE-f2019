@@ -150,13 +150,13 @@ export default class AdminAuth extends Component<any, any> {
               </div>
 
               <div className="form-group">
-                <input type="submit" value="Login" className="btn login_btn" />
+                <input type="submit" value="Login" className="btn login_btn btn-secondary" />
               </div>
             </form>
           </div>
           <div className="card-footer">
             <div className="d-flex justify-content-center links">
-              Don't have an account?<button onClick={this.getSignup}>Sign Up</button>
+              Don't have an account? <button onClick={this.getSignup}> Sign Up </button>
             </div>
           </div>
         </>
@@ -226,7 +226,7 @@ export default class AdminAuth extends Component<any, any> {
                   </select>
                 </div>
 
-                <button type="submit" className="form-control">Register</button>
+                <button type="submit" className="form-control btn btn-secondary">Register</button>
               </div>
             </form>
           </div >

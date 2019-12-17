@@ -88,22 +88,21 @@ export default class RecordList extends Component<any, any> {
   }
 
   getEntries(entries: any, i: any) {
-    // if ((entries.param === "" || entries.param === null) && (entries.value === "" || entries.value === null) && (entries.unit === null || entries.unit === "")){
-    //   return (<></>)
-    // }
-    return (
-      <div>
-        <button key={i} className="jumbotron" onClick={() => this.getSingleRecord(i)}>
+    if ((entries.param === undefined) && (entries.value === null) && (entries.unit === "")) {
+      return (<></>)
+    } else {
+      return (
+        <div key={i} className="jumbotron">
           <h2>Param: {entries.param}</h2>
           <h2>Value: {entries.value}</h2>
           <h2>Unit: {entries.unit}</h2>
-        </button>
-      </div>
-    )
+        </div>
+      )
+    }
   }
 
   singlePage() {
-    this.setState({single: false})
+    this.setState({ single: false })
   }
 
   render() {
@@ -119,11 +118,10 @@ export default class RecordList extends Component<any, any> {
       return (
         <Div>
           <h1>Personal Records</h1>
-          <button type="button" className="btn btn-dark"><Link to="/user/addrecord"> Add Record </Link></button>
+          <button type="button" className="btn btn-secondary btn-lg"><Link to="/user/addrecord"> Add Record </Link></button>
           <div>{this.state.recordList.map(this.getRecordList)}</div>
         </Div>
       );
     }
-
   }
 }
