@@ -20,9 +20,10 @@ export default class SidebarComponent extends React.Component<any, any> {
           <Sidebar className="w3-sidebar w3-light-grey w3-bar-block">
             <h2 className="w3-bar-item"><img src="bee-128.png" alt="" ></img></h2>
             <div className="w3-bar-item w3-button"><Link to="/profile">Profile</Link></div>
-            <div className="w3-bar-item w3-button"><Link to="/user/record">Record <FaCaretDown /></Link></div>
-            <div className="w3-bar-item w3-button"><Link to="/user/access">Access</Link></div>
-            <div className="w3-bar-item w3-button"><Link to="/user/authorize">Authorize</Link></div>
+            <div className="w3-bar-item w3-button"><Link to="/user/record">Record</Link></div>
+            <div className="w3-bar-item w3-button"><Link to="/user/search">Search</Link></div>
+            <div className="w3-bar-item w3-button"><Link to="/user/access">Authorized</Link></div>
+            <div className="w3-bar-item w3-button"><Link to="/user/authorize">Authorizing</Link></div>
           </Sidebar>
         ) : (this.props.loggedInStatus === "LOGGED_IN" && this.props.usertype === "doctor" ? (
           <div className="w3-sidebar w3-light-grey w3-bar-block">

@@ -10,7 +10,8 @@ export default class RecordList extends Component<any, any> {
     this.state = {
       recordList: [],
       errors: [],
-      recordID: ""
+      recordID: "",
+      record: {}
     };
 
     this.getRecordList = this.getRecordList.bind(this);
@@ -40,7 +41,6 @@ export default class RecordList extends Component<any, any> {
     this._isMounted = false;
   }
 
-
   async getSingleRecord(i:any) {
 
     await this.setState({recordID: this.state.recordList[i].recordID})
@@ -61,7 +61,7 @@ export default class RecordList extends Component<any, any> {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        this.setState({ recordList: response })
+        this.setState({ record: response })
       })
       .catch(error => {
         console.log(error);
@@ -83,7 +83,7 @@ export default class RecordList extends Component<any, any> {
     return (
       <Div>
         <h1>Personal Records</h1>
-        <button type="button" className="btn btn-dark"><Link to="/patient/addrecord"> Add Record </Link></button>
+        <button type="button" className="btn btn-dark"><Link to="/user/addrecord"> Add Record </Link></button>
         <div>{this.state.recordList.map(this.getRecordList)}</div>
       </Div>
     );

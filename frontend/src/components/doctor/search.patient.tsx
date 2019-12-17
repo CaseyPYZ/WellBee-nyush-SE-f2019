@@ -7,6 +7,7 @@ export default class SearchPatient extends Component<any, any> {
         super(props);
         this.state = {
             keyword: "",
+            user: {},
         };
         this.handleChange = this.handleChange.bind(this);
         this.searchPatient = this.searchPatient.bind(this);
@@ -27,17 +28,16 @@ export default class SearchPatient extends Component<any, any> {
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
 
-        console.log(this.state.keyword)
-
         fetch("http://localhost:5000/searchUser", {
             method: "post",
             credentials: "include",
             headers: headers,
+            body: JSON.stringify(this.state)
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(response => {
                 console.log(response);
-                // this.setState({ user: response })
+                this.setState({ user: response })
             })
             .catch(error => {
                 console.log(error);
@@ -63,6 +63,7 @@ export default class SearchPatient extends Component<any, any> {
                         <button className="input-group-text cyan lighten-2" id="basic-text1"><FaSearch /></button>
                     </div>
                 </form>
+                <button>{this.state.user.email}</button>
             </Div>
         );
     }

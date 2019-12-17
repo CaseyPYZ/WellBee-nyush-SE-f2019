@@ -12,11 +12,13 @@ import PatientList from "./components/admin/list.patient";
 import DoctorList from "./components/admin/list.doctor";
 import RecordList from "./components/patient/record/list.record.tsx";
 import AddRecord from "./components/patient/record/add.record";
-import AccessList from "./components/patient/access";
-import AuthorizeList from "./components/patient/authorize";
+import AccessList from "./components/patient/have.access";
+import AuthorizeList from "./components/patient/authorizing";
 import Login from "./pages/login.public";
 import HomePublic from "./pages/home.public";
 import SearchPatient from "./components/doctor/search.patient";
+import Search from "./components/patient/search";
+import Authorized from "./components/doctor/authorized";
 
 export default class App extends Component<any, any> {
 
@@ -59,8 +61,9 @@ export default class App extends Component<any, any> {
           <Switch>
             <PrivatePatientRoute path="/user/addrecord" history={this.props.history} loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AddRecord} />} />
             <PrivatePatientRoute path="/user/record" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={RecordList} />
-            <PrivatePatientRoute path="/user/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AccessList} />
-            <PrivatePatientRoute path="/user/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AuthorizeList} />
+            <PrivatePatientRoute path="/user/search" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={() => <Search user={this.state.user} usertype={this.state.usertype} />} /> />
+            <PrivatePatientRoute path="/user/access" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={() => <AccessList user={this.state.user} usertype={this.state.usertype} />} /> />
+            <PrivatePatientRoute path="/user/authorize" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={() => <AuthorizeList user={this.state.user} usertype={this.state.usertype} />} /> />
             <PrivatePatientRoute path="/user" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientPrivate} />
 
             <PrivateAdminRoute path="/admin/user-list" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={PatientList} />
@@ -68,6 +71,7 @@ export default class App extends Component<any, any> {
             <PrivateAdminRoute path="/admin" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={AdminPrivate} />
 
             <PrivateDoctorRoute path="/doctor/patient-list" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={SearchPatient} />
+            <PrivateDoctorRoute path="/doctor/request" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={Authorized} />
             <PrivateDoctorRoute path="/doctor" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={DoctorPrivate} />
 
             <PrivateRoute path="/profile" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={Profile} />
