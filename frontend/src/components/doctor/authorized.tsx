@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
 
 export default class Authorized extends Component<any, any> {

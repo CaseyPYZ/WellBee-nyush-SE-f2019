@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import { Div } from "../styles/pages.style";
 
 /*
-- Get profile
-- Update password
-- Delete Account
+Class: Profile
+- Get user profile
 */
 export default class Profile extends Component<any, any> {
+  
+  /*
+  State:
+  - profile = user profile information
+  */
   constructor(props: any) {
     super(props);
     this.state = {
@@ -18,10 +22,12 @@ export default class Profile extends Component<any, any> {
     this.deleteAccount = this.deleteAccount.bind(this);
   }
 
+  // Every time the component is rendered, get user profile
   componentDidMount() {
     this.getProfile();
   }
 
+  // Call to server to GET user profile information
   async getProfile() {
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -36,9 +42,11 @@ export default class Profile extends Component<any, any> {
     })
       .then(response => response.json())
       .then(response => {
+        // if success, save profile information
         this.setState({ profile: response })
       })
       .catch(error => {
+        // if error, save error
         this.setState({ loginErrors: error });
       })
   }

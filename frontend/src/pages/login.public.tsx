@@ -102,7 +102,7 @@ export default class Login extends Component<any, any> {
     }
 
     return (
-      <Div>
+      <Div data-testid="login-button">
         <h2>Choose Account Type</h2>
         <br />
         {button}

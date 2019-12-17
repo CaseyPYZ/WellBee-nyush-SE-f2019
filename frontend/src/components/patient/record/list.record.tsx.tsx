@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Div } from "../../../styles/pages.style";
-import GetRecord from "./get.record";
 
 export default class RecordList extends Component<any, any> {
   _isMounted = false;

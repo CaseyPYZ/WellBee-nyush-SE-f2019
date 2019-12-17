@@ -124,6 +124,7 @@ export default class AdminAuth extends Component<any, any> {
                   <span className="input-group-text"><FaUser /></span>
                 </div>
                 <input
+                  data-testid="login-email"
                   type="email"
                   name="email"
                   placeholder="email"
@@ -156,9 +157,6 @@ export default class AdminAuth extends Component<any, any> {
           <div className="card-footer">
             <div className="d-flex justify-content-center links">
               Don't have an account?<button onClick={this.getSignup}>Sign Up</button>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Link to="/forgot">Forgot your password?</Link>
             </div>
           </div>
         </>
