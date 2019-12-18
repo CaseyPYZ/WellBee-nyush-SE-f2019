@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 import { FaSearch } from "react-icons/fa";
 
+/*
+Class: Search
+- Get user profile
+*/
 export default class Search extends Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -17,26 +21,26 @@ export default class Search extends Component<any, any> {
         this.grantAuthorization = this.grantAuthorization.bind(this);
     }
 
+    // watches for any input
     handleChange(event: any) {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
+    // POST username / email to server
+    // Based on the email and usertype sent back to server,
+    // if user exists in database, the user will be saved in the state 
     async handleSubmit(event: any) {
         event.preventDefault();
-
         await this.setState({
             targetUserEmail: this.state.keyword
         })
-
-        console.log(this.state)
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
-
         if (this.state.targetUsertype === 'user') {
             fetch("http://localhost:5000/searchUser", {
                 method: "post",
@@ -72,22 +76,19 @@ export default class Search extends Component<any, any> {
         }
     }
 
-    // usertype / email
+    // POST username / email to server
+    // Grants authorization for specified user to access their records
+    // Specified user is saved into database
     async grantAuthorization(event: any) {
         event.preventDefault();
-
         await this.setState({
             targetUserEmail: this.state.keyword
         })
-
-        console.log(this.state)
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
-
         fetch("http://localhost:5000/authorize-user", {
             method: "post",
             headers: headers,
@@ -131,19 +132,15 @@ export default class Search extends Component<any, any> {
                     </div>
                 </form>
 
-                <div></div>
-                {this.state.search ?
+                <br />
+                {this.state.search.email ?
                     <div className="jumbotron">
-                        {this.state.search.email}
+                        <h2>{this.state.search.email}</h2>
                         <br />
                         <button className="btn btn-primary btn-sm" onClick={this.grantAuthorization}>Grant</button>
                     </div>
                     :
-                    <div className="jumbotron">
-                        {this.state.search.email}
-                        <br />
-                        <button className="btn btn-primary btn-sm" onClick={this.grantAuthorization}>Grant</button>
-                    </div>
+                   <></>
                 }
             </Div>
         );

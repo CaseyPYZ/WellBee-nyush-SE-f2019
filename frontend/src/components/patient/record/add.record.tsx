@@ -73,7 +73,7 @@ export default class AddRecord extends Component<any, any> {
             .then(response => {
                 console.log(response);
                 console.log(this.props.history)
-                this.props.history.push(`/patient/record`);
+                this.props.history.push(`/user/record`);
             })
             .catch(error => {
                 console.log(error);
