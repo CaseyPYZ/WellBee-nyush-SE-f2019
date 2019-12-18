@@ -14,5 +14,5 @@ module.exports = {
       "json",
       "node"
     ],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
   }
