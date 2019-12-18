@@ -274,7 +274,7 @@ export const getEmergencyProfile = (req: Request, res: Response, next: NextFunct
     else{
         return res.status(400).json({msg: "Usertype is not user. Only users have emergency profile"});
     }
-}
+};
 
 /**
  * POST /account/password
@@ -299,14 +299,14 @@ export const UpdateEmergencyProfile = (req: Request, res: Response, next: NextFu
                 if (err){
                     return next(err);
                 }
-                return res.status(200).json({EmergencyProfile: user.EmergencyProfile, msg: "Emergency profile has been updated"})
-            })
-        })
+                return res.status(200).json({EmergencyProfile: user.EmergencyProfile, msg: "Emergency profile has been updated"});
+            });
+        });
     }
     else{
         return res.status(400).json({msg: "Usertype is not user. Only users have emergency profile"});
     }
-}
+};
 
 
 
