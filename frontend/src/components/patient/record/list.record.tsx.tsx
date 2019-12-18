@@ -11,15 +11,19 @@ export default class RecordList extends Component<any, any> {
       recordList: [],
       errors: [],
       recordID: "",
-      record: {}
+      record: { entries: [] },
+      single: false
     };
 
     this.getRecordList = this.getRecordList.bind(this);
     this.getSingleRecord = this.getSingleRecord.bind(this);
+    this.getEntries = this.getEntries.bind(this);
+    this.singlePage = this.singlePage.bind(this);
   }
 
   componentDidMount() {
     this._isMounted = true;
+    this.setState({ single: false })
 
     console.log("IN HERE")
     fetch("http://localhost:5000/account/get-recordlist", {
@@ -41,9 +45,9 @@ export default class RecordList extends Component<any, any> {
     this._isMounted = false;
   }
 
-  async getSingleRecord(i:any) {
+  async getSingleRecord(i: any) {
 
-    await this.setState({recordID: this.state.recordList[i].recordID})
+    await this.setState({ recordID: this.state.recordList[i].recordID })
     console.log(this.state.recordList[i].recordID)
     console.log(this.state.recordID)
 
@@ -57,6 +61,7 @@ export default class RecordList extends Component<any, any> {
       method: "post",
       credentials: "include",
       headers: headers,
+      body: JSON.stringify(this.state)
     })
       .then(response => response.json())
       .then(response => {
@@ -67,6 +72,9 @@ export default class RecordList extends Component<any, any> {
         console.log(error);
         this.setState({ errors: error });
       })
+
+    console.log(this.state.record)
+    this.setState({ single: true })
   }
 
   getRecordList(record: any, i: any) {
@@ -79,13 +87,41 @@ export default class RecordList extends Component<any, any> {
     )
   }
 
+  getEntries(entries: any, i: any) {
+    if ((entries.param === undefined) && (entries.value === null) && (entries.unit === "")) {
+      return (<></>)
+    } else {
+      return (
+        <div key={i} className="jumbotron">
+          <h2>Param: {entries.param}</h2>
+          <h2>Value: {entries.value}</h2>
+          <h2>Unit: {entries.unit}</h2>
+        </div>
+      )
+    }
+  }
+
+  singlePage() {
+    this.setState({ single: false })
+  }
+
   render() {
-    return (
-      <Div>
-        <h1>Personal Records</h1>
-        <button type="button" className="btn btn-dark"><Link to="/user/addrecord"> Add Record </Link></button>
-        <div>{this.state.recordList.map(this.getRecordList)}</div>
-      </Div>
-    );
+    if (this.state.single) {
+      return (
+        <Div onClick={this.singlePage}>
+          <p>{this.state.record.type}</p>
+          <p>{this.state.record.date}</p>
+          <p>{this.state.record.entries.map(this.getEntries)}</p>
+        </Div>
+      )
+    } else {
+      return (
+        <Div>
+          <h1>Personal Records</h1>
+          <button type="button" className="btn btn-secondary btn-lg"><Link to="/user/addrecord"> Add Record </Link></button>
+          <div>{this.state.recordList.map(this.getRecordList)}</div>
+        </Div>
+      );
+    }
   }
 }

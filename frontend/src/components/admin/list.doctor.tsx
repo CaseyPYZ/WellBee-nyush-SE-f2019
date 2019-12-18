@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
 
+
+// Doctor List Class
+// Shows list of doctors inside the database
+// Key is used to filter the list of doctors
 export default class DoctorList extends Component<any, any> {
     constructor(props: any) {
         super(props);

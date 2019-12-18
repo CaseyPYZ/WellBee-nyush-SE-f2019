@@ -19,6 +19,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             User.findOne({ email: req.body.email }, (err, existingUser: UserDocument) => {
@@ -54,6 +62,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             Doctor.findOne({ email: req.body.email }, (err, existingUser: DoctorDocument) => {
@@ -65,19 +81,11 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 
                 user.save(err => {
                     if (err) { return res.status(400).send(err); }
-                    console.log("[[[]]] Save user succeed.");
                     req.logIn(user, (err) => {
-                        if (res.headersSent) {
-                            console.log(res);
-                            return res;
-                        }
-                        console.log("[[[]]] Login user.");
                         if (err) {
                             console.log(err);
                             return res.send(err);
                         }
-                        console.log("[[[]]] Login user success.");
-                        console.log(user);
                         return res.status(200).json({ user: req.user, msg: "Success signing up doctor" });
                     });
                 });
@@ -92,6 +100,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             Admin.findOne({ email: req.body.email }, (err, existingUser: AdminDocument) => {
@@ -107,7 +123,6 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                             console.log(err);
                             return res.status(400).send(err);
                         }
-                        console.log(req.user);
                         return res.status(200).json({ user: req.user, msg: "Success signing up admin" });
                     });
                 });

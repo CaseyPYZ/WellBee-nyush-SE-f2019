@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Div } from "../styles/pages.style";
 
 /*
-Once logged in as an PATIENT
+Home page for PATIENT
 */
 export default class PatientPrivate extends Component<any, any> {
   render() {

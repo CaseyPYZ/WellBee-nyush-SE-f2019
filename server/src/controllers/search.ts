@@ -22,10 +22,10 @@ export const postSearchUser = (req: Request, res: Response, next: NextFunction) 
             return res.json({
                 name: existingUser.name,
                 email: existingUser.email,
-                age: existingUser.age
+                age: existingUser.profile.age
             });
         }
-        return res.status(404).send("User not found.");
+        return res.status(400).json({msg: "User not found"});
     });
 };
 
@@ -40,10 +40,10 @@ export const postSearchDoctor = (req: Request, res: Response, next: NextFunction
             return res.json({
                 name: existingUser.name,
                 email: existingUser.email,
-                age: existingUser.age
+                age: existingUser.profile.age
             });
         }
-        return res.send("User not found.");
+        return res.status(400).json({msg: "User not found"});
     });
 };
 
@@ -75,7 +75,7 @@ export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
             data.forEach((userdoc: UserDocument, index) => {
                 const userinfo = {"name": userdoc.name,
                                 "email": userdoc.email,
-                                "age": userdoc.age};
+                                "age": userdoc.profile.age};
                 userdata.push(userinfo);
             });
             return res.status(200).send(userdata);

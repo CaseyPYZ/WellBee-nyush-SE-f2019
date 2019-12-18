@@ -146,16 +146,13 @@ export default class PatientAuth extends Component<any, any> {
               </div>
 
               <div className="form-group">
-                <input type="submit" value="Login" className="btn login_btn" />
+                <input type="submit" value="Login" className="btn login_btn btn-secondary" />
               </div>
             </form>
           </div>
           <div className="card-footer">
             <div className="d-flex justify-content-center links">
               Don't have an account?<button onClick={this.getSignup}>Sign Up</button>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Link to="/">Forgot your password?</Link>
             </div>
           </div>
         </>
@@ -224,7 +221,7 @@ export default class PatientAuth extends Component<any, any> {
                   </select>
                 </div>
 
-                <button type="submit" className="form-control">Register</button>
+                <button type="submit" className="form-control btn btn-secondary">Register</button>
               </div>
             </form>
           </div >
@@ -234,7 +231,7 @@ export default class PatientAuth extends Component<any, any> {
     return (
       <div className="card">
         <div className="card-header">
-          <h3>PATIENT</h3>
+          <h3>USER</h3>
         </div>
         {show}
       </div>
