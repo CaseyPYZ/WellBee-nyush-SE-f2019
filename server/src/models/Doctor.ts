@@ -18,7 +18,6 @@ const doctorSchema = new mongoose.Schema({
     usertype: String,
     password: String,
 
-    tokens: Array,
 
     profile: {
         name: String,

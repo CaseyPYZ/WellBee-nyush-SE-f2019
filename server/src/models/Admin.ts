@@ -53,12 +53,5 @@ adminSchema.methods.comparePassword = comparePassword;
  * Helper method for getting user's gravatar.
  */
 
-adminSchema.methods.gravatar = function (size: number = 200) {
-    if (!this.email) {
-        return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-    }
-    const md5 = crypto.createHash("md5").update(this.email).digest("hex");
-    return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
 
 export const Admin = mongoose.model<AdminDocument>("Admin", adminSchema);
