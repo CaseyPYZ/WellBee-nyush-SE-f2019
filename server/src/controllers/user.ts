@@ -158,7 +158,7 @@ export const getAccount = (req: Request, res: Response, next: NextFunction) => {
         });
     }
     else if (user.usertype == "doctor"){
-        Doctor.findById(user.id, (err, user: UserDocument) => {
+        Doctor.findById(user.id, (err, user: DoctorDocument) => {
             if (err) {
                 return next(err);
             }
@@ -166,7 +166,7 @@ export const getAccount = (req: Request, res: Response, next: NextFunction) => {
         });
     }
     else if (user.usertype == "admin"){
-        User.findById(user.id, (err, user: UserDocument) => {
+        Admin.findById(user.id, (err, user: AdminDocument) => {
             if (err) {
                 return next(err);
             }
