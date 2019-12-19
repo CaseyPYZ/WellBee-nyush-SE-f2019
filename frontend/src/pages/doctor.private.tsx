@@ -2,21 +2,9 @@ import React, { Component } from "react";
 import { Div } from "../styles/pages.style";
 
 /*
-Once logged in as an DOCTOR
+Home page for DOCTOR
 */
 export default class DoctorPrivate extends Component<any, any> {
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      profile: false,
-      record: false,
-      access: false,
-      authorized: false,
-      emergency: false,
-    }
-  }
-
   render() {
     return (
       <Div>

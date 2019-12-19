@@ -10,12 +10,18 @@ import PatientAuth from "../components/auth/patient.auth";
 import DoctorAuth from "../components/auth/doctor.auth";
 
 /*
-PUBLIC page
-- choose user type
-- login or sign up
+Class Login
+- PUBLIC page 
+- Determines which usertype to render login and signup form
 */
 export default class Login extends Component<any, any> {
 
+  /*
+  State:
+  - if admin is true: show admin login/signup form
+  - if doctor is true: show doctor login/signup form
+  - if patient is true: show patient login/signup form
+  */
   constructor(props: any) {
     super(props);
     this.state = {
@@ -30,6 +36,7 @@ export default class Login extends Component<any, any> {
     this.showDoctor = this.showDoctor.bind(this);
   }
 
+  // Based on usertype, determines where to redirect page after login/signup
   handleSuccessfulAuth(data: any, usertype: string) {
     this.props.handleLogin(data, usertype);
     if (usertype === 'admin') {
@@ -39,9 +46,9 @@ export default class Login extends Component<any, any> {
     } else if (usertype === 'user') {
       this.props.history.push(`/patient`);
     }
-    console.log('USER: ' + usertype);
   }
 
+  // Show Admin login form
   showAdmin() {
     this.setState({
       admin: true,
@@ -50,6 +57,7 @@ export default class Login extends Component<any, any> {
     })
   }
 
+  // Show Patient login form
   showPatient() {
     this.setState({
       admin: false,
@@ -58,6 +66,7 @@ export default class Login extends Component<any, any> {
     })
   }
 
+  // Show Doctor login form
   showDoctor() {
     this.setState({
       admin: false,
@@ -78,6 +87,7 @@ export default class Login extends Component<any, any> {
         <input type="image" id="image" alt="doctor" src={Doctor} style={verticalStyle} onClick={this.showDoctor}></input><br />
         <input type="image" id="image" alt="patient" src={Patient} style={verticalStyle} onClick={this.showPatient}></input>
       </Column>
+
     if (this.state.admin) {
       container = <AdminAuth adminLogin={this.state.admin} handleSuccessfulAuth={this.handleSuccessfulAuth} />
     } else if (this.state.patient) {
@@ -97,13 +107,13 @@ export default class Login extends Component<any, any> {
           </Column>
           <Column>
             <input type="image" id="image" alt="patient" src={Patient} style={verticalStyle} onClick={this.showPatient} />
-            <h3>PATIENT</h3>
+            <h3>USER</h3>
           </Column>
         </div>
     }
 
     return (
-      <Div>
+      <Div data-testid="login-button">
         <h2>Choose Account Type</h2>
         <br />
         {button}

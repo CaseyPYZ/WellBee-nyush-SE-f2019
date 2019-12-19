@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Div } from "../../styles/pages.style";
+import { Div } from "../../../styles/pages.style";
 
-//https://codesandbox.io/s/00xq32n3pn?from-embed
-
+/*
+Class: AddRecord
+- patient can add record
+*/
 export default class AddRecord extends Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -27,12 +29,14 @@ export default class AddRecord extends Component<any, any> {
         this.handleRemoveEntry = this.handleRemoveEntry.bind(this);
     }
 
+    // handles input for the record
     handleChange(event: any) {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
+    // handles input for profile information
     handleEntryChange = (idx: any) => (event: any) => {
         const newEntry = this.state.entries.map((entry: any, index: any) => {
             if (idx !== index) return entry;
@@ -41,39 +45,40 @@ export default class AddRecord extends Component<any, any> {
         this.setState({ entries: newEntry });
     };
 
+    // handles input for all the entries
     handleAddEntry = () => {
         this.setState({
             entries: this.state.entries.concat([{ param: "", value: "", unit: "" }])
         });
     };
 
+    // remove entry form
     handleRemoveEntry = (idx: any) => () => {
         this.setState({
             entries: this.state.entries.filter((s: any, sidx: any) => idx !== sidx)
         });
     };
 
+    // add record to backend
+    // if successful, redirect user to record list page
     async addRecord(event: any) {
         event.preventDefault();
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
-
-        console.log("IN HERE")
         fetch("http://localhost:5000/account/add-record", {
             method: "post",
             headers: headers,
             credentials: "include",
-            mode: 'cors',
             body: JSON.stringify(this.state)
         })
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                this.props.history.push(`/patient/record`);
+                console.log(this.props.history)
+                this.props.history.push(`/user/record`);
             })
             .catch(error => {
                 console.log(error);
@@ -81,6 +86,7 @@ export default class AddRecord extends Component<any, any> {
             })
     }
 
+    // add record form
     render() {
         return (
             <Div>

@@ -2,24 +2,9 @@ import React, { Component } from "react";
 import { Div } from "../styles/pages.style";
 
 /*
-Once logged in as an ADMIN
+Home page for ADMIN
 */
 export default class AdminPrivate extends Component<any, any> {
-
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            profile: false,
-            doctor: false,
-            patient: false
-        }
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
-
-    handleSubmit() {
-        this.props.handleLogout();
-    }
-
     render() {
         return (
             <Div>

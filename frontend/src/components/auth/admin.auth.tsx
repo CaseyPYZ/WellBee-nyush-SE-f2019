@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { FaKey, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
+/*
+Class: AdminAuth
+- Login / Sign up for admin
+*/
 export default class AdminAuth extends Component<any, any> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -11,10 +13,6 @@ export default class AdminAuth extends Component<any, any> {
       password: String,
       password_confirmation: String,
       usertype: "admin",
-      facebook: String,
-      twitter: String,
-      google: String,
-      tokens: Array,
       profile: {
         name: String,
         gender: String,
@@ -37,6 +35,7 @@ export default class AdminAuth extends Component<any, any> {
     this.getSignup = this.getSignup.bind(this);
   }
 
+  // render sign up form
   getSignup() {
     this.setState({
       auth: {
@@ -46,12 +45,14 @@ export default class AdminAuth extends Component<any, any> {
     })
   }
 
+  // handles input 
   handleChange(event: any) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
+  // handles input for sign up
   handleProfileChange(event: any) {
     this.setState({
       profile: {
@@ -61,26 +62,22 @@ export default class AdminAuth extends Component<any, any> {
     })
   }
 
-
+  // when submit login, authenticate in backend
   async handleLoginSubmit(event: any) {
     event.preventDefault();
-
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
     });
-
     fetch("http://localhost:5000/login", {
       method: "post",
-
       credentials: "include",
       headers: headers,
       body: JSON.stringify(this.state)
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
@@ -88,9 +85,10 @@ export default class AdminAuth extends Component<any, any> {
       })
   }
 
+  // when submit signup, create user in backend
   async handleSignupSubmit(event: any) {
+    console.log(this.state)
     event.preventDefault();
-
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -105,6 +103,7 @@ export default class AdminAuth extends Component<any, any> {
     })
       .then(response => response.json())
       .then(response => {
+        console.log(response)
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
@@ -112,8 +111,8 @@ export default class AdminAuth extends Component<any, any> {
       })
   }
 
+  // admin login / sign up form
   render() {
-
     var show;
     if (this.state.auth.login) {
       show =
@@ -125,6 +124,7 @@ export default class AdminAuth extends Component<any, any> {
                   <span className="input-group-text"><FaUser /></span>
                 </div>
                 <input
+                  data-testid="login-email"
                   type="email"
                   name="email"
                   placeholder="email"
@@ -150,16 +150,13 @@ export default class AdminAuth extends Component<any, any> {
               </div>
 
               <div className="form-group">
-                <input type="submit" value="Login" className="btn login_btn" />
+                <input type="submit" value="Login" className="btn login_btn btn-secondary" />
               </div>
             </form>
           </div>
           <div className="card-footer">
             <div className="d-flex justify-content-center links">
-              Don't have an account?<button onClick={this.getSignup}>Sign Up</button>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Link to="/">Forgot your password?</Link>
+              Don't have an account? <button onClick={this.getSignup}> Sign Up </button>
             </div>
           </div>
         </>
@@ -229,7 +226,7 @@ export default class AdminAuth extends Component<any, any> {
                   </select>
                 </div>
 
-                <button type="submit" className="form-control">Register</button>
+                <button type="submit" className="form-control btn btn-secondary">Register</button>
               </div>
             </form>
           </div >

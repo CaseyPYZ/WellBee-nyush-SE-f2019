@@ -447,6 +447,7 @@ export const getRecordList = (req: Request, res: Response, next: NextFunction  )
  * Get a specific record by recordID
  */
 export const getRecord = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     Record.findById(req.body.recordID, (err, existingRecord: RecordDocument) => {
         if (err){ return next(err); }
         if (existingRecord){

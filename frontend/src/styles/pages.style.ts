@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Redirect } from 'react-router';
 
 export const Div = styled.div`
     text-align: center;
