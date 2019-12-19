@@ -83,9 +83,8 @@ export default class RecordList extends Component<any, any> {
   getRecordList(record: any, i: any) {
     return (
       <button style={elementStyle.listRow} key={i} onClick={() => this.getSingleRecord(i)}>
-          <p style={textStyle.pText}>Record ID: {record.recordID}</p>
-          <p style={textStyle.pText}>Description: {record.description}</p>
           <p style={textStyle.pText}>Timestamp: {record.date}</p>
+          <p style={textStyle.pText}>Description: {record.description}</p>
       </button>
     )
   }
