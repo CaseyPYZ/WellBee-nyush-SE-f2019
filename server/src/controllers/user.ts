@@ -55,8 +55,6 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors.array());
-        //return res.redirect("/login");
         return res.status(400).send({msg: "errors"});
     }
 
@@ -69,20 +67,17 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
     switch (usertype){
         case "user": {
             passport.authenticate("userLocal", (err: Error, user: UserDocument, info: IVerifyOptions) => {
-                console.log("\n***************USER LOGIN***************");
-                console.log(user);
-                console.log("****************************************\n");
+
 
                 if (err) { return next(err); }
                 if (!user) {
                     console.log("POST LOGIN ERROR");
-                    return res.status(400).send({user: null, msg: "Oops something went wrong"});
+                    return res.status(400).send({user: null, msg: "Oops something went wrong", UserNotExist: true});
                 }
                 req.logIn(user, (err) => {
                     if (err) { return next(err); }
                     console.log("POST LOGIN SUCCESS");
-                    // console.log(req.headers)
-                    // console.log(user);
+
                     return res.status(200).send({user: user, msg: "You have logged in!"});
         
                 });
@@ -92,9 +87,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "doctor": {
             passport.authenticate("doctorLocal", (err: Error, user: DoctorDocument, info: IVerifyOptions) => {
-                console.log("\n***************DOCT LOGIN***************");
-                console.log(user);
-                console.log("****************************************\n");
+
 
                 if (err) { return next(err); }
                 if (!user) {
@@ -103,8 +96,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
                 }
                 req.logIn(user, (err) => {
                     if (err) { return next(err); }
-                    console.log("POST LOGIN SUCCESS");
-                    console.log(user);
+
                     return res.status(200).send({user: user, msg: "You have logged in!"});
         
                 });
@@ -114,9 +106,7 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
         }
         case "admin": {
             passport.authenticate("adminLocal", (err: Error, user: AdminDocument, info: IVerifyOptions) => {
-                console.log("\n***************ADMIN LOGIN***************");
-                console.log(user);
-                console.log("****************************************\n");
+
 
                 if (err) { return next(err); }
                 if (!user) {
@@ -126,7 +116,6 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
                 req.logIn(user, (err) => {
                     if (err) { return next(err); }
                     console.log("POST LOGIN SUCCESS");
-                    console.log("Admin: %s", user);
                     return res.status(200).send({user: user, msg: "You have logged in!"});
         
                 });
