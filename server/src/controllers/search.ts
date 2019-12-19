@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
-import { Admin, AdminDocument } from "../models/Admin";
 import { PersonnelDocument, UserInfo } from "../models/Personnel";
 
 
@@ -12,8 +11,7 @@ import { PersonnelDocument, UserInfo } from "../models/Personnel";
 
 export const postSearchUser = (req: Request, res: Response, next: NextFunction) => {
     const key = req.body.keyword;
-
-    //This key word can be ID, name, email;
+    //keyword should be email
 
 
     User.findOne({email: key}, (err: Error, existingUser: UserDocument) => {
@@ -31,10 +29,9 @@ export const postSearchUser = (req: Request, res: Response, next: NextFunction) 
 
 export const postSearchDoctor = (req: Request, res: Response, next: NextFunction) => {
     const key = req.body.keyword;
+    //keyword should be email
 
-    //This key word can be ID, name, email;
-
-    Doctor.findOne({email: key}, (err: Error, existingUser: UserDocument) => {
+    Doctor.findOne({email: key}, (err: Error, existingUser: DoctorDocument) => {
         if (err){ return next(err); }
         if (existingUser){ 
             return res.json({
@@ -52,9 +49,6 @@ export const postSearchDoctor = (req: Request, res: Response, next: NextFunction
 //       Add a wrapper to deal with different types of searching requirement.
 
 export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
-
-    //Need to check if the user is admin
-    //if req.user.usertype == "admin":
 
     const user = req.user as PersonnelDocument;
     if (user.usertype != "admin"){
@@ -85,9 +79,6 @@ export const getAllUser = (req: Request, res: Response, next: NextFunction) => {
 
 
 export const getAllDoctor = (req: Request, res: Response, next: NextFunction) => {
-
-    //Need to check if the use is admin
-    //if req.user.usertype == "admin"
 
     const user = req.user as PersonnelDocument;
     if (user.usertype != "admin"){

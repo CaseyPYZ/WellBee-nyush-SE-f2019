@@ -246,8 +246,10 @@ export const postUpdateProfile = (req: Request, res: Response, next: NextFunctio
 };
 
 /**
- * GET /account
- * Profile page.
+ * GET ***
+ * Emergency profile page.
+ * This functionality is not supported in the frontend.
+ * Should be added in the future.
  */
 export const getEmergencyProfile = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as PersonnelDocument;
@@ -265,8 +267,10 @@ export const getEmergencyProfile = (req: Request, res: Response, next: NextFunct
 };
 
 /**
- * POST /account/password
+ * POST ***
  * Update Emergency profile.
+ * This functionality is not supported in the frontend.
+ * Should be added in the future.
  */
 
 export const UpdateEmergencyProfile = (req: Request, res: Response, next: NextFunction) => {
@@ -299,8 +303,7 @@ export const UpdateEmergencyProfile = (req: Request, res: Response, next: NextFu
 
 /**
  * POST /account/delete
- * Delete user account.
- * TODO: We need to delete the records associated with the account for users
+ * Delete user account and the associated records for users.
  */
 export const postDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as PersonnelDocument;
@@ -372,9 +375,6 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         entries: entriesArray
     });
 
-    console.log("********* NEW RECORD *********");
-    console.log(newRecord);
-    console.log("******************************");
 
     newRecord.save((err) => {
         if (err) { return next(err);}
@@ -388,26 +388,11 @@ export const postAddRecord = (req: Request, res: Response, next: NextFunction  )
         
         const newRecordBrief = new RecordBrief(newRecord._id, newRecord.type, newRecord.date, newRecord.description);
 
-        console.log("********* NEW RECORD BRIEF *********");
-        console.log("BEFORE");
-        console.log(user.recordBriefList);
-        console.log("NEW R BRIEF");
-        console.log(newRecordBrief);
-        console.log("******************************");
-
-        // This following line evokes error
-            // ASYNC HANDLING NEEDED 
         user.recordBriefList.push(newRecordBrief);
         user.save((err: WriteError) => {
             return next(err);
         });
 
-        console.log("\nAFTER");
-        console.log(user.recordBriefList);
-        console.log("******************************");
-
-        // *** flash not showding => frontend?
-        req.flash("success", { msg: "New record successfully added." });
         return res.status(200).send({ 
             newRB: newRecordBrief,
             msg: "New record successfully added." 

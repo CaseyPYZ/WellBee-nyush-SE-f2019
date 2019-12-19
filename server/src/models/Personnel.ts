@@ -12,10 +12,7 @@ export interface PersonnelDocument extends mongoose.Document {
     email: string;
     usertype: Usertype;
     password: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
 
-    tokens: AuthToken[];
 
     profile: {
         name: string;
@@ -27,8 +24,6 @@ export interface PersonnelDocument extends mongoose.Document {
     };
 
     comparePassword: comparePasswordFunction;
-    gravatar: (size: number) => string;
-
 }
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
@@ -38,8 +33,3 @@ export const comparePassword: comparePasswordFunction = function (candidatePassw
         cb(err, isMatch);   //callback function
     });
 };
-
-export interface AuthToken {
-    accessToken: string;
-    kind: string;
-}

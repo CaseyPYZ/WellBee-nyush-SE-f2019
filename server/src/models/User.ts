@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt-nodejs";
-import crypto from "crypto";
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
 import { PersonnelDocument, comparePassword, UserInfo } from "./Personnel";
 import { RecordBrief } from "./records/Record";
@@ -37,10 +36,6 @@ const userSchema = new mongoose.Schema({
     usertype: String,
     name: String,
     password: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-
-    tokens: Array,
 
     profile: {
         name: String,
@@ -86,15 +81,5 @@ userSchema.pre("save", function save(next) {
 
 userSchema.methods.comparePassword = comparePassword;
 
-/**
- * Helper method for getting user's gravatar.
- */
-userSchema.methods.gravatar = function (size: number = 200) {
-    if (!this.email) {
-        return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-    }
-    const md5 = crypto.createHash("md5").update(this.email).digest("hex");
-    return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
 
 export const User = mongoose.model<UserDocument>("User", userSchema);

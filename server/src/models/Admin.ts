@@ -11,20 +11,11 @@ export interface AdminDocument extends PersonnelDocument {
     
 };
 
-export interface AuthToken {
-    accessToken: string;
-    kind: string;
-}
-
 const adminSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     usertype: String,
     name: String,
     password: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-
-    tokens: Array,
 
     profile: {
         name: String,
@@ -33,7 +24,6 @@ const adminSchema = new mongoose.Schema({
         birthday: String,
         location: String,
         website: String,
-        picture: String
     }
 }, { timestamps: true });
 
