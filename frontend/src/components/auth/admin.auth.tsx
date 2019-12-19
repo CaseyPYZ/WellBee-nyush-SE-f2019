@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FaKey, FaUser } from "react-icons/fa";
+import * as textStyle from "../../styles/text.style";
 
 /*
 Class: AdminAuth
@@ -236,7 +237,7 @@ export default class AdminAuth extends Component<any, any> {
     return (
       <div className="card">
         <div className="card-header">
-          <h3>ADMIN</h3>
+          <h3 style={textStyle.tagText}>ADMIN</h3>
         </div>
         {show}
       </div>

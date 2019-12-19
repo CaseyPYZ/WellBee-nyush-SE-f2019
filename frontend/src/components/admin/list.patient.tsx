@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
+import * as textStyle from "../../styles/text.style";
+import * as elementStyle from "../../styles/element.style";
 
 /*
 Class: PatientList
@@ -50,10 +52,8 @@ export default class PatientList extends Component<any, any> {
     // map out all the patients in a div
     getPatientList(patient: any, i: any) {
         return (
-            <div key={i} className="jumbotron">
-                <img alt=""></img>
-                {i}
-                <h2>{patient.email}</h2>
+            <div key={i} style={elementStyle.listRow}>
+                <h2 style={textStyle.pText}>{patient.email}</h2>
             </div>
         )
     }
@@ -91,7 +91,7 @@ export default class PatientList extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>User List</h1>
+                <h1 style={textStyle.pHeader}>User List</h1>
                 <form className="input-group md-form form-sm form-1 pl-0" onSubmit={this.searchPatient}>
                     <input
                         className="form-control my-0 py-1"
