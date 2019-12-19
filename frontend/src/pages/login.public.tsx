@@ -8,6 +8,7 @@ import { Div, Column } from "../styles/app.style";
 import AdminAuth from "../components/auth/admin.auth";
 import PatientAuth from "../components/auth/patient.auth";
 import DoctorAuth from "../components/auth/doctor.auth";
+import * as textStyle from '../styles/text.style';
 
 /*
 Class Login
@@ -99,23 +100,23 @@ export default class Login extends Component<any, any> {
         <div>
           <Column>
             <input type="image" id="image" alt="admin" src={Admin} style={verticalStyle} onClick={this.showAdmin} /><br />
-            <h3>ADMIN</h3>
+            <h3 style={textStyle.tagText} >ADMIN</h3>
           </Column>
           <Column>
             <input type="image" id="image" alt="doctor" src={Doctor} style={verticalStyle} onClick={this.showDoctor} /><br />
-            <h3>DOCTOR</h3>
+            <h3 style={textStyle.tagText} >DOCTOR</h3>
           </Column>
           <Column>
             <input type="image" id="image" alt="patient" src={Patient} style={verticalStyle} onClick={this.showPatient} />
-            <h3>USER</h3>
+            <h3 style={textStyle.tagText} >USER</h3>
           </Column>
         </div>
     }
 
     return (
       <Div data-testid="login-button">
-        <h2>Choose Account Type</h2>
-        <br />
+        <h2 style={textStyle.pHeader}>Choose Account Type</h2>
+        <br /><br /><br />
         {button}
         <div>
           {container}

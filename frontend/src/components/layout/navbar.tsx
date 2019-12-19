@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Img, Navbar } from '../../styles/navbar.style';
 import { Link } from 'react-router-dom';
 import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import * as textStyle from '../../styles/text.style';
 
 /*
 NAVBAR
@@ -36,7 +37,7 @@ export default class NavbarComponent extends React.Component<any> {
       <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div className="container">
           <Link className="navbar-brand" to="/home">
-            <h2><Img src="bee-128.png" alt="" /> WellBee </h2>
+            <p style={textStyle.logoText}><Img src="bee-128.png" alt="" /> WellBee </p>
           </Link>
 
           <div className="collapse navbar-collapse" id="navbarResponsive">

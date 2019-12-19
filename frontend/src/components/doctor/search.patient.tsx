@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 import { FaSearch } from "react-icons/fa";
+import * as textStyle from "../../styles/text.style";
 
 /*
 Class: Search Patient
@@ -51,7 +52,7 @@ export default class SearchPatient extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Search Patient</h1>
+                <h1 style={textStyle.pHeader}>Search Patient</h1>
                 <form className="input-group md-form form-sm form-1 pl-0" onSubmit={this.searchPatient}>
                     <input
                         className="form-control my-0 py-1"
