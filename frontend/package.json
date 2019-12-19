@@ -30,9 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
