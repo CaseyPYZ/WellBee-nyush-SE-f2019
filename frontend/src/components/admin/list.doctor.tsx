@@ -3,9 +3,10 @@ import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
 
 
-// Doctor List Class
-// Shows list of doctors inside the database
-// Key is used to filter the list of doctors
+/*
+Class: PatientList
+- doctor list for admin
+*/
 export default class DoctorList extends Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -20,6 +21,7 @@ export default class DoctorList extends Component<any, any> {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    // get list of all the doctors from backend
     componentDidMount() {
         fetch("http://localhost:5000/getAllDoctor", {
             method: "get",
@@ -30,17 +32,18 @@ export default class DoctorList extends Component<any, any> {
                 this.setState({ doctorList: response })
             })
             .catch(error => {
-                console.log(error);
                 this.setState({ errors: error });
             })
     }
 
+    // handle search bar input
     handleChange(event: any) {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
+    // map out all the doctors in a div
     getDoctorList(doctor: any, i: any) {
         return (
             <div key={i} className="jumbotron">
@@ -51,9 +54,11 @@ export default class DoctorList extends Component<any, any> {
         )
     }
 
+    // get list of all the doctors
+    // filter in frontend based on any input
+    // if doctor email contains any of the keyword, show a list
     searchDoctor(event: any) {
         event.preventDefault();
-
         fetch("http://localhost:5000/getAllDoctor", {
             method: "get",
             credentials: "include",
@@ -73,11 +78,11 @@ export default class DoctorList extends Component<any, any> {
                 }
             })
             .catch(error => {
-                console.log(error);
                 this.setState({ errors: error });
             })
     }
 
+    // html for searchbar and list of doctors
     render() {
         return (
             <Div>

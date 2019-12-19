@@ -5,6 +5,10 @@ import * as textStyle from "../../../styles/text.style"
 import * as elementStyle from "../../../styles/element.style"
 
 
+/*
+Class: RecordList
+- All the records of the patient
+*/
 export default class RecordList extends Component<any, any> {
   _isMounted = false;
 
@@ -24,6 +28,7 @@ export default class RecordList extends Component<any, any> {
     this.singlePage = this.singlePage.bind(this);
   }
 
+  // patient get all their records
   componentDidMount() {
     this._isMounted = true;
     this.setState({ single: false })
@@ -48,18 +53,14 @@ export default class RecordList extends Component<any, any> {
     this._isMounted = false;
   }
 
+  // patient get one record with more detailed information
   async getSingleRecord(i: any) {
-
     await this.setState({ recordID: this.state.recordList[i].recordID })
-    console.log(this.state.recordList[i].recordID)
-    console.log(this.state.recordID)
-
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
     });
-
     fetch("http://localhost:5000/account/get-record", {
       method: "post",
       credentials: "include",
@@ -75,11 +76,10 @@ export default class RecordList extends Component<any, any> {
         console.log(error);
         this.setState({ errors: error });
       })
-
-    console.log(this.state.record)
     this.setState({ single: true })
   }
 
+  // map out buttons for each record that was fetched from the backend
   getRecordList(record: any, i: any) {
     return (
       <button style={elementStyle.listRow} key={i} onClick={() => this.getSingleRecord(i)}>
@@ -90,6 +90,8 @@ export default class RecordList extends Component<any, any> {
     )
   }
 
+  // map out all the entries
+  // dont map them if they are empty
   getEntries(entries: any, i: any) {
     if ((entries.param === undefined) && (entries.value === null) && (entries.unit === "")) {
       return (<></>)
@@ -104,6 +106,9 @@ export default class RecordList extends Component<any, any> {
     }
   }
 
+  // if single = true -> then render the individual record 
+  // if false, render the record list 
+  // this sets single to false
   singlePage() {
     this.setState({ single: false })
   }

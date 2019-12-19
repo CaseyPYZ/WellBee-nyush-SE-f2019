@@ -3,6 +3,10 @@ import { Div } from "../../styles/pages.style";
 import * as textStyle from "../../styles/text.style"
 
 
+/*
+Class: AccessList
+- List of people whom you gave access to
+*/
 export default class AccessList extends Component<any, any> {
     _isMounted = false;
 
@@ -27,6 +31,7 @@ export default class AccessList extends Component<any, any> {
         this.getEntries = this.getEntries.bind(this);
     }
 
+    // when component rendered, get list of authorized users
     componentDidMount() {
         this._isMounted = true;
 
@@ -60,6 +65,8 @@ export default class AccessList extends Component<any, any> {
         this._isMounted = false;
     }
 
+    // create buttons for each person you granted access
+    // when button clicked, get list of records from the person you clicked
     getAccessList(access: any, i: any) {
         return (
             <button className="btn btn-secondary btn-lg" onClick={() => { this.userRecords(access) }}>
@@ -68,6 +75,8 @@ export default class AccessList extends Component<any, any> {
         )
     }
 
+    // create button for all the records that are listed
+    // brief information
     getRecord(record: any, i: any) {
         return (
             <button className="btn btn-secondary btn-lg" onClick={() => { this.individualRecord(record) }}>
@@ -79,6 +88,7 @@ export default class AccessList extends Component<any, any> {
         )
     }
 
+    // get detailed information of the specific record
     async individualRecord(record: any) {
         console.log("RECORD")
         await this.setState({ recordID: record.recordID })
@@ -108,6 +118,7 @@ export default class AccessList extends Component<any, any> {
         this.setState({ single: true })
     }
 
+    // fetch a record list from the backend
     async userRecords(access: any) {
         this.setState({
             targetUserEmail: access.email
@@ -136,6 +147,7 @@ export default class AccessList extends Component<any, any> {
             })
     }
 
+    // map out each entry from the specific record
     getEntries(entries: any, i: any) {
         if ((entries.param === undefined) && (entries.value === null) && (entries.unit === "")) {
             return (<></>)
@@ -150,6 +162,9 @@ export default class AccessList extends Component<any, any> {
         }
     }
 
+    // if single = true -> then render the individual record 
+    // if false, render the access list 
+    // this sets single to false
     singlePage() {
         this.setState({ single: false })
     }

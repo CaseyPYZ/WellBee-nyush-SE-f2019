@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { FaUser, FaKey } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
+/*
+Class: PatientAuth
+- Login / Sign up for patient
+*/
 export default class PatientAuth extends Component<any, any> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -11,10 +13,6 @@ export default class PatientAuth extends Component<any, any> {
       password: "",
       password_confirmation: "",
       usertype: "user",
-      facebook: "",
-      twitter: "",
-      google: "",
-      tokens: [],
       profile: {
         name: "",
         gender: "",
@@ -37,6 +35,7 @@ export default class PatientAuth extends Component<any, any> {
     this.getSignup = this.getSignup.bind(this);
   }
 
+  // render sign up form
   getSignup() {
     this.setState({
       auth: {
@@ -46,12 +45,14 @@ export default class PatientAuth extends Component<any, any> {
     })
   }
 
+  // handles input 
   handleChange(event: any) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
+  // handles input for sign up
   handleProfileChange(event: any) {
     this.setState({
       profile: {
@@ -61,6 +62,7 @@ export default class PatientAuth extends Component<any, any> {
     })
   }
 
+  // when submit login, authenticate in backend
   async handleLoginSubmit(event: any) {
     event.preventDefault();
     const headers = new Headers({
@@ -76,7 +78,6 @@ export default class PatientAuth extends Component<any, any> {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         this.props.handleSuccessfulAuth(response, this.state.usertype);
       })
       .catch(error => {
@@ -84,6 +85,7 @@ export default class PatientAuth extends Component<any, any> {
       })
   }
 
+  // when submit signup, create user in backend
   async handleSignupSubmit(event: any) {
     event.preventDefault();
     console.log("HERE")
@@ -108,8 +110,8 @@ export default class PatientAuth extends Component<any, any> {
       })
   }
 
+  // patient login / sign up form
   render() {
-
     var show;
     if (this.state.auth.login) {
       show =

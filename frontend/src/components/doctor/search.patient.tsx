@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 import { FaSearch } from "react-icons/fa";
 
+/*
+Class: Search Patient
+- doctor searched for patient
+*/
 export default class SearchPatient extends Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -13,21 +17,21 @@ export default class SearchPatient extends Component<any, any> {
         this.searchPatient = this.searchPatient.bind(this);
     }
 
+    // handles input in the search bar
     handleChange(event: any) {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
+    // search patient on backend based on exact patient email
     searchPatient(event:any) {
         event.preventDefault();
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
-
         fetch("http://localhost:5000/searchUser", {
             method: "post",
             credentials: "include",
@@ -36,15 +40,14 @@ export default class SearchPatient extends Component<any, any> {
         })
             .then(response => response.json())
             .then(response => {
-                console.log(response);
                 this.setState({ user: response })
             })
             .catch(error => {
-                console.log(error);
                 this.setState({ errors: error });
             })
     }
 
+    // search bar
     render() {
         return (
             <Div>
