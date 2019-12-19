@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 import { FaSearch } from "react-icons/fa";
+import * as textStyle from "../../styles/text.style"
 
 /*
 Class: Search
@@ -110,7 +111,8 @@ export default class Search extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Authorization</h1>
+                <h1 style={textStyle.pHeader} >Authorization</h1>
+                <br />
                 <form className="input-group md-form form-sm form-1 pl-0" onSubmit={this.handleSubmit}>
                     <input
                         className="form-control my-0 py-1"
@@ -124,8 +126,8 @@ export default class Search extends Component<any, any> {
 
                     <select defaultValue={this.state.targetUsertype}
                         onChange={(e) => this.setState({ targetUsertype: e.target.value })}>
-                        <option value="doctor">Doctor</option>
-                        <option value="user">User</option>
+                        <option value="doctor" style={textStyle.pText} >Doctor</option>
+                        <option value="user" style={textStyle.pText}>User</option>
                     </select>
 
                     <div className="input-group-prepend">

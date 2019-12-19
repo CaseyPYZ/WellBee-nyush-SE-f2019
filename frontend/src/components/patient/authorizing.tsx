@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
+import * as textStyle from "../../styles/text.style"
 
 /*
 Class: AuthorizeList
@@ -96,7 +97,9 @@ export default class AuthorizeList extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Authorizing</h1>
+                <h1 style={textStyle.pHeader} >Authorizing</h1>
+                <h2 style={textStyle.pSubHeader}>Currently authorizing the following users</h2>
+                <br />
                 <div>{this.state.authorizeList.map(this.getAuthorizingList)}</div>
             </Div>
         );
