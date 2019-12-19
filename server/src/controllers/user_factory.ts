@@ -33,7 +33,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 if (err) { return res.status(400).send(err); }
                 if (existingUser) {
                     console.log("Account with that email address already exists." );
-                    return res.status(400).send({ msg: "User with that email address already exists." });
+                    return res.status(400).send({UserAlreadyExist: true});
                 }
                 console.log("====saving user information =====");
                 console.log(user);
@@ -76,7 +76,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 if (err) { return res.status(400).send(err); }
                 if (existingUser) {
                     console.log("Account with that email address already exists.");
-                    return res.status(400).json({ msg: "Doctor with that email address already exists." });
+                    return res.status(400).json({UserAlreadyExist: true});
                 }
                 
                 user.save(err => {
@@ -105,7 +105,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                     age: req.body.age || "",
                     gender: req.body.gender || "",
                     birthday: req.body.birthday || "",
-                    location: req.body.location ||"",
+                    location: req.body.location || "",
                     website: req.body.website || "",
                 }
             });
@@ -114,7 +114,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 if (err) { return res.status(400).send(err); }
                 if (existingUser) {
                     console.log("Account with that email address already exists.");
-                    return res.status(400).json({ msg: "Admin with that email address already exists." });
+                    return res.status(400).json({UserAlreadyExist: true});
                 }
                 user.save((err) => {
                     if (err) { return res.status(400).send(err); }
