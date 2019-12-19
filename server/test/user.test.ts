@@ -47,7 +47,7 @@ describe("POST /login", () => {
             })
             .expect(200)
             .end(function(err, res) {
-                expect(res.body.msg).equal("You have logged in!")
+                expect(res.body.msg).equal("You have logged in!");
                 done();
             });
     });
@@ -65,7 +65,7 @@ describe("POST /login", () => {
             })
             .expect(200)
             .end(function(err, res) {
-                expect(res.body.msg).equal("You have logged in!")
+                expect(res.body.msg).equal("You have logged in!");
                 done();
             });
     });
@@ -83,7 +83,7 @@ describe("POST /login", () => {
             })
             .expect(200)
             .end(function(err, res) {
-                expect(res.body.msg).equal("You have logged in!")
+                expect(res.body.msg).equal("You have logged in!");
                 done();
             });
     });

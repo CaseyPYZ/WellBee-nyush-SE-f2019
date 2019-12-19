@@ -8,9 +8,9 @@ export default class PatientPrivate extends Component<any, any> {
   render() {
     return (
       <Div>
-        <h1>STATUS: {this.props.loggedInStatus}</h1>
         <div>
           <h3>HI PATIENT</h3>
+          <h2>WELCOME {this.props.user.email} </h2>
         </div>
       </Div>
     );

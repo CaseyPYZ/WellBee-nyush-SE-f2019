@@ -181,6 +181,26 @@ export default class Profile extends Component<any, any> {
                     required
                   /></div>
 
+                  <div><input
+                    type="number"
+                    name="age"
+                    placeholder="age"
+                    value={this.state.age}
+                    onChange={this.handleChange}
+                    className="form-control"
+                    required
+                  /></div>
+
+                  <div><input
+                    type="text"
+                    name="location"
+                    placeholder="address"
+                    value={this.state.location}
+                    onChange={this.handleChange}
+                    className="form-control"
+                    required
+                  /></div>
+
                   <div className="input-group mb-3">
                     <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
                       <option selected>gender</option>

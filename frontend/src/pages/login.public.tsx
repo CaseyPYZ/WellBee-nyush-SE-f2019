@@ -44,7 +44,7 @@ export default class Login extends Component<any, any> {
     } else if (usertype === 'doctor') {
       this.props.history.push(`/doctor`);
     } else if (usertype === 'user') {
-      this.props.history.push(`/patient`);
+      this.props.history.push(`/user`);
     }
   }
 

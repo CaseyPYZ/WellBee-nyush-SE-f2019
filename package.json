@@ -26,6 +26,7 @@
     "server": "cd server && npm start",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "test": "cd server && npm run test",
+    "build": "cd server && npm run build",
     "installit": "npm install && cd server && npm install && cd ../ && cd frontend && npm install && cd ../"
   },
   "repository": {

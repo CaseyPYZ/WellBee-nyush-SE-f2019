@@ -18,8 +18,7 @@ export default class PatientAuth extends Component<any, any> {
         gender: "",
         birthday: "",
         location: "",
-        website: "",
-        picture: ""
+        age: "",
       },
       errors: [],
       auth: {
@@ -89,6 +88,7 @@ export default class PatientAuth extends Component<any, any> {
   async handleSignupSubmit(event: any) {
     event.preventDefault();
     console.log("HERE")
+    console.log(this.state)
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
@@ -214,9 +214,29 @@ export default class PatientAuth extends Component<any, any> {
                   required
                 /></div>
 
+                <div><input
+                  type="number"
+                  name="age"
+                  placeholder="age"
+                  value={this.state.profile.age}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+
+                <div><input
+                  type="text"
+                  name="location"
+                  placeholder="address"
+                  value={this.state.profile.location}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+
                 <div className="input-group mb-3">
-                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleProfileChange}>
-                    <option >gender</option>
+                  <select className="custom-select" id="inputGroupSelect02" name="gender" onChange={this.handleProfileChange}>
+                    <option selected>gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="none">None</option>

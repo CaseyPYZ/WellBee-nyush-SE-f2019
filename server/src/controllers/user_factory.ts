@@ -20,12 +20,12 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 password: req.body.password,
                 usertype: req.body.usertype,
                 profile: {
-                    name: req.body.name || "",
-                    age: req.body.age || "",
-                    gender: req.body.gender || "",
-                    birthday: req.body.birthday || "",
-                    location: req.body.location ||"",
-                    website: req.body.website || "",
+                    name: req.body.profile.name || "",
+                    age: req.body.profile.age || "",
+                    gender: req.body.profile.gender || "",
+                    birthday: req.body.profile.birthday || "",
+                    location: req.body.profile.location ||"",
+                    website: req.body.profile.website || "",
                 }
             });
 
