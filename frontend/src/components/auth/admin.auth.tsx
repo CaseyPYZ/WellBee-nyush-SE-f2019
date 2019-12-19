@@ -17,6 +17,7 @@ export default class AdminAuth extends Component<any, any> {
       profile: {
         name: String,
         gender: String,
+        age: String,
         birthday: String,
         location: String,
         website: String,
@@ -89,12 +90,13 @@ export default class AdminAuth extends Component<any, any> {
   // when submit signup, create user in backend
   async handleSignupSubmit(event: any) {
     event.preventDefault();
+    console.log("HERE")
+    console.log(this.state)
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
     });
-
     fetch("http://localhost:5000/signup", {
       method: "post",
       credentials: "include",

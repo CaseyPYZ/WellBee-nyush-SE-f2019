@@ -17,6 +17,7 @@ export default class DoctorAuth extends Component<any, any> {
       profile: {
         name: String,
         gender: String,
+        age: String,
         birthday: String,
         location: String,
         website: String,
@@ -89,6 +90,8 @@ export default class DoctorAuth extends Component<any, any> {
   // when submit signup, create user in backend
   async handleSignupSubmit(event: any) {
     event.preventDefault();
+    console.log("HERE")
+    console.log(this.state)
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",

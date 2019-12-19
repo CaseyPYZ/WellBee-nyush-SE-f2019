@@ -49,6 +49,7 @@ export default class Profile extends Component<any, any> {
       usertype: this.props.usertype,
       user: this.props.user,
     })
+    console.log(this.state)
     fetch("http://localhost:5000/account", {
       method: "get",
       credentials: "include",
