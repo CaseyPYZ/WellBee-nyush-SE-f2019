@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Div } from "../styles/pages.style";
+import { Div, profileButton } from "../styles/pages.style";
+import * as textStyle from "../styles/text.style"
 
 /*
 Class: Profile
@@ -116,19 +117,26 @@ export default class Profile extends Component<any, any> {
   render() {
     return (
       <Div>
-        <h2>PROFILE INFORMATION</h2>
-        <img src="" alt="" />
-        <h4>Email: {this.state.profile.email}</h4>
-        <h4>Name: {this.state.profile.name}</h4>
-        <h4>Gender: {this.state.profile.gender}</h4>
-        <h4>Location: {this.state.profile.location}</h4>
-        <h4>Birthday: {this.state.profile.birthday}</h4>
-        <h4>Website: {this.state.profile.website}</h4>
+        <div className="card">
+          <div className="card-header">
+            <p style={textStyle.profileHeader}>Profile Information</p>
+          </div>
+          <img src="" alt="" />
+          <div className="card-body" >
+            <p style={textStyle.profileText} >Email: {this.state.profile.email}</p>
+            <p style={textStyle.profileText} >Name: {this.state.profile.name}</p>
+            <p style={textStyle.profileText} >Gender: {this.state.profile.gender}</p>
+            <p style={textStyle.profileText} >Location: {this.state.profile.location}</p>
+            <p style={textStyle.profileText} >Birthday: {this.state.profile.birthday}</p>
+            <p style={textStyle.profileText} >Website: {this.state.profile.website}</p>
+          </div>
 
-        <br />
-        <button className="btn btn-secondary btn-space" onClick={this.changePassword}>Change Password</button>
-        <button className="btn btn-secondary btn-space" onClick={this.updateProfile}>Edit Profile</button>
-        <button className="btn btn-secondary btn-space" onClick={this.deleteAccount}>Delete Account</button>
+          <div style={profileButton} className="card-footer">
+            <button className="btn btn-secondary btn-space" onClick={this.changePassword}>Change Password</button>
+            <button className="btn btn-secondary btn-space" onClick={this.updateProfile}>Edit Profile</button>
+            <button className="btn btn-secondary btn-space" onClick={this.deleteAccount}>Delete Account</button>
+          </div>
+        </div>
       </Div>
     );
   }
