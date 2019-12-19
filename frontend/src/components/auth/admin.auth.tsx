@@ -17,6 +17,7 @@ export default class AdminAuth extends Component<any, any> {
       profile: {
         name: String,
         gender: String,
+        age: String,
         birthday: String,
         location: String,
         website: String,
@@ -88,14 +89,14 @@ export default class AdminAuth extends Component<any, any> {
 
   // when submit signup, create user in backend
   async handleSignupSubmit(event: any) {
-    console.log(this.state)
     event.preventDefault();
+    console.log("HERE")
+    console.log(this.state)
     const headers = new Headers({
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": 'http://localhost:5000/'
     });
-
     fetch("http://localhost:5000/signup", {
       method: "post",
       credentials: "include",
@@ -197,11 +198,10 @@ export default class AdminAuth extends Component<any, any> {
                   className="form-control"
                   required
                 /></div>
-
                 <input
                   type="name"
                   name="name"
-                  placeholder="name"
+                  placeholder="Name"
                   className="form-control"
                   value={this.state.profile.name}
                   onChange={this.handleProfileChange}
@@ -218,8 +218,28 @@ export default class AdminAuth extends Component<any, any> {
                   required
                 /></div>
 
+                <div><input
+                  type="number"
+                  name="age"
+                  placeholder="age"
+                  value={this.state.profile.age}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+
+                <div><input
+                  type="text"
+                  name="location"
+                  placeholder="address"
+                  value={this.state.profile.location}
+                  onChange={this.handleProfileChange}
+                  className="form-control"
+                  required
+                /></div>
+
                 <div className="input-group mb-3">
-                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleProfileChange}>
+                  <select className="custom-select" id="inputGroupSelect02" name="gender" onChange={this.handleProfileChange}>
                     <option selected>gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>

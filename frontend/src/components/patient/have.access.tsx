@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 import * as textStyle from "../../styles/text.style"
 
-
 /*
 Class: AccessList
 - List of people whom you gave access to

@@ -49,6 +49,8 @@ export default class Profile extends Component<any, any> {
       usertype: this.props.usertype,
       user: this.props.user,
     })
+    console.log(this.props.usertype)
+    console.log(this.state.user)
     fetch("http://localhost:5000/account", {
       method: "get",
       credentials: "include",
@@ -176,6 +178,26 @@ export default class Profile extends Component<any, any> {
                     name="birthday"
                     placeholder="Birthday"
                     value={this.state.birthday}
+                    onChange={this.handleChange}
+                    className="form-control"
+                    required
+                  /></div>
+
+                  <div><input
+                    type="number"
+                    name="age"
+                    placeholder="age"
+                    value={this.state.age}
+                    onChange={this.handleChange}
+                    className="form-control"
+                    required
+                  /></div>
+
+                  <div><input
+                    type="text"
+                    name="location"
+                    placeholder="address"
+                    value={this.state.location}
                     onChange={this.handleChange}
                     className="form-control"
                     required

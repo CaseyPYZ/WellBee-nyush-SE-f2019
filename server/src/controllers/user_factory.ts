@@ -24,7 +24,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                     age: req.body.profile.age || "",
                     gender: req.body.profile.gender || "",
                     birthday: req.body.profile.birthday || "",
-                    location: req.body.profile.location || "",
+                    location: req.body.profile.location ||"",
                     website: req.body.profile.website || "",
                 }
             });

@@ -5,6 +5,9 @@ This is the repo for WellBee EHR System
 1. Clone repository
 2. `npm run installit` - this script installs all dependencies in `/server`, `/frontend`, and `/` which contains the `concurrently` dependency to run both frontend and backend at the same time.
 
+## Build
+1. `npm run build`
+
 # Running
 1. type `npm start`
 
