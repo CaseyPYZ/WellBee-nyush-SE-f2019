@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import { FaSearch } from 'react-icons/fa';
 import { Div } from "../../styles/pages.style";
 
+/*
+Class: PatientList
+- patient list for admin
+*/
 export default class PatientList extends Component<any, any> {
     _isMounted = false;
-
     constructor(props: any) {
         super(props);
         this.state = {
@@ -17,9 +20,9 @@ export default class PatientList extends Component<any, any> {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    // get all the patients from backend
     componentDidMount() {
         this._isMounted = true;
-
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
@@ -29,7 +32,6 @@ export default class PatientList extends Component<any, any> {
                 this.setState({ patientList: response })
             })
             .catch(error => {
-                console.log(error);
                 this.setState({ errors: error });
             })
     }
@@ -38,12 +40,14 @@ export default class PatientList extends Component<any, any> {
         this._isMounted = false;
     }
 
+    // handle search bar input
     handleChange(event: any) {
         this.setState({
             [event.target.name]: event.target.value
         });
     }
 
+    // map out all the patients in a div
     getPatientList(patient: any, i: any) {
         return (
             <div key={i} className="jumbotron">
@@ -54,9 +58,11 @@ export default class PatientList extends Component<any, any> {
         )
     }
 
+    // get list of all the patients
+    // filter in frontend based on any input
+    // if patient email contains any of the keyword, show a list
     searchPatient(event: any) {
         event.preventDefault();
-
         fetch("http://localhost:5000/getAllUser", {
             method: "get",
             credentials: "include",
@@ -81,6 +87,7 @@ export default class PatientList extends Component<any, any> {
             })
     }
 
+    // html and searchbar and list of users
     render() {
         return (
             <Div>

@@ -67,6 +67,7 @@ export default class App extends Component<any, any> {
     });
   }
 
+  // render components based on url
   render() {
     return (
       <div className="app" >
@@ -90,7 +91,7 @@ export default class App extends Component<any, any> {
             <PrivateDoctorRoute path="/doctor/request" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={Authorized} />
             <PrivateDoctorRoute path="/doctor" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype} component={DoctorPrivate} />
 
-            <PrivateRoute path="/profile" loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype}  component={() => <Profile handleLogout={this.handleLogout} user={this.state.user} usertype={this.state.usertype} />} />
+            <PrivateRoute path="/profile" history={this.props.history} loggedInStatus={this.state.loggedInStatus} usertype={this.state.usertype}  component={() => <Profile handleLogout={this.handleLogout} user={this.state.user} usertype={this.state.usertype} />} />
 
             <Route exact path="/home" render={(props) => <HomePublic {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />
             <Route exact path="/signup" render={(props) => <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.loggedInStatus} />} />

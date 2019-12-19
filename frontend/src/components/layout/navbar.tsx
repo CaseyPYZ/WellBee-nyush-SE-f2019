@@ -15,14 +15,13 @@ export default class NavbarComponent extends React.Component<any> {
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
   
+  // when logged out, redirect to login
+  // destroy session on backend
   handleLogoutClick() {
-    console.log("IN LOGOUT");
-
     fetch("http://localhost:5000/logout", {
       method: "get"
     })
       .then(response => {
-        console.log(response);
         this.props.handleLogout();
         this.props.history.push(`/login`);
       })
@@ -31,6 +30,7 @@ export default class NavbarComponent extends React.Component<any> {
       });
   }
 
+  // navbar switches based on logged in and logged out state
   render() {
     return (
       <Navbar className="navbar navbar-expand-lg navbar-dark bg-dark static-top">

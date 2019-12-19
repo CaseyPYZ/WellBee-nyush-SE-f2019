@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
 
+/*
+Class: AuthorizeList
+- List of people whom you gave access to
+*/
 export default class AuthorizeList extends Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -23,13 +27,11 @@ export default class AuthorizeList extends Component<any, any> {
     }
 
     componentDidMount() {
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
             "Access-Control-Allow-Origin": 'http://localhost:5000/'
         });
-
         fetch("http://localhost:5000/view-authorizing-users", {
             method: "get",
             headers: headers,
@@ -46,15 +48,15 @@ export default class AuthorizeList extends Component<any, any> {
             })
     }
 
+    // remove the authorization you granted to the user
+    // communication with backend
     async removeAuthorization(user:any) {
         console.log(user)
         await this.setState({
             targetUsertype: user.usertype,
             targetUserEmail: user.email
         }) 
-
         console.log(user.usertype)
-
         const headers = new Headers({
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -78,6 +80,8 @@ export default class AuthorizeList extends Component<any, any> {
             })
     }
 
+    // create boxes for each person you gave authorization to
+    // including button to remove the authorization
     getAuthorizingList(record: any, i: any) {
         return (
             <div className="jumbotron">
@@ -93,7 +97,6 @@ export default class AuthorizeList extends Component<any, any> {
         return (
             <Div>
                 <h1>Authorizing</h1>
-                <h2>Who has authorization to see you</h2>
                 <div>{this.state.authorizeList.map(this.getAuthorizingList)}</div>
             </Div>
         );

@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 
 /*
 Class: Search
-- Get user profile
+- Search user email
 */
 export default class Search extends Component<any, any> {
     constructor(props: any) {
@@ -106,6 +106,7 @@ export default class Search extends Component<any, any> {
             })
     }
 
+    // render authorization component
     render() {
         return (
             <Div>
