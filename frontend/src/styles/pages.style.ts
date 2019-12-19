@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Redirect } from 'react-router';
 
 export const Div = styled.div`
     text-align: center;
@@ -10,3 +11,12 @@ export const Div = styled.div`
     background-color: white;
     height: 100vh;
     `
+
+export const profileDiv = {
+    
+};
+
+export const profileButton = {
+    display:'flex',
+    //alignItems: 'strech'
+}

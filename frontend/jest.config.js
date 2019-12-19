@@ -14,10 +14,6 @@ module.exports = {
     setupFilesAfterEnv: [
       "@testing-library/jest-dom/extend-expect"
     ],
-<<<<<<< HEAD
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
-  }
-=======
     // Test spec file resolution pattern
     // Matches parent folder `__tests__` and filename
     // should contain `test` or `spec`.
@@ -28,4 +24,3 @@ module.exports = {
   };
 
   
->>>>>>> ecd440eccdd3e3c499c26a43a8d4613828610c61
