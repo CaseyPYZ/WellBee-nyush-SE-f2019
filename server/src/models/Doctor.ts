@@ -17,8 +17,6 @@ const doctorSchema = new mongoose.Schema({
     name: String,
     usertype: String,
     password: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
 
     tokens: Array,
 
@@ -57,12 +55,4 @@ doctorSchema.methods.comparePassword = comparePassword;
 /**
  * Helper method for getting user's gravatar.
  */
-doctorSchema.methods.gravatar = function (size: number = 200) {
-    if (!this.email) {
-        return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-    }
-    const md5 = crypto.createHash("md5").update(this.email).digest("hex");
-    return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
-
 export const Doctor = mongoose.model<DoctorDocument>("Doctor", doctorSchema);
