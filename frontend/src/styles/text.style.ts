@@ -40,9 +40,34 @@ export const buttonLinkText = {
     textDecoration: 'none'
 } as React.CSSProperties;
 
+
+/**
+ * Link text
+ */
+export const sideLinkText = {
+    color: '#343A41',
+    fontSize: '16px',
+    textAlign: 'left',
+    fontFamily: "'Lato', sans-serif",
+    textDecoration: 'none'
+} as React.CSSProperties;
+
+
 /**
  * Text on logo
  */
 export const logoText = {
+    color:'white',
+    fontSize: '20px',
+    fontFamily: "'Montserrat', sans-serif",
+    paddingTop:'6px'
+} as React.CSSProperties;
 
+
+export const tagText = {
+    color: '#252933',
+    fontSize: '22px',
+    paddingTop: '15px',
+    fontFamily: "'Montserrat', sans-serif",
+    textAlign: 'center'
 } as React.CSSProperties;

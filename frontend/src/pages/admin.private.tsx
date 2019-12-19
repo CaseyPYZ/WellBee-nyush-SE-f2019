@@ -9,7 +9,7 @@ export default class AdminPrivate extends Component<any, any> {
         return (
             <Div>
                 <div>
-                    <h3>ADMIN</h3>
+                    <h3>HI ADMIN</h3>
                     <h2>WELCOME {this.props.user.email} </h2>
                 </div>
             </Div>

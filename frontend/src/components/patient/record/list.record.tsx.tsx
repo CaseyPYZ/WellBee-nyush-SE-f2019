@@ -96,10 +96,10 @@ export default class RecordList extends Component<any, any> {
       return (<></>)
     } else {
       return (
-        <div key={i} className="jumbotron">
-          <h2>Param: {entries.param}</h2>
-          <h2>Value: {entries.value}</h2>
-          <h2>Unit: {entries.unit}</h2>
+        <div style={elementStyle.listRow} key={i} >
+          <h2 style={textStyle.pText}>Param: {entries.param}</h2>
+          <h2 style={textStyle.pText}>Value: {entries.value}</h2>
+          <h2 style={textStyle.pText}>Unit: {entries.unit}</h2>
         </div>
       )
     }

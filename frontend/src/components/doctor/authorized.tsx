@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
+import * as textStyle from "../../styles/text.style";
 
 /*
 Class: Authorized
@@ -84,7 +85,7 @@ export default class Authorized extends Component<any, any> {
     render() {
         return (
             <Div>
-                <h1>Authorized</h1>
+                <h1 style={textStyle.pHeader}>Authorized</h1>
                 <div>{this.state.accessList.map(this.getAccessList)}</div>
                 <div>{this.state.userRecord.map(this.getAccessList)}</div>
 

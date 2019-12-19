@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FaUser, FaKey } from "react-icons/fa";
+import * as textStyle from "../../styles/text.style";
 
 /*
 Class: DoctorAuth
@@ -250,7 +251,7 @@ export default class DoctorAuth extends Component<any, any> {
     return (
       <div className="card">
         <div className="card-header">
-          <h3>DOCTOR</h3>
+          <h3 style={textStyle.tagText}>DOCTOR</h3>
         </div>
         {show}
       </div>
