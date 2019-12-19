@@ -1,8 +1,4 @@
-import async, { nextTick } from "async";
-import crypto from "crypto";
-import nodemailer from "nodemailer";
 import passport from "passport";
-import { AuthToken } from "../models/Admin";
 import { User, UserDocument } from "../models/User";
 import { Doctor, DoctorDocument } from "../models/Doctor";
 import { Admin, AdminDocument } from "../models/Admin";
@@ -13,22 +9,35 @@ import { IVerifyOptions } from "passport-local";
 import { WriteError } from "mongodb";
 import { check, sanitize, validationResult } from "express-validator";
 import "../config/passport";
-import { profile } from "winston";
 import { PersonnelDocument, UserInfo } from "../models/Personnel";
-import { DocumentProvider } from "mongoose";
-import { userInfo } from "os";
+import * as userFactory from "./user_factory";
+
 
 /**
- * GET /login
- * Login page.
+ * POST /signup
+ * Create a new local account.
  */
-export const getLogin = (req: Request, res: Response) => {
-    if (req.user) {
-        console.log("GET LOGIN WITH USER");
-        return res.send({user: req.user});
+export const postSignup = (req: Request, res: Response, next: NextFunction) => {
+
+    /* Global steps */
+
+
+    check("email", "Email is not valid").isEmail();
+    check("password", "Password must be at least 4 characters long").isLength({ min: 4 });
+    check("confirmPassword", "Passwords do not match").equals(req.body.password);
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    sanitize("email").normalizeEmail({ gmail_remove_dots: false });
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(400).send(errors);
     }
-    console.log("GET LOGIN WITHOUT USER");
-    return res.send();
+
+    /* User factory */
+
+    userFactory.createUser(req, res, next);
 };
 
 /**
@@ -72,7 +81,8 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
                 req.logIn(user, (err) => {
                     if (err) { return next(err); }
                     console.log("POST LOGIN SUCCESS");
-                    console.log(user);
+                    // console.log(req.headers)
+                    // console.log(user);
                     return res.status(200).send({user: user, msg: "You have logged in!"});
         
                 });
@@ -139,21 +149,10 @@ export const postLogin = (req: Request, res: Response, next: NextFunction) => {
 export const logout = (req: Request, res: Response) => {
     req.logout();
     req.session.destroy(function (err) {
-        res.json({ msg: "Logged out!" });
+        res.status(200).json({ msg: "Logged out!" });
     });
 };
 
-/**a
- * GET /signup
- * Signup page.
- */
-export const getSignup = (req: Request, res: Response) => {
-    if (req.user) {
-        return res.redirect("/");
-    }
-    res.json({status: "NOT_LOGGED_IN"});
-
-};
 
 /**
  * GET /account
@@ -308,34 +307,6 @@ export const UpdateEmergencyProfile = (req: Request, res: Response, next: NextFu
     }
 };
 
-
-
-/**
- * POST /account/password
- * Update current password.
- */
-export const postUpdatePassword = (req: Request, res: Response, next: NextFunction) => {
-    check("password", "Password must be at least 4 characters long").isLength({ min: 4 });
-    check("confirmPassword", "Passwords do not match").equals(req.body.password);
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        req.flash("errors", errors.array());
-        return res.redirect("/account");
-    }
-
-    const user = req.user as UserDocument;
-    User.findById(user.id, (err, user: UserDocument) => {
-        if (err) { return next(err); }
-        user.password = req.body.password;
-        user.save((err: WriteError) => {
-            if (err) { return next(err); }
-            req.flash("success", { msg: "Password has been changed." });
-            res.redirect("/account");
-        });
-    });
-};
 
 /**
  * POST /account/delete

@@ -4,7 +4,6 @@ import mongoose, { Document } from "mongoose";
 
 import { PersonnelDocument, comparePassword, UserInfo } from "./Personnel";
 import { RecordBrief } from "./records/Record";
-import { ExecFileOptionsWithStringEncoding } from "child_process";
 
 export type EmergencyPROFILE = {
     name: string;
