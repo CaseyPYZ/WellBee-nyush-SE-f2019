@@ -19,6 +19,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             User.findOne({ email: req.body.email }, (err, existingUser: UserDocument) => {
@@ -54,6 +62,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             Doctor.findOne({ email: req.body.email }, (err, existingUser: DoctorDocument) => {
@@ -84,6 +100,14 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
                 name: req.body.name,
                 password: req.body.password,
                 usertype: req.body.usertype,
+                profile: {
+                    name: req.body.name || "",
+                    age: req.body.age || "",
+                    gender: req.body.gender || "",
+                    birthday: req.body.birthday || "",
+                    location: req.body.location ||"",
+                    website: req.body.website || "",
+                }
             });
 
             Admin.findOne({ email: req.body.email }, (err, existingUser: AdminDocument) => {

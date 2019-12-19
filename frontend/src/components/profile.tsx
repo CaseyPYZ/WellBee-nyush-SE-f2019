@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Div } from "../styles/pages.style";
+import { Div, profileButton } from "../styles/pages.style";
+import * as textStyle from "../styles/text.style"
 
 /*
 Class: Profile
@@ -150,62 +151,74 @@ export default class Profile extends Component<any, any> {
     if (this.state.update) {
       return (
         <Div>
-          <h2>UPDATE PROFILE INFORMATION</h2>
-          <div className="card-body">
-            <form onSubmit={this.updateProfile}>
-              <div className="form-group">
+          <div className="card">
+            <div className="card-header">
+              <p style={textStyle.profileHeader}>UPDATE PROFILE INFORMATION</p>
+            </div>
+            <div className="card-body" >
+              <form onSubmit={this.updateProfile}>
+                <div className="form-group">
 
-                <input
-                  type="name"
-                  name="name"
-                  placeholder="name"
-                  className="form-control"
-                  value={this.state.name}
-                  onChange={this.handleChange}
-                  required
-                />
+                  <input
+                    type="name"
+                    name="name"
+                    placeholder="name"
+                    className="form-control"
+                    value={this.state.name}
+                    onChange={this.handleChange}
+                    required
+                  />
 
-                <div><input
-                  type="date"
-                  name="birthday"
-                  placeholder="Birthday"
-                  value={this.state.birthday}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                /></div>
+                  <div><input
+                    type="date"
+                    name="birthday"
+                    placeholder="Birthday"
+                    value={this.state.birthday}
+                    onChange={this.handleChange}
+                    className="form-control"
+                    required
+                  /></div>
 
-                <div className="input-group mb-3">
-                  <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
-                    <option selected>gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="none">None</option>
-                  </select>
+                  <div className="input-group mb-3">
+                    <select className="custom-select" id="inputGroupSelect02" onChange={this.handleChange}>
+                      <option selected>gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="none">None</option>
+                    </select>
+                  </div>
                 </div>
-
                 <button type="submit" className="form-control btn btn-secondary">Update</button>
-              </div>
-            </form>
-          </div >
+              </form>
+            </div>
+          </div>
+        </Div>
+      );
+    } else {
+      return (
+        <Div>
+          <div className="card">
+            <div className="card-header">
+              <p style={textStyle.profileHeader}>Profile Information</p>
+            </div>
+            <img src="" alt="" />
+            <div className="card-body" >
+              <p style={textStyle.profileText} >Name: {this.state.profile.name}</p>
+              <p style={textStyle.profileText} >Gender: {this.state.profile.gender}</p>
+              <p style={textStyle.profileText} >Age: {this.state.profile.age}</p>
+              <p style={textStyle.profileText} >Birthday: {this.state.profile.birthday}</p>
+              <p style={textStyle.profileText} >Location: {this.state.profile.location}</p>
+            </div>
+
+            <div style={profileButton} className="card-footer">
+              <button className="btn btn-secondary btn-space" onClick={this.showUpdate}>Edit Profile</button>
+              <button className="btn btn-secondary btn-space" onClick={this.deleteAccount}>Delete Account</button>
+            </div>
+          </div>
         </Div>
       );
     }
-    return (
-      <Div>
-        <h2>PROFILE INFORMATION</h2>
-        <img src="" alt="" />
-        <h4>Name: {this.state.profile.name}</h4>
-        <h4>Gender: {this.state.profile.gender}</h4>
-        <h4>Age: {this.state.profile.age}</h4>
-        <h4>Birthday: {this.state.profile.birthday}</h4>
-        <h4>Location: {this.state.profile.location}</h4>
 
-        <br />
-        <button className="btn btn-secondary btn-space" onClick={this.showUpdate}>Edit Profile</button>
-        <button className="btn btn-secondary btn-space" onClick={this.deleteAccount}>Delete Account</button>
-      </Div>
-    );
   }
 }
 
