@@ -11,12 +11,3 @@ export const Div = styled.div`
     background-color: white;
     height: 100vh;
     `
-
-export const profileDiv = {
-    
-};
-
-export const profileButton = {
-    display:'flex',
-    //alignItems: 'strech'
-}

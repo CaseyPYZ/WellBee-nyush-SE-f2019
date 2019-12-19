@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Div } from "../../../styles/pages.style";
+import * as textStyle from "../../../styles/text.style"
+import * as elementStyle from "../../../styles/element.style"
+
 
 export default class RecordList extends Component<any, any> {
   _isMounted = false;
@@ -79,10 +82,10 @@ export default class RecordList extends Component<any, any> {
 
   getRecordList(record: any, i: any) {
     return (
-      <button key={i} className="jumbotron" onClick={() => this.getSingleRecord(i)}>
-        <h2>{record.recordID}</h2>
-        <h2>{record.description}</h2>
-        <h2>{record.date}</h2>
+      <button style={elementStyle.listRow} key={i} onClick={() => this.getSingleRecord(i)}>
+          <p style={textStyle.pText}>Record ID: {record.recordID}</p>
+          <p style={textStyle.pText}>Description: {record.description}</p>
+          <p style={textStyle.pText}>Timestamp: {record.date}</p>
       </button>
     )
   }
@@ -117,8 +120,10 @@ export default class RecordList extends Component<any, any> {
     } else {
       return (
         <Div>
-          <h1>Personal Records</h1>
-          <button type="button" className="btn btn-secondary btn-lg"><Link to="/user/addrecord"> Add Record </Link></button>
+          <h1 style={textStyle.pHeader}>Personal Records</h1>
+          <br /><br /><br />
+          <button type="button" className="btn btn-secondary btn-space"><Link style={textStyle.buttonLinkText} to="/user/addrecord"> Add Record </Link></button>
+          <br /><br /><br /><br /><br />
           <div>{this.state.recordList.map(this.getRecordList)}</div>
         </Div>
       );

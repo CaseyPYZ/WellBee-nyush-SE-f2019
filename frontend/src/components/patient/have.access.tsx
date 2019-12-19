@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Div } from "../../styles/pages.style";
+import * as textStyle from "../../styles/text.style"
+
 
 export default class AccessList extends Component<any, any> {
     _isMounted = false;
@@ -69,10 +71,10 @@ export default class AccessList extends Component<any, any> {
     getRecord(record: any, i: any) {
         return (
             <button className="btn btn-secondary btn-lg" onClick={() => { this.individualRecord(record) }}>
-                <p>Type: {record.type}</p>
-                <p>Date:  {record.date}</p>
-                <p>Record ID: {record.recordID}</p>
-                <p>Description:  {record.description}</p>
+                <p style={textStyle.pText} >Type: {record.type}</p>
+                <p style={textStyle.pText} >Date:  {record.date}</p>
+                <p style={textStyle.pText} >Record ID: {record.recordID}</p>
+                <p style={textStyle.pText} >Description:  {record.description}</p>
             </button>
         )
     }
@@ -140,9 +142,9 @@ export default class AccessList extends Component<any, any> {
         } else {
             return (
                 <div key={i} className="jumbotron">
-                    <h2>Param: {entries.param}</h2>
-                    <h2>Value: {entries.value}</h2>
-                    <h2>Unit: {entries.unit}</h2>
+                    <h2 style={textStyle.pText} >Param: {entries.param}</h2>
+                    <h2 style={textStyle.pText} >Value: {entries.value}</h2>
+                    <h2 style={textStyle.pText} >Unit: {entries.unit}</h2>
                 </div>
             )
         }
@@ -164,7 +166,7 @@ export default class AccessList extends Component<any, any> {
         } else {
             return (
                 <Div>
-                    <h1>Authorized</h1>
+                    <h1 style={textStyle.pHeader} >Authorized</h1>
                     <br />
                     <div>{this.state.accessList.map(this.getAccessList)}</div>
                     <div>{this.state.userRecord.map(this.getRecord)}</div>

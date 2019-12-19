@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Div, profileButton } from "../styles/pages.style";
+import { Div } from "../styles/pages.style";
 import * as textStyle from "../styles/text.style"
+import * as elementStyle from "../styles/element.style"
+
 
 /*
 Class: Profile
@@ -119,19 +121,19 @@ export default class Profile extends Component<any, any> {
       <Div>
         <div className="card">
           <div className="card-header">
-            <p style={textStyle.profileHeader}>Profile Information</p>
+            <p style={textStyle.pHeader}>Profile Information</p>
           </div>
           <img src="" alt="" />
           <div className="card-body" >
-            <p style={textStyle.profileText} >Email: {this.state.profile.email}</p>
-            <p style={textStyle.profileText} >Name: {this.state.profile.name}</p>
-            <p style={textStyle.profileText} >Gender: {this.state.profile.gender}</p>
-            <p style={textStyle.profileText} >Location: {this.state.profile.location}</p>
-            <p style={textStyle.profileText} >Birthday: {this.state.profile.birthday}</p>
-            <p style={textStyle.profileText} >Website: {this.state.profile.website}</p>
+            <p style={textStyle.pText} >Email: {this.state.profile.email}</p>
+            <p style={textStyle.pText} >Name: {this.state.profile.name}</p>
+            <p style={textStyle.pText} >Gender: {this.state.profile.gender}</p>
+            <p style={textStyle.pText} >Location: {this.state.profile.location}</p>
+            <p style={textStyle.pText} >Birthday: {this.state.profile.birthday}</p>
+            <p style={textStyle.pText} >Website: {this.state.profile.website}</p>
           </div>
 
-          <div style={profileButton} className="card-footer">
+          <div style={elementStyle.profileButton} className="card-footer">
             <button className="btn btn-secondary btn-space" onClick={this.changePassword}>Change Password</button>
             <button className="btn btn-secondary btn-space" onClick={this.updateProfile}>Edit Profile</button>
             <button className="btn btn-secondary btn-space" onClick={this.deleteAccount}>Delete Account</button>
