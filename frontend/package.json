@@ -12,7 +12,7 @@
     "@types/react-router": "^5.1.1",
     "@types/react-router-dom": "^5.1.0",
     "@types/styled-components": "^4.1.19",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "jest-enzyme": "^7.1.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
