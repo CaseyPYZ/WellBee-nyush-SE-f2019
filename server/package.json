@@ -41,7 +41,7 @@
         "express-validator": "^6.2.0",
         "fbgraph": "^1.4.4",
         "koa": "^2.8.2",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "lusca": "^1.6.1",
         "mongoose": "^5.7.1",
         "nodemailer": "^6.3.0",
